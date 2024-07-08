@@ -1,0 +1,13 @@
+package com.kvy.demogerenciamentoaulas;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoGerenciamentoAulasApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoGerenciamentoAulasApplication.class, args);
+	}
+
+}
