@@ -1,11 +1,13 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -27,9 +29,15 @@ public class LoginService {
     }
 
     @Transactional
-    public Login editarSenha(Long id, String password) {
+    public Login editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
+        if (!novaSenha.equals(confirmaSenha)){
+            throw new RuntimeException("Nova senha não confere com confirmação senha.");
+        }
         Login user = buscarPorId(id);
-        user.setPassword(password);
+        if (!user.getPassword().equals(senhaAtual)){
+            throw new RuntimeException("Sua senha não confere.");
+        }
+        user.setPassword(novaSenha);
         return user;
     }
 
@@ -53,5 +61,8 @@ public class LoginService {
         }
     }
 
-
+    @Transactional(readOnly = true)
+    public List<Login> buscarTodos() {
+        return loginRepository.findAll();
+    }
 }

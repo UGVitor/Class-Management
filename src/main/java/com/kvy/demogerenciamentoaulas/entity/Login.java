@@ -24,7 +24,7 @@ public class Login implements Serializable {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, length = 25)
-    private Role role;
+    private Role role = Role.ROLE_PROFESSOR;
 
     public enum Role {
         ROLE_ADMIN, ROLE_PROFESSOR

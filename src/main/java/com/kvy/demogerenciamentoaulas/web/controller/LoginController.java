@@ -1,12 +1,20 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
+import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.service.LoginService;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginCreateDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginResponseDto;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginSenhaDto;
+import com.kvy.demogerenciamentoaulas.web.dto.mapper.LoginMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,21 +24,21 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping
-    public ResponseEntity<Login> create(@RequestBody Login login) {
-        Login user = loginService.salvar(login);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<LoginResponseDto> create(@Valid @RequestBody LoginCreateDTO createDTO) {
+        Login user = loginService.salvar(LoginMapper.toLogin(createDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(LoginMapper.toDto(user));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Login> getById(@PathVariable Long id) {
+    public ResponseEntity<LoginResponseDto> getById(@PathVariable Long id) {
         Login user = loginService.buscarPorId(id);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(LoginMapper.toDto(user));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Login> updatePassaword(@PathVariable Long id, @RequestBody Login usuario) {
-        Login user = loginService.editarSenha(id, usuario.getPassword());
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Void> updatePassaword(@PathVariable Long id, @Valid @RequestBody LoginSenhaDto dto) {
+        Login user = loginService.editarSenha(id, dto.getSenhaAtual(), dto.getNovaSenha(), dto.getConfirmaSenha());
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -44,4 +52,11 @@ public class LoginController {
         loginService.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping
+    public ResponseEntity<List<LoginResponseDto>> getLoginAll() {
+        List<Login> logins = loginService.buscarTodos();
+        return ResponseEntity.ok(LoginMapper.toListDto(logins));
+    }
+
 }
