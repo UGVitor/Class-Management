@@ -25,10 +25,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+=======
+
+>>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -51,11 +55,14 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version>
 		</dependency>
 		<dependency>
+=======
+>>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
