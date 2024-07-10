@@ -9,9 +9,10 @@ public class AulaResponseDto {
 
     private Long id;
 
+    private String topico;
+
     private LocalDate data;
 
-    private String topico;
 
 
 }

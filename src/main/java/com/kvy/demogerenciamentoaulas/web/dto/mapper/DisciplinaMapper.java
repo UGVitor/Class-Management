@@ -8,6 +8,9 @@ import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaCreateDto;
 import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaResponseDto;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class DisciplinaMapper {
     public static Disciplina toDisciplina(DisciplinaCreateDto disciplinaCreateDto){
 
@@ -20,5 +23,8 @@ public class DisciplinaMapper {
         ModelMapper mapper = new ModelMapper();
         return mapper.map(disciplina, DisciplinaResponseDto.class);
 
+    }
+    public static List<DisciplinaResponseDto> toListDto(List<Disciplina> disciplinaList){
+        return disciplinaList.stream().map(disciplina -> toDisciplinaDto(disciplina)).collect(Collectors.toList());
     }
 }

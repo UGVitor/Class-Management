@@ -5,6 +5,7 @@ import com.kvy.demogerenciamentoaulas.service.AulaService;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaCreateDto;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaResponseDto;
 import com.kvy.demogerenciamentoaulas.web.dto.mapper.AulaMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,16 +21,16 @@ public class AulaController {
     private final AulaService aulaService;
 
     @PostMapping
-    public ResponseEntity<AulaResponseDto> createAula(@RequestBody AulaCreateDto aulaCreateDto) {
+    public ResponseEntity<AulaResponseDto> createAula(@Valid @RequestBody AulaCreateDto aulaCreateDto) {
 
         Aula savedAula = aulaService.salvar(AulaMapper.toAula(aulaCreateDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(AulaMapper.toAulaDto(savedAula));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Aula> getAulaById(@PathVariable Long id) {
+    public ResponseEntity<AulaResponseDto> getAulaById(@PathVariable Long id) {
         Aula aula = aulaService.buscarPorId(id);
-        return ResponseEntity.ok(aula);
+        return ResponseEntity.ok(AulaMapper.toAulaDto(aula));
     }
 
     @PutMapping("/{id}")
@@ -51,9 +52,9 @@ public class AulaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Aula>> getAulaAll(@PathVariable Long id) {
+    public ResponseEntity<List<AulaResponseDto>> getAulaAll(@PathVariable Long id) {
         List<Aula> aulas = aulaService.buscarTodos(id);
-        return ResponseEntity.ok(aulas);
+        return ResponseEntity.ok(AulaMapper.toListDto(aulas));
     }
 
 }

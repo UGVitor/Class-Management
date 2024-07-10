@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -69,4 +71,9 @@ public class DisciplinaService {
             throw new RuntimeException("Disciplina não encontrada com o ID: " + id);
         }
     }
+    @Transactional(readOnly = true)
+    public List<Disciplina> buscarTodos(Long id) {
+        return disciplinaRepository.findAll();
+    }
+
 }
