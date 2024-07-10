@@ -7,10 +7,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-<<<<<<< HEAD
-=======
 import java.time.LocalDateTime;
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -32,12 +29,9 @@ public class Aula implements Serializable {
     private String topico;
     @Column(name = "cod_disciplina", nullable = false)
     private Long cod_disciplina;
-<<<<<<< HEAD
+
     @Column(name = "status", nullable = false, length = 25)
     private boolean status = false;
-
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disciplina_id")
@@ -62,12 +56,11 @@ public class Aula implements Serializable {
                 "id=" + id +
                 '}';
     }
-<<<<<<< HEAD
+
 
 
     public boolean getStatus() {
         return this.status;
     }
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
+
 }

@@ -8,10 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
+
 import java.util.List;
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class AulaService {
     }
 
     @Transactional
-<<<<<<< HEAD
+
     public Aula editarStatus(Long id) {
         Aula existingAula = buscarPorId(id);
 
@@ -50,8 +48,7 @@ public class AulaService {
     }
 
     @Transactional
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
+
     public Aula editar(Long id, Aula aula) {
         Aula existingAula = buscarPorId(id);
 
@@ -77,11 +74,7 @@ public class AulaService {
         return existingAula;
     }
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
     @Transactional
     public void excluir(Long id) {
         Optional<Aula> optionalAula = aulaRepository.findById(id);
@@ -92,12 +85,11 @@ public class AulaService {
             throw new RuntimeException("Aula não encontrada com o ID: " + id);
         }
     }
-<<<<<<< HEAD
+
 
     @Transactional(readOnly = true)
     public List<Aula> buscarTodos(Long id) {
         return aulaRepository.findAll();
     }
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
+
 }

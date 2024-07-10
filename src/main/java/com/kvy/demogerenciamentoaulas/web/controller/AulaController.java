@@ -2,16 +2,16 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.service.AulaService;
+import com.kvy.demogerenciamentoaulas.web.dto.AulaCreateDto;
+import com.kvy.demogerenciamentoaulas.web.dto.AulaResponseDto;
+import com.kvy.demogerenciamentoaulas.web.dto.mapper.AulaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
 import java.util.List;
 
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/aulas")
@@ -20,9 +20,10 @@ public class AulaController {
     private final AulaService aulaService;
 
     @PostMapping
-    public ResponseEntity<Aula> createAula(@RequestBody Aula aula) {
-        Aula savedAula = aulaService.salvar(aula);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
+    public ResponseEntity<AulaResponseDto> createAula(@RequestBody AulaCreateDto aulaCreateDto) {
+
+        Aula savedAula = aulaService.salvar(AulaMapper.toAula(aulaCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(AulaMapper.toAulaDto(savedAula));
     }
 
     @GetMapping("/{id}")
@@ -37,21 +38,17 @@ public class AulaController {
         return ResponseEntity.ok(updatedAula);
     }
 
-<<<<<<< HEAD
     @PutMapping("/{id}")
     public ResponseEntity<Aula> updateStatus(@PathVariable Long id) {
         Aula updatedStatus = aulaService.editarStatus(id);
         return ResponseEntity.ok(updatedStatus);
     }
 
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAula(@PathVariable Long id) {
         aulaService.excluir(id);
         return ResponseEntity.noContent().build();
     }
-<<<<<<< HEAD
 
     @GetMapping
     public ResponseEntity<List<Aula>> getAulaAll(@PathVariable Long id) {
@@ -59,6 +56,4 @@ public class AulaController {
         return ResponseEntity.ok(aulas);
     }
 
-=======
->>>>>>> 7e2ba0f3d15dc7b62c24eeeb97c1961f193f1f98
 }

@@ -2,6 +2,10 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.service.DisciplinaService;
+import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaCreateDto;
+import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaResponseDto;
+import com.kvy.demogerenciamentoaulas.web.dto.mapper.AulaMapper;
+import com.kvy.demogerenciamentoaulas.web.dto.mapper.DisciplinaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +19,10 @@ public class DisciplinaController {
     private final DisciplinaService disciplinaService;
 
     @PostMapping
-    public ResponseEntity<Disciplina> createDisciplina(@RequestBody Disciplina disciplina) {
-        Disciplina savedDisciplina = disciplinaService.salvar(disciplina);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDisciplina);
+    public ResponseEntity<DisciplinaResponseDto> createDisciplina(@RequestBody DisciplinaCreateDto disciplinaCreateDto) {
+
+        Disciplina savedDisciplina = disciplinaService.salvar(DisciplinaMapper.toDisciplina(disciplinaCreateDto));
+        return ResponseEntity.status(HttpStatus.CREATED).body(DisciplinaMapper.toDisciplinaDto(savedDisciplina));
     }
 
     @GetMapping("/{id}")

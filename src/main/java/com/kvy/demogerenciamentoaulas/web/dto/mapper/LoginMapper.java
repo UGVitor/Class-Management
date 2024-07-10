@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class LoginMapper {
 
     public static Login toLogin(LoginCreateDTO createDTO){
+
         return new ModelMapper().map(createDTO, Login.class);
     }
 
