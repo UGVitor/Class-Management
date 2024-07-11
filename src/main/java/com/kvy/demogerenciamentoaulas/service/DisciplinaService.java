@@ -1,8 +1,10 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.DisciplinaUniqueViolationException;
+import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +26,18 @@ public class DisciplinaService {
         Login professor = loginRepository.findById(disciplina.getCod_professor())
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getCod_professor()));
         disciplina.setProfessor(professor);
-        return disciplinaRepository.save(disciplina);
+
+        try {
+            return disciplinaRepository.save(disciplina);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex){
+            throw new DisciplinaUniqueViolationException(String.format("Disciplina {%s} ja existente", disciplina.getNome()));
+        }
     }
 
     @Transactional(readOnly = true)
     public Disciplina buscarPorId(Long id) {
         return disciplinaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Disciplina não encontrada com o ID: " + id));
+                .orElseThrow(() -> new DisciplinaEntityNotFoundException(String.format("Disciplina id=%s não encontrado", id)));
     }
 
     @Transactional

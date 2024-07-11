@@ -2,6 +2,8 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.exception.AulaEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,7 @@ public class AulaService {
     @Transactional(readOnly = true)
     public Aula buscarPorId(Long id) {
         return aulaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Aula não encontrada com o ID: " + id));
+                .orElseThrow(() -> new AulaEntityNotFoundException(String.format("Aula id=%s não encontrado", id)));
     }
 
     @Transactional

@@ -2,6 +2,8 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,13 @@ public class CursoService {
 
     @Transactional
     public Curso salvar(Curso curso) {
+
         return cursoRepository.save(curso);
     }
     @Transactional
     public Curso buscarPorId(Long id) {
         return cursoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Disciplina não encontrada com o ID: " + id));
+                .orElseThrow(() -> new CursoEntityNotFoundException(String.format("Curso id=%s não encontrado", id)));
     }
     @Transactional
     public Curso editar(Long id, Curso curso) {
