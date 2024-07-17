@@ -30,6 +30,6 @@ public class Curso implements Serializable {
     }
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Curso> cursos = new HashSet<>();
+    private Set<Disciplina> disciplinas = new HashSet<>();
 
 }

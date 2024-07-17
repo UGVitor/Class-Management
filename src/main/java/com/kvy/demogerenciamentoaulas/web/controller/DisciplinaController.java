@@ -56,6 +56,15 @@ public class DisciplinaController {
         return ResponseEntity.ok(DisciplinaMapper.toDisciplinaDto(disciplina));
     }
 
+    @Operation(summary = "Atualizar disciplina", description = "Atualiza os detalhes de uma disciplina existente pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Disciplina atualizada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Disciplina.class))),
+                    @ApiResponse(responseCode = "404", description = "Disciplina não encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Disciplina> updateDisciplina(@PathVariable Long id, @RequestBody Disciplina disciplina) {
         Disciplina updatedDisciplina = disciplinaService.editar(id, disciplina);
@@ -74,6 +83,14 @@ public class DisciplinaController {
         disciplinaService.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Operation(summary = "Recuperar todas as disciplinas", description = "Recupera todas as disciplinas",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Disciplinas recuperadas com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = DisciplinaResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Nenhuma disciplina encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @GetMapping
     public ResponseEntity<List<DisciplinaResponseDto>> getDisciplinaAll(@PathVariable Long id) {
         List<Disciplina> disciplinas = disciplinaService.buscarTodos(id);

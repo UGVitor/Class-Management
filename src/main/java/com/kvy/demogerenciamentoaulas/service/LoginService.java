@@ -1,8 +1,10 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.exception.IncorrectPasswordException;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
+import com.kvy.demogerenciamentoaulas.exception.PasswordMismatchException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,14 +38,21 @@ public class LoginService {
 
     @Transactional
     public Login editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
-        if (!novaSenha.equals(confirmaSenha)){
-            throw new RuntimeException("Nova senha não confere com confirmação senha.");
+        if (!novaSenha.equals(confirmaSenha)) {
+            throw new PasswordMismatchException("Nova senha não confere com confirmação senha.");
         }
+
         Login user = buscarPorId(id);
-        if (!user.getPassword().equals(senhaAtual)){
-            throw new RuntimeException("Sua senha não confere.");
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado.");
         }
+        if (!user.getPassword().equals(senhaAtual)) {
+            throw new IncorrectPasswordException("Sua senha não confere.");
+        }
+
         user.setPassword(novaSenha);
+        loginRepository.save(user);
+
         return user;
     }
 

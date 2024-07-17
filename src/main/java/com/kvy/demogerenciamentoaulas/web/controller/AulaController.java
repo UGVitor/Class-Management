@@ -38,7 +38,6 @@ public class AulaController {
             })
     @PostMapping
     public ResponseEntity<AulaResponseDto> createAula(@Valid @RequestBody AulaCreateDto aulaCreateDto) {
-
         Aula savedAula = aulaService.salvar(AulaMapper.toAula(aulaCreateDto));
         return ResponseEntity.status(HttpStatus.CREATED).body(AulaMapper.toAulaDto(savedAula));
     }
@@ -56,13 +55,29 @@ public class AulaController {
         return ResponseEntity.ok(AulaMapper.toAulaDto(aula));
     }
 
+    @Operation(summary = "Atualizar aula", description = "Atualiza os detalhes de uma aula existente pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Aula atualizada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
+                    @ApiResponse(responseCode = "404", description = "Aula não encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Aula> updateAula(@PathVariable Long id, @RequestBody Aula aula) {
         Aula updatedAula = aulaService.editar(id, aula);
         return ResponseEntity.ok(updatedAula);
     }
 
-    @PutMapping("/{id}")
+    @Operation(summary = "Atualizar status da aula", description = "Atualiza o status de uma aula pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Status da aula atualizado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
+                    @ApiResponse(responseCode = "404", description = "Aula não encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
+    @PatchMapping("/{id}/status")
     public ResponseEntity<Aula> updateStatus(@PathVariable Long id) {
         Aula updatedStatus = aulaService.editarStatus(id);
         return ResponseEntity.ok(updatedStatus);
@@ -81,6 +96,13 @@ public class AulaController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Listar todas as aulas", description = "Recurso para listar todas as aulas",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de aulas recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @GetMapping
     public ResponseEntity<List<AulaResponseDto>> getAulaAll(@PathVariable Long id) {
         List<Aula> aulas = aulaService.buscarTodos(id);

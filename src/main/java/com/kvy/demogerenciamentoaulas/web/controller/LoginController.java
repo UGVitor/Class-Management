@@ -63,6 +63,8 @@ public class LoginController {
                     @ApiResponse(responseCode = "400", description = "Senha não confere",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "404", description = "Recursos não encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Campos inválidos ou mal formatados",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PatchMapping("/{id}")
@@ -71,6 +73,15 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Atualizar login", description = "Atualiza um login existente pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Login atualizado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Campos inválidos ou mal formatados",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Login> updateLogin(@PathVariable Long id, @RequestBody Login login) {
         Login updatedLogin = loginService.editar(id, login);
@@ -90,6 +101,13 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Listar todos os logins", description = "Retorna uma lista de todos os logins",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de logins recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = LoginResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Nenhum login encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @GetMapping
     public ResponseEntity<List<LoginResponseDto>> getLoginAll() {
         List<Login> logins = loginService.buscarTodos();

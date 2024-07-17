@@ -1,10 +1,12 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +22,20 @@ public class DisciplinaService {
 
     private final DisciplinaRepository disciplinaRepository;
     private final LoginRepository loginRepository;
+    private final CursoRepository cursoRepository;
 
     @Transactional
     public Disciplina salvar(Disciplina disciplina) {
         Login professor = loginRepository.findById(disciplina.getCod_professor())
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getCod_professor()));
+        Curso curso = cursoRepository.findById(disciplina.getCod_curso())
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + disciplina.getCod_curso()));
 
         if (professor.getRole() != Login.Role.ROLE_PROFESSOR) {
             throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
         }
 
+        disciplina.setCurso(curso);
         disciplina.setProfessor(professor);
 
         try {

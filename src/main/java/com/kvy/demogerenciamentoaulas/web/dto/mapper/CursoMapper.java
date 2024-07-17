@@ -15,11 +15,11 @@ public class CursoMapper {
 
     }
 
-    public static CursoResponseDto toCursoDto(Curso curso){
+    public static CursoResponseDto toDto(Curso curso){
         ModelMapper mapper = new ModelMapper();
         return mapper.map(curso, CursoResponseDto.class);
     }
     public static List<CursoResponseDto> toListDto(List<Curso> cursoList){
-        return cursoList.stream().map(curso -> toCursoDto(curso)).collect(Collectors.toList());
+        return cursoList.stream().map(curso -> toDto(curso)).collect(Collectors.toList());
     }
 }
