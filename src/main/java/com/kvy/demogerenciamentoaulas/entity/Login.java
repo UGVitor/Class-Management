@@ -20,13 +20,12 @@ public class Login implements Serializable {
     private Long id;
     @Column(name = "login", nullable = false, unique = true, length = 100)
     private String login;
-
     @Column(name = "password", nullable = false, length = 200)
     private String password;
     @Enumerated(EnumType.STRING)
 
     @Column(name = "role", nullable = false, length = 25)
-    private Role role = Role.ROLE_PROFESSOR;
+    private Role role = Role.ROLE_ADMIN;
     public enum Role {
         ROLE_ADMIN, ROLE_PROFESSOR
     }

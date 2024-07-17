@@ -6,6 +6,6 @@ import lombok.*;
 public class DisciplinaResponseDto {
 
     private Long id;
-
     private String nome;
+    private String descricao;
 }

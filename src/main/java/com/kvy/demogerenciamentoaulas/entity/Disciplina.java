@@ -18,7 +18,7 @@ public class Disciplina implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "nome", nullable = false, unique = true, length = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
     @Column(name = "descricao", nullable = false)
     private String descricao;
@@ -26,6 +26,12 @@ public class Disciplina implements Serializable {
     private int cargaHoraria;
     @Column(name = "cod_professor", nullable = false)
     private Long cod_professor;
+    @Column(name = "cod_curso", nullable = false)
+    private Long cod_curso;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor_id")

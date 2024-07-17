@@ -25,6 +25,11 @@ public class DisciplinaService {
     public Disciplina salvar(Disciplina disciplina) {
         Login professor = loginRepository.findById(disciplina.getCod_professor())
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getCod_professor()));
+
+        if (professor.getRole() != Login.Role.ROLE_PROFESSOR) {
+            throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
+        }
+
         disciplina.setProfessor(professor);
 
         try {

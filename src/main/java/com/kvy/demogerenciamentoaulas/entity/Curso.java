@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.management.relation.Role;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,9 +26,10 @@ public class Curso implements Serializable {
     private Role turno = Role.MATUTINO;
 
     public enum Role{
-
         MATUTINO, DIURNO, NOTURNO
     }
 
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Curso> cursos = new HashSet<>();
 
 }

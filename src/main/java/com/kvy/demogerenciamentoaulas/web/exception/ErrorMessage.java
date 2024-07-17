@@ -14,14 +14,11 @@ import java.util.Map;
 
 @Getter @ToString
 public class ErrorMessage {
+
     private String path;
-
     private String method;
-
     private int status;
-
     private String statusMessage;
-
     private String message;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Map<String, String> errors;
