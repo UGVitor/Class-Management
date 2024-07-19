@@ -80,4 +80,16 @@ public class LoginService {
     public List<Login> buscarTodos() {
         return loginRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public Login buscarPorUsername(String username) {
+        return loginRepository.findByUsername(username).orElseThrow(
+                () -> new LoginEntityNotFoundException(String.format("Usuário com '%s' não encontrado", username))
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Login.Role buscarRolePorUsername(String username) {
+        return loginRepository.findRoleByUsername(username);
+    }
 }
