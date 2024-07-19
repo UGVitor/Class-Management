@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.config;
 
+import com.kvy.demogerenciamentoaulas.jwt.JwtAuthorrizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableMethodSecurity
@@ -26,11 +28,19 @@ public class SpringSecurityConfig {
                 .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "api/v1/logins").permitAll()
+                        .requestMatchers(HttpMethod.POST, "api/v1/auth").permitAll()
                         .anyRequest().authenticated()
                 ).sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                ).addFilterBefore(
+                        jwtAuthorrizationFilter(), UsernamePasswordAuthenticationFilter.class
                 ).build();
 
+    }
+
+    @Bean
+    public JwtAuthorrizationFilter jwtAuthorrizationFilter(){
+        return new JwtAuthorrizationFilter();
     }
 
     @Bean

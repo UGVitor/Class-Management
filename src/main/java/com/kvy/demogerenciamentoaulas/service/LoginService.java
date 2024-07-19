@@ -7,6 +7,7 @@ import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.PasswordMismatchException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,12 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Login salvar(Login login) {
         try {
+            login.setPassword(passwordEncoder.encode(login.getPassword()));
             return loginRepository.save(login);
 
         } catch (org.springframework.dao.DataIntegrityViolationException ex){
@@ -46,11 +49,11 @@ public class LoginService {
         if (user == null) {
             throw new RuntimeException("Usuário não encontrado.");
         }
-        if (!user.getPassword().equals(senhaAtual)) {
+        if (!passwordEncoder.matches(senhaAtual, user.getPassword())) {
             throw new IncorrectPasswordException("Sua senha não confere.");
         }
 
-        user.setPassword(novaSenha);
+        user.setPassword(passwordEncoder.encode(novaSenha));
         loginRepository.save(user);
 
         return user;
