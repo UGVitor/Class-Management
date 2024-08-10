@@ -6,12 +6,134 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style/nav_bar.css">
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <div class="container">
+      <div class="navbar">
+        <header>
+          <i class="fas fa-user"></i>
+          <nav>
+            <li>
+              <a href="#" class="has-submenu" id="home-link">Turno</a>
+              <ul class="submenu" id="home-submenu">
+                <li><a href="#" onclick="selectFilter('Turno', 'Manhã')">Manhã</a></li>
+                <li><a href="#" onclick="selectFilter('Turno', 'Tarde')">Tarde</a></li>
+                <li><a href="#" onclick="selectFilter('Turno', 'Noite')">Noite</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="has-submenu" id="services-link">Turma</a>
+              <ul class="submenu" id="services-submenu">
+                <li><a href="#" onclick="selectFilter('Turma', 'ADS')">ADS</a></li>
+                <li><a href="#" onclick="selectFilter('Turma', 'Ensino Médio')">Ensino Médio</a></li>
+                <li><a href="#" onclick="selectFilter('Turma', 'Redes')">Redes</a></li>
+                <li><a href="#" onclick="selectFilter('Turma', 'MSI')">MSI</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="has-submenu" id="projects-link">Data</a>
+              <ul class="submenu" id="projects-submenu">
+                <li><input type="text" id="datepicker" placeholder="Escolha uma data" class="flatpickr-input"></li>
+              </ul>
+            </li>
+          </nav>
+        </header>
+      </div>
+      
+      <div class="filters-display">
+        <h3>Filtros Selecionados: Turno: <span id="turno-filter"> Nenhum</span> | Turma: <span id="turma-filter">Turma: Nenhum</span> | Data: <span id="data-filter"> Nenhuma</span></h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Hora</th>
+              <th>Duração</th>
+              <th>Disciplina</th>
+              <th>Professor</th>
+              <th>Curso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+            </tr>
+            <tr>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+            </tr>
+            <tr>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+            </tr>
+            <tr>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+              <td>.</td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Incluindo o flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      flatpickr("#datepicker", {
+        dateFormat: "d/m/Y",
+        onChange: function(selectedDates, dateStr, instance) {
+          selectFilter('Data', dateStr);
+        }
+      });
+
+      function selectFilter(filterType, value) {
+        document.getElementById(filterType.toLowerCase() + '-filter').innerText = value;
+      }
+
+      function toggleSubmenu(linkId, submenuId) {
+        var submenu = document.getElementById(submenuId);
+        var link = document.getElementById(linkId);
+
+        if (submenu.style.display === "none" || submenu.style.display === "") {
+          submenu.style.display = "flex";
+          link.classList.add("active");
+        } else {
+          submenu.style.display = "none";
+          link.classList.remove("active");
+        }
+      }
+
+      document.getElementById("home-link").onclick = function() {
+        toggleSubmenu("home-link", "home-submenu");
+      }
+      document.getElementById("services-link").onclick = function() {
+        toggleSubmenu("services-link", "services-submenu");
+      }
+      document.getElementById("projects-link").onclick = function() {
+        toggleSubmenu("projects-link", "projects-submenu");
+      }
+    </script>
+    
+  
+    
   </body>
 </html>

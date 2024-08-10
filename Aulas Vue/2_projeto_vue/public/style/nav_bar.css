@@ -1,0 +1,166 @@
+/* Estilo básico para todos os elementos */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  li {
+    margin: 10px;
+    list-style: none;
+  }
+  
+  body {
+    background-color: #DDF5F7;
+  }
+  
+  /* Estilo da navbar */
+  .navbar {
+    background-color: #44679F;
+    position: fixed;
+    width: 230px;
+    height: 100vh;
+    z-index: 100;
+    transition: width 0.3s ease;
+  }
+  
+  .navbar i {
+    margin-top: 15px;
+    color: #DDF5F7;
+    font-size: 35px;
+    margin-bottom: 10px;
+  }
+  
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  
+  nav {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #000000;
+    font-size: 19px;
+    align-items: center;
+  }
+  
+  li a {
+    color: #DDF5F7;
+    padding: 10px;
+    transition: ease .3s;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  nav li a:hover {
+    background-color: #C0D9E5;
+    color: #3B577D;
+    border-radius: 7px;
+  }
+  
+  /* Setinha indicando submenu */
+  .has-submenu::after {
+    content: "▼";
+    font-size: 12px;
+    color: #DDF5F7;
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  /* Setinha rotacionada quando submenu aberto */
+  .has-submenu.active::after {
+    transform: rotate(180deg);
+  }
+  
+  /* Submenu */
+  .submenu {
+    margin-top: 15px;
+    display: none;
+    flex-direction: column;
+    padding-left: 20px;
+  }
+  
+  .submenu li a {
+    padding: 5px 10px;
+    font-size: 16px;
+    color: #DDF5F7;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .navbar {
+      width: 150px;
+    }
+  
+    nav {
+      gap: 15px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .navbar {
+      width: 100px;
+    }
+  
+    nav {
+      gap: 10px;
+      font-size: 14px;
+    }
+  
+    li a {
+      padding: 5px;
+    }
+  }
+  
+  /* Estilo do input de data */
+  .flatpickr-input {
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 16px;
+  }
+  
+  /* Container principal */
+  .container {
+    display: flex;
+  }
+  
+  /* Área de filtros */
+  .filters-display {
+    margin-left: 240px;
+    padding: 20px;
+    flex: 1;
+  }
+  
+  .filters-display h3 {
+    margin-bottom: 15px;
+  }
+  
+  .filters-display table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .filters-display table th,
+  .filters-display table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .filters-display table th {
+    background-color: #44679F;
+    color: #DDF5F7;
+  }
+  
