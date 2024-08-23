@@ -30,8 +30,9 @@ public class CursoService {
     @Transactional
     public Curso editar(Long id, Curso curso) {
         Curso existingCurso = buscarPorId(id);
-
-        existingCurso.setTurma(curso.getTurma());
+        existingCurso.setNome(curso.getNome());
+        existingCurso.setTurno(curso.getTurno());
+        existingCurso.setPeriodo(curso.getPeriodo());
         return existingCurso;
     }
 
@@ -48,7 +49,7 @@ public class CursoService {
 
 
     @Transactional(readOnly = true)
-    public List<Curso> buscarTodos(Long id) {
+    public List<Curso> buscarTodos() {
         return cursoRepository.findAll();
     }
 }

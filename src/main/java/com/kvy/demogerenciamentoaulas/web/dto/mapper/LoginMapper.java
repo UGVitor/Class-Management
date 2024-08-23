@@ -11,13 +11,9 @@ import java.util.stream.Collectors;
 
 public class LoginMapper {
 
-    public static Login toLogin(LoginCreateDTO createDTO){
-
-        return new ModelMapper().map(createDTO, Login.class);
-    }
-
-    public static LoginResponseDto toDto(Login login){
+    public static LoginResponseDto toDto(Login login) {
         String role = login.getRole().name().substring("ROLE_".length());
+
         PropertyMap<Login, LoginResponseDto> props = new PropertyMap<Login, LoginResponseDto>() {
             @Override
             protected void configure() {
@@ -29,7 +25,11 @@ public class LoginMapper {
         return mapper.map(login, LoginResponseDto.class);
     }
 
-    public static List<LoginResponseDto> toListDto(List<Login> logins){
+    public static Login toLogin(LoginCreateDTO createDTO) {
+        return new ModelMapper().map(createDTO, Login.class);
+    }
+
+    public static List<LoginResponseDto> toListDto(List<Login> logins) {
         return logins.stream().map(user -> toDto(user)).collect(Collectors.toList());
     }
 }

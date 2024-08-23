@@ -14,22 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice @Slf4j
 public class ApiExceptionHandles {
 
-    @ExceptionHandler(PasswordMismatchException.class)
-    public ResponseEntity<ErrorMessage> passwordMismatchException(PasswordMismatchException ex, HttpServletRequest request) {
-        log.error("Api Error - ", ex);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
-    }
-    @ExceptionHandler(IncorrectPasswordException.class)
-    public ResponseEntity<ErrorMessage> incorrectPasswordException(IncorrectPasswordException ex, HttpServletRequest request) {
-        log.error("Api Error - ", ex);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
-    }
     @ExceptionHandler(LoginUniqueViolationException.class)
     public ResponseEntity<ErrorMessage> loginUniqueViolationException(LoginUniqueViolationException ex, HttpServletRequest request){
 

@@ -3,15 +3,17 @@ package com.kvy.demogerenciamentoaulas.web.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
 public class AulaResponseDto {
 
     private Long id;
-
-    private String topico;
-
     private LocalDate data;
+    private LocalTime horario;
+    private int duracao;
+    private String topico;
+    private Long cod_disciplina;
 
 
 

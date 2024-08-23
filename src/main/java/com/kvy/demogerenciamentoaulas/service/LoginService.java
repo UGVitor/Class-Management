@@ -1,13 +1,10 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
-import com.kvy.demogerenciamentoaulas.exception.IncorrectPasswordException;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
-import com.kvy.demogerenciamentoaulas.exception.PasswordMismatchException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +16,10 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Login salvar(Login login) {
         try {
-            login.setPassword(passwordEncoder.encode(login.getPassword()));
             return loginRepository.save(login);
 
         } catch (org.springframework.dao.DataIntegrityViolationException ex){
@@ -41,21 +36,14 @@ public class LoginService {
 
     @Transactional
     public Login editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
-        if (!novaSenha.equals(confirmaSenha)) {
-            throw new PasswordMismatchException("Nova senha não confere com confirmação senha.");
+        if (!novaSenha.equals(confirmaSenha)){
+            throw new RuntimeException("Nova senha não confere com confirmação senha.");
         }
-
         Login user = buscarPorId(id);
-        if (user == null) {
-            throw new RuntimeException("Usuário não encontrado.");
+        if (!user.getPassword().equals(senhaAtual)){
+            throw new RuntimeException("Sua senha não confere.");
         }
-        if (!passwordEncoder.matches(senhaAtual, user.getPassword())) {
-            throw new IncorrectPasswordException("Sua senha não confere.");
-        }
-
-        user.setPassword(passwordEncoder.encode(novaSenha));
-        loginRepository.save(user);
-
+        user.setPassword(novaSenha);
         return user;
     }
 
@@ -84,15 +72,4 @@ public class LoginService {
         return loginRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public Login buscarPorUsername(String username) {
-        return loginRepository.findByUsername(username).orElseThrow(
-                () -> new LoginEntityNotFoundException(String.format("Usuário com '%s' não encontrado", username))
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public Login.Role buscarRolePorUsername(String username) {
-        return loginRepository.findRoleByUsername(username);
-    }
 }

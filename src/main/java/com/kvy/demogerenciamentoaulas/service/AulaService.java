@@ -3,14 +3,15 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.exception.AulaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.Filtro;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class AulaService {
     @Transactional
     public Aula salvar(Aula aula) {
         Disciplina disciplina = disciplinaRepository.findById(aula.getCod_disciplina())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + aula.getCod_disciplina()));
+                .orElseThrow(() -> new RuntimeException("Disciplina não encontrada com o ID: " + aula.getCod_disciplina()));
         aula.setDisciplina(disciplina);
         return aulaRepository.save(aula);
     }
@@ -36,7 +37,6 @@ public class AulaService {
     }
 
     @Transactional
-
     public Aula editarStatus(Long id) {
         Aula existingAula = buscarPorId(id);
 
@@ -50,11 +50,10 @@ public class AulaService {
     }
 
     @Transactional
-
     public Aula editar(Long id, Aula aula) {
         Aula existingAula = buscarPorId(id);
 
-        existingAula.setData(aula.getData());
+        existingAula.setDia(aula.getDia());
         existingAula.setHorario(aula.getHorario());
         existingAula.setDuracao(aula.getDuracao());
         existingAula.setTopico(aula.getTopico());
@@ -90,8 +89,13 @@ public class AulaService {
 
 
     @Transactional(readOnly = true)
-    public List<Aula> buscarTodos(Long id) {
+    public List<Aula> buscarTodos() {
         return aulaRepository.findAll();
     }
+
+    /*@Transactional
+    public List<Filtro> filtrarAulas(LocalDate data, String turno, String curso, String periodo) {
+        return aulaRepository.filtrarAulas(data, turno, curso, periodo);
+    }*/
 
 }

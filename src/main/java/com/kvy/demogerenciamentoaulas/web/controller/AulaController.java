@@ -4,6 +4,7 @@ import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.service.AulaService;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaCreateDto;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaResponseDto;
+import com.kvy.demogerenciamentoaulas.web.dto.Filtro;
 import com.kvy.demogerenciamentoaulas.web.dto.mapper.AulaMapper;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,10 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "Aulas", description = "Contém todas as operações relativas aos recursos de CRUD de aula.")
@@ -37,9 +40,10 @@ public class AulaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<AulaResponseDto> createAula(@Valid @RequestBody AulaCreateDto aulaCreateDto) {
-        Aula savedAula = aulaService.salvar(AulaMapper.toAula(aulaCreateDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(AulaMapper.toAulaDto(savedAula));
+    public ResponseEntity<Aula> createAula(@Valid @RequestBody Aula aula) {
+
+        Aula savedAula = aulaService.salvar(aula);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
     }
 
     @Operation(summary = "Recuperar uma aula pelo id", description = "Recuperar uma aula pelo id",
@@ -50,34 +54,18 @@ public class AulaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<AulaResponseDto> getAulaById(@PathVariable Long id) {
+    public ResponseEntity<Aula> getAulaById(@PathVariable Long id) {
         Aula aula = aulaService.buscarPorId(id);
-        return ResponseEntity.ok(AulaMapper.toAulaDto(aula));
+        return ResponseEntity.ok(aula);
     }
 
-    @Operation(summary = "Atualizar aula", description = "Atualiza os detalhes de uma aula existente pelo ID",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Aula atualizada com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
-                    @ApiResponse(responseCode = "404", description = "Aula não encontrada",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-            })
     @PutMapping("/{id}")
     public ResponseEntity<Aula> updateAula(@PathVariable Long id, @RequestBody Aula aula) {
         Aula updatedAula = aulaService.editar(id, aula);
         return ResponseEntity.ok(updatedAula);
     }
 
-    @Operation(summary = "Atualizar status da aula", description = "Atualiza o status de uma aula pelo ID",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Status da aula atualizado com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
-                    @ApiResponse(responseCode = "404", description = "Aula não encontrada",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-            })
-    @PatchMapping("/{id}/status")
+    @PutMapping("/status/{id}")
     public ResponseEntity<Aula> updateStatus(@PathVariable Long id) {
         Aula updatedStatus = aulaService.editarStatus(id);
         return ResponseEntity.ok(updatedStatus);
@@ -96,17 +84,20 @@ public class AulaController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Listar todas as aulas", description = "Recurso para listar todas as aulas",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de aulas recuperada com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaResponseDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-            })
     @GetMapping
-    public ResponseEntity<List<AulaResponseDto>> getAulaAll(@PathVariable Long id) {
-        List<Aula> aulas = aulaService.buscarTodos(id);
-        return ResponseEntity.ok(AulaMapper.toListDto(aulas));
+    public ResponseEntity<List<Aula>> getAulaAll() {
+        List<Aula> aulas = aulaService.buscarTodos();
+        return ResponseEntity.ok(aulas);
     }
+
+    /*@GetMapping("/filtrar")
+    public ResponseEntity<List<Filtro>> filtrarAulas(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate data,
+            @RequestParam(required = false) String turno,
+            @RequestParam(required = false) String curso,
+            @RequestParam(required = false) String periodo) {
+        List<Filtro> aulasFiltradas = aulaService.filtrarAulas(data, turno, curso, periodo);
+        return ResponseEntity.ok(aulasFiltradas);
+    }*/
 
 }

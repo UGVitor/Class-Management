@@ -31,12 +31,12 @@ public class DisciplinaService {
         Curso curso = cursoRepository.findById(disciplina.getCod_curso())
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + disciplina.getCod_curso()));
 
-        if (professor.getRole() != Login.Role.ROLE_PROFESSOR) {
+        if (professor.getRole() != Login.Role.PROFESSOR) {
             throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
         }
 
-        disciplina.setCurso(curso);
         disciplina.setProfessor(professor);
+        disciplina.setCurso(curso);
 
         try {
             return disciplinaRepository.save(disciplina);
@@ -61,7 +61,7 @@ public class DisciplinaService {
         existingDisciplina.setCod_professor(disciplina.getCod_professor());
 
         Long novoIdProfessor = disciplina.getCod_professor();
-
+        Long novoIdCurso = disciplina.getCod_curso();
 
         if (existingDisciplina.getProfessor() == null ||
                 !existingDisciplina.getProfessor().getId().equals(novoIdProfessor)) {
@@ -70,6 +70,18 @@ public class DisciplinaService {
                 Login professor = loginRepository.findById(novoIdProfessor)
                         .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + novoIdProfessor));
                 existingDisciplina.setProfessor(professor);
+
+            } else {
+                existingDisciplina.setProfessor(null);
+            }
+        }
+        if (existingDisciplina.getCurso() == null ||
+                !existingDisciplina.getCurso().getId().equals(novoIdCurso)) {
+
+            if (novoIdCurso != null) {
+                Curso curso = cursoRepository.findById(novoIdCurso)
+                        .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + novoIdCurso));
+                existingDisciplina.setCurso(curso);
 
             } else {
                 existingDisciplina.setProfessor(null);
@@ -90,7 +102,7 @@ public class DisciplinaService {
         }
     }
     @Transactional(readOnly = true)
-    public List<Disciplina> buscarTodos(Long id) {
+    public List<Disciplina> buscarTodos() {
         return disciplinaRepository.findAll();
     }
 

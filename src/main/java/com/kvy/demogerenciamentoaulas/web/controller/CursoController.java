@@ -37,9 +37,10 @@ public class CursoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<CursoResponseDto> createCurso(@Valid @RequestBody CursoCreateDto cursoCreateDto) {
-        Curso savedCurso = cursoService.salvar(CursoMapper.toCurso(cursoCreateDto));
-        return ResponseEntity.status(HttpStatus.CREATED).body(CursoMapper.toDto(savedCurso));
+    public ResponseEntity<Curso> createCurso(@Valid @RequestBody Curso curso) {
+
+        Curso savedCurso = cursoService.salvar(curso);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedCurso);
     }
 
     @Operation(summary = "Recuperar um curso pelo id", description = "Recuperar um curso pelo id",
@@ -50,24 +51,9 @@ public class CursoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<CursoResponseDto> getById(@PathVariable Long id) {
+    public ResponseEntity<Curso> getById(@PathVariable Long id) {
         Curso curso = cursoService.buscarPorId(id);
-        return ResponseEntity.ok(CursoMapper.toDto(curso));
-    }
-
-    @Operation(summary = "Atualizar curso", description = "Atualiza os detalhes de um curso existente pelo ID",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Curso atualizado com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Curso.class))),
-                    @ApiResponse(responseCode = "404", description = "Curso não encontrado",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-            })
-    @PutMapping("/{id}")
-    public ResponseEntity<Curso> updateCurso(@PathVariable Long id, @RequestBody Curso curso){
-        Curso updatedCurso = cursoService.editar(id, curso);
-        return ResponseEntity.ok(updatedCurso);
+        return ResponseEntity.ok(curso);
     }
 
     @Operation(summary = "Excluir curso", description = "Recurso para excluir um curso pelo ID",
@@ -82,17 +68,9 @@ public class CursoController {
         cursoService.excluir(id);
         return ResponseEntity.noContent().build();
     }
-
-    @Operation(summary = "Recuperar todos os cursos", description = "Recupera todos os cursos disponíveis",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Cursos recuperados com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CursoResponseDto.class))),
-                    @ApiResponse(responseCode = "404", description = "Nenhum curso encontrado",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
-            })
     @GetMapping
-    public ResponseEntity<List<CursoResponseDto>> getCursoAll(@PathVariable Long id) {
-        List<Curso> cursos = cursoService.buscarTodos(id);
-        return ResponseEntity.ok(CursoMapper.toListDto(cursos));
+    public ResponseEntity<List<Curso>> getCursoAll() {
+        List<Curso> cursos = cursoService.buscarTodos();
+        return ResponseEntity.ok(cursos);
     }
 }

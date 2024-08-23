@@ -1,13 +1,12 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -19,8 +18,6 @@ public class Aula implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
     @Column(name = "horario", nullable = false)
     private LocalTime horario;
     @Column(name = "duracao", nullable = false)
@@ -29,12 +26,20 @@ public class Aula implements Serializable {
     private String topico;
     @Column(name = "cod_disciplina", nullable = false)
     private Long cod_disciplina;
+    @Column(name = "status", length = 25)
+    private boolean status;
 
-    @Column(name = "status", nullable = false, length = 25)
-    private boolean status = false;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dia", nullable = false)
+    private Role dia;
+
+    public enum Role{
+        SEGUNDA, TERCA, QUARTA, QUINTA, SEXTA, SABADO
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disciplina_id")
+    @JsonBackReference("disciplina-referencia")
     private Disciplina disciplina;
 
     @Override
