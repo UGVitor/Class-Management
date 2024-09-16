@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+    <link rel="icon" href="img/icon.png">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo do body */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #44679F, #DDF5F7);
+            font-family: Arial, sans-serif;
+        }
+
+        /* Estilo do container de login */
+        .login-container {
+            background-color: #ffffff; /* Branco para contraste */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Estilo do título */
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333; /* Cinza escuro */
+        }
+
+        /* Estilo dos inputs */
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #d1d9e6; /* Cinza claro para bordas */
+            border-radius: 4px;
+            background-color: #f7fafc; /* Cinza muito claro para fundo dos inputs */
+        }
+
+        /* Estilo do botão de login */
+        .login-container button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff; /* Azul */
+            border: none;
+            border-radius: 4px;
+            color: #ffffff; /* Branco */
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background-color: #0056b3; /* Azul mais escuro no hover */
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Estilo para telas menores */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1rem;
+            }
+
+            .login-container h2 {
+                font-size: 1.5rem;
+            }
+
+            .login-container button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <input type="text" id="login" placeholder="Login">
+        <input type="password" id="password" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+        <p class="error-message" id="error-message">Login ou senha incorretos!</p>
+    </div>
+    
+    <script>
+        async function login() {
+        const loginInput = document.getElementById('login').value;
+        const passwordInput = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
+
+        try {
+            const response = await fetch('http://localhost:8081/api/v1/logins');
+
+            if (!response.ok) {
+                throw new Error(`Erro ao obter dados: ${response.status}`);
+            }
+
+            const logins = await response.json();
+
+            const user = logins.find(user => user.login === loginInput);
+
+            if (user && user.password === passwordInput && user.role === 'ADMIN') {
+                window.location.href = 'index2.html';
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Erro na autenticação:', error);
+            errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+            errorMessage.style.display = 'block';
+        }
+    }
+    </script>
+</body>
+</html>

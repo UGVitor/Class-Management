@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Disciplina</title>
+    <link rel="icon" href="../../img/icon.png">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        a {
+            text-decoration: none;
+        }
+        li {
+            list-style: none;
+        }
+        body {
+            background: linear-gradient(135deg, #44679F, #DDF5F7);
+        }
+        .navbar {
+            background-color: #44679F;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            height: 60px; /* Ajuste se necessário */
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            height: 60px;
+        }
+        header h1 a {
+            color: #fff;
+            font-size: 35px;
+        }
+        nav {
+            display: flex;
+            gap: 30px;
+            color: #000000;
+            font-size: 19px;
+        }
+        li a {
+            color: #fff;
+            padding: 10px;
+            transition: ease .3s;
+            cursor: pointer;
+        }
+        nav li a:hover {
+            background-color: #ffffffa8;
+            color: #000;
+            border-radius: 7px;
+        }
+        nav button {
+            color: #DDF5F7;
+            padding: 5px 10px;
+            transition: ease .3s;
+            cursor: pointer;
+            position: relative;
+            background-color: #44679F;
+            border: 0;
+            font-size: 16px;
+        }
+        nav button:hover {
+            background-color: #C0D9E5;
+            color: #3B577D;
+            border-radius: 7px;
+        }
+        #app {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px); /* Subtraia a altura da navbar */
+            margin-top: 0;
+            padding: 0 20px;
+            text-align: center;
+            padding: 20px 30px;
+        }
+        form {
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #44679F;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #3b577d;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <header>
+            <h1><a href="#">Disciplina</a></h1>
+            <nav>
+                <li><a href="home.html">Home</a></li>
+            </nav>
+        </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="updateDisciplina">
+            <h2>Alterar Disciplina</h2>
+            <div class="form-group">
+                <label for="id">ID da Disciplina:</label>
+                <input type="text" id="id" v-model="disciplina.id" required />
+            </div>
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" v-model="disciplina.nome" required />
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição:</label>
+                <input type="text" id="descricao" v-model="disciplina.descricao" required />
+            </div>
+            <div class="form-group">
+                <label for="cargaHoraria">Carga Horária:</label>
+                <input type="number" id="cargaHoraria" v-model="disciplina.cargaHoraria" required />
+            </div>
+            <div class="form-group">
+                <label for="cod_professor">Código do Professor:</label>
+                <input type="number" id="cod_professor" v-model="disciplina.cod_professor" required />
+            </div>
+            <div class="form-group">
+                <label for="cod_curso">Código do Curso:</label>
+                <input type="number" id="cod_curso" v-model="disciplina.cod_curso" required />
+            </div>
+            <div class="form-group">
+                <button type="submit">Alterar Disciplina</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                disciplina: {
+                    id: '',
+                    nome: '',
+                    descricao: '',
+                    cargaHoraria: '',
+                    cod_professor: '',
+                    cod_curso: ''
+                }
+            },
+            methods: {
+                updateDisciplina() {
+                    const { id, nome, descricao, cargaHoraria, cod_professor, cod_curso } = this.disciplina;
+                    const disciplinaData = { nome, descricao, cargaHoraria, cod_professor, cod_curso };
+
+                    fetch(`http://localhost:8081/api/v1/disciplinas/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(disciplinaData),
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Disciplina alterada com sucesso!');
+                            this.disciplina = {
+                                id: '',
+                                nome: '',
+                                descricao: '',
+                                cargaHoraria: '',
+                                cod_professor: '',
+                                cod_curso: ''
+                            };
+                        } else {
+                            throw new Error('Erro ao alterar a disciplina');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao alterar a disciplina, tente novamente.');
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

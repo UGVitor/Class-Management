@@ -1,0 +1,67 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Background elegante */
+body {
+  background: linear-gradient(135deg, #44679F, #DDF5F7);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo da div centralizada */
+.centered-div {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 10px 10px 30px #080808,
+              -10px -10px 30px #fff;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.centered-div h1 {
+  color: #44679F;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Estilo do botão */
+.centered-div button {
+  background-color: #44679F;
+  color: #fff;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.centered-div button:hover {
+  background-color: #C0D9E5;
+  color: #3B577D;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .centered-div {
+      padding: 30px;
+  }
+
+  .centered-div h1 {
+      font-size: 20px;
+  }
+
+  .centered-div button {
+      padding: 12px 25px;
+      font-size: 16px;
+  }
+}

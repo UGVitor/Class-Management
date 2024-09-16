@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deletar Login</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../style/telaDelete.css">
+    <link rel="stylesheet" href="../../style/botao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <header>
+            <h1><a href="#">Login</a></h1>
+            <nav>
+                <li><a href="home.html">Home</a></li>
+            </nav>
+        </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="deleteLogin">
+            <h2>Deletar Login</h2>
+            <div class="form-group">
+                <label for="id">ID do Login:</label>
+                <input type="text" id="id" v-model="loginId" required />
+            </div>
+            <div class="form-group">
+                
+                <button class="button" type="submit">
+                    <div class="trash">
+                        <div class="top">
+                            <div class="paper"></div>
+                        </div>
+                        <div class="box"></div>
+                        <div class="check">
+                            <svg viewBox="0 0 8 6">
+                                <polyline points="1 3.4 2.71428571 5 7 1"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <span>Deletar Login</span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                loginId: ''
+            },
+            methods: {
+                deleteLogin() {
+                    const id = this.loginId;
+
+                    fetch(`http://localhost:8081/api/v1/logins/${id}`, {
+                        method: 'DELETE',
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Login deletado com sucesso!');
+                            this.loginId = ''; 
+                        } else {
+                            throw new Error('Erro ao deletar o login');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao deletar o login, tente novamente.');
+                    });
+                }
+            }
+        });
+    </script>
+    <script>
+        document.querySelectorAll('.button').forEach(button => button.addEventListener('click', e => {
+            if (!button.classList.contains('delete')) {
+                button.classList.add('delete');
+                setTimeout(() => button.classList.remove('delete'), 3200);
+            }
+            e.preventDefault();
+        }));
+    </script>
+</body>
+</html>
