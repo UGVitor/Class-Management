@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,14 +28,11 @@ public class Aula implements Serializable {
     private int duracao;
     @Column(name = "topico", nullable = false, length = 200)
     private String topico;
-    @Column(name = "cod_disciplina", nullable = false)
-    private Long cod_disciplina;
 
-    @Column(name = "status", nullable = false, length = 25)
-    private boolean status = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disciplina_id")
+    @JsonBackReference("disciplina-aula")
     private Disciplina disciplina;
 
     @Override
@@ -58,9 +56,5 @@ public class Aula implements Serializable {
     }
 
 
-
-    public boolean getStatus() {
-        return this.status;
-    }
 
 }

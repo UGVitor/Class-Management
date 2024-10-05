@@ -22,8 +22,8 @@ public class AulaService {
 
     @Transactional
     public Aula salvar(Aula aula) {
-        Disciplina disciplina = disciplinaRepository.findById(aula.getCod_disciplina())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + aula.getCod_disciplina()));
+        Disciplina disciplina = disciplinaRepository.findById(aula.getDisciplina().getId())
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + aula.getDisciplina().getId()));
         aula.setDisciplina(disciplina);
         return aulaRepository.save(aula);
     }
@@ -34,22 +34,8 @@ public class AulaService {
                 .orElseThrow(() -> new AulaEntityNotFoundException(String.format("Aula id=%s não encontrado", id)));
     }
 
-    @Transactional
-
-    public Aula editarStatus(Long id) {
-        Aula existingAula = buscarPorId(id);
-
-        if (!existingAula.getStatus()) {
-            existingAula.setStatus(true);
-        }else {
-            existingAula.setStatus(false);
-        }
-
-        return existingAula;
-    }
 
     @Transactional
-
     public Aula editar(Long id, Aula aula) {
         Aula existingAula = buscarPorId(id);
 
@@ -57,20 +43,10 @@ public class AulaService {
         existingAula.setHorario(aula.getHorario());
         existingAula.setDuracao(aula.getDuracao());
         existingAula.setTopico(aula.getTopico());
-        existingAula.setCod_disciplina(aula.getCod_disciplina());
 
-        Long novoIdDisciplina = aula.getCod_disciplina();
-
-        if (existingAula.getDisciplina() == null ||
-                !existingAula.getDisciplina().getId().equals(novoIdDisciplina)) {
-            if (novoIdDisciplina != null) {
-                Disciplina disciplina = disciplinaRepository.findById(aula.getCod_disciplina())
-                        .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + aula.getCod_disciplina()));
-                existingAula.setDisciplina(disciplina);
-            } else {
-                existingAula.setDisciplina(null);
-            }
-        }
+        Disciplina disciplina = disciplinaRepository.findById(aula.getDisciplina().getId())
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + aula.getDisciplina().getId()));
+        existingAula.setDisciplina(disciplina);
 
         return existingAula;
     }
