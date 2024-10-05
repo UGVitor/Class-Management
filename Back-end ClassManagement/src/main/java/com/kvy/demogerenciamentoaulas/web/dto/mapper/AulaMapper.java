@@ -2,7 +2,6 @@ package com.kvy.demogerenciamentoaulas.web.dto.mapper;
 
 import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaCreateDto;
-import com.kvy.demogerenciamentoaulas.web.dto.TurmaResponseDto;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;

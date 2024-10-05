@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,20 +25,13 @@ public class Disciplina implements Serializable {
     private String descricao;
     @Column(name = "cargaHoraria", nullable = false)
     private int cargaHoraria;
-    @Column(name = "cod_professor", nullable = false)
-    private Long cod_professor;
-    @Column(name = "cod_curso", nullable = false)
-    private Long cod_curso;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "professor_id")
     private Login professor;
 
     @OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("disciplina-aula")
     private Set<Aula> aulas = new HashSet<>();
 
 

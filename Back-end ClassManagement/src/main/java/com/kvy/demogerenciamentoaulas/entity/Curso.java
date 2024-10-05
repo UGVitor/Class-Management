@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Curso implements Serializable {
     }
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("curso-turma")
     private Set<Disciplina> disciplinas = new HashSet<>();
 
 }

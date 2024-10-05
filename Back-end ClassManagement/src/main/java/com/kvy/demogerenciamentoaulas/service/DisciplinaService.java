@@ -4,7 +4,6 @@ import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaUniqueViolationException;
-import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,8 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(Disciplina disciplina) {
-        Login professor = loginRepository.findById(disciplina.getCod_professor())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getCod_professor()));
+        Login professor = loginRepository.findById(disciplina.getProfessor().getId())
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getProfessor().getId()));
 
         if (professor.getRole() != Login.Role.ROLE_PROFESSOR) {
             throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
@@ -32,11 +31,7 @@ public class DisciplinaService {
 
         disciplina.setProfessor(professor);
 
-        try {
-            return disciplinaRepository.save(disciplina);
-        } catch (org.springframework.dao.DataIntegrityViolationException ex){
-            throw new DisciplinaUniqueViolationException(String.format("Disciplina {%s} ja existente", disciplina.getNome()));
-        }
+        return disciplinaRepository.save(disciplina);
     }
 
     @Transactional(readOnly = true)
@@ -52,23 +47,9 @@ public class DisciplinaService {
         existingDisciplina.setNome(disciplina.getNome());
         existingDisciplina.setDescricao(disciplina.getDescricao());
         existingDisciplina.setCargaHoraria(disciplina.getCargaHoraria());
-        existingDisciplina.setCod_professor(disciplina.getCod_professor());
-
-        Long novoIdProfessor = disciplina.getCod_professor();
-
-
-        if (existingDisciplina.getProfessor() == null ||
-                !existingDisciplina.getProfessor().getId().equals(novoIdProfessor)) {
-
-            if (novoIdProfessor != null) {
-                Login professor = loginRepository.findById(novoIdProfessor)
-                        .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + novoIdProfessor));
-                existingDisciplina.setProfessor(professor);
-
-            } else {
-                existingDisciplina.setProfessor(null);
-            }
-        }
+        Login professor = loginRepository.findById(disciplina.getProfessor().getId())
+                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getProfessor().getId()));
+        existingDisciplina.setProfessor(professor);
 
         return existingDisciplina;
     }
@@ -83,6 +64,7 @@ public class DisciplinaService {
             throw new RuntimeException("Disciplina não encontrada com o ID: " + id);
         }
     }
+
     @Transactional(readOnly = true)
     public List<Disciplina> buscarTodos(Long id) {
         return disciplinaRepository.findAll();
