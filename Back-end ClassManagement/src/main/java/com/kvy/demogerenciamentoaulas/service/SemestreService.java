@@ -1,13 +1,7 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Aula;
-import com.kvy.demogerenciamentoaulas.entity.Curso;
-import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
-import com.kvy.demogerenciamentoaulas.exception.AulaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
-import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
+import com.kvy.demogerenciamentoaulas.exception.SemestreEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.SemestreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +24,7 @@ public class SemestreService {
     @Transactional
     public Semestre buscarPorId(Long id) {
         return semestreRepository.findById(id)
-                .orElseThrow(() -> new CursoEntityNotFoundException(String.format("Semestre id=%s não encontrado", id)));
+                .orElseThrow(() -> new SemestreEntityNotFoundException(String.format("Semestre id=%s não encontrado", id)));
     }
 
     @Transactional
