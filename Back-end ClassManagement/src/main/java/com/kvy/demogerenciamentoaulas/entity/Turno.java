@@ -9,6 +9,7 @@ import java.io.Serializable;
 @Table(name = "Turno")
 public class Turno implements Serializable {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -17,3 +18,4 @@ public class Turno implements Serializable {
     @Column(name = "turno", nullable = false)
     private String turno;
 }
+
