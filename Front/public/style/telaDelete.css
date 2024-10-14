@@ -69,21 +69,22 @@ nav li a:hover {
     border-radius: 7px;
 }
 
-nav button {
+#app button {
     color: #DDF5F7;
-    padding: 5px 10px;
+    padding: 10px;
     transition: ease .3s;
     cursor: pointer;
     position: relative;
     background-color: #44679F;
     border: 0;
     font-size: 16px;
+    border-radius: 5px;
 }
 
-nav button:hover {
+#app button:hover {
     background-color: #C0D9E5;
-    color: #3B577D;
-    border-radius: 7px;
+    color: #30517f;
+    border-radius: 5px;
 }
 
 form {
