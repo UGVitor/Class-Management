@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Aula</title>
+    <title>Home Turma</title>
     <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -174,32 +174,34 @@
                 <h1><a href="index.html">Aula</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="cadastroAula.html">Criar</a></li>
-                    <li><a href="deleteAula.html">Deletar</a></li>
-                    <li><a href="alterarAula.html">Alterar</a></li>
+                    <li><a href="CadastroTurma.html">Criar</a></li>
+                    <li><a href="DeleteTurma.html">Deletar</a></li>
+                    <li><a href="AlterarTurma.html">Alterar</a></li>
                 </nav>
             </header>
         </div>
         <!-- Header terminated -->
 
         <div class="filters-display">
-            <table v-if="currentEntity === 'aulas'">
+            <table v-if="currentEntity === 'turmas'">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Dia</th>
-                        <th>Horário</th>
-                        <th>Duração (min)</th>
-                        <th>Código Disciplina</th>
+                        <th>Turma</th>
+                        <th>Periodo</th>
+                        <th>Turno</th>
+                        <th>Curso</th>
+                        <th>Semestre</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="aula in data" :key="aula.id">
-                        <td>{{ aula.id }}</td>
-                        <td>{{ aula.dia }}</td>
-                        <td>{{ aula.horario }}</td>
-                        <td>{{ aula.duracao }}</td>
-                        <td>{{ aula.cod_disciplina }}</td>
+                    <tr v-for="turma in data" :key="turma.id">
+                        <td>{{ turma.id }}</td>
+                        <td>{{ turma.nome }}</td>
+                        <td>{{ turma.id_periodo }}</td>
+                        <td>{{ turma.id_turno }}</td>
+                        <td>{{ turma.id_curso }}</td>
+                        <td>{{ turma.id_semestre }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -215,7 +217,7 @@
             data() {
                 return {
                     data: [],
-                    currentEntity: 'aulas',
+                    currentEntity: 'turma',
                 };
             },
             methods: {
@@ -234,14 +236,14 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        aulas: 'http://localhost:8081/api/v1/aulas'
+                        aulas: 'http://localhost:8081/api/v1/turma'
                     };
     
                     this.data = await this.fetchData(endpoints[entity]);
                 }
             },
             mounted(){
-                this.showAll('aulas');
+                this.showAll('turma');
             }
         });
     </script>

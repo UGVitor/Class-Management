@@ -17,9 +17,9 @@ li {
 
 body {
     background: linear-gradient(135deg, #44679F, #DDF5F7);
+    height: 100%;
 }
 
-/* Wrapper para centralizar a navbar */
 .navbar-wrapper {
     display: flex;
     justify-content: center;
@@ -29,12 +29,12 @@ body {
 
 .navbar {
     background-color: #44679F;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve */
-    max-width: 600px; /* Máxima largura de 500px */
-    width: 100%; /* Largura total do container disponível */
-    padding: 20px; /* Espaçamento interno */
-    border-radius: 8px; /* Bordas arredondadas */
-    position: relative; /* Necessário para o posicionamento do submenu */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); 
+    max-width: 600px; 
+    width: 100%; 
+    padding: 20px; 
+    border-radius: 8px; 
+    position: relative; 
 }
 
 .user-login {
