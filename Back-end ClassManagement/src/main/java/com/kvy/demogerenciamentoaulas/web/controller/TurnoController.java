@@ -17,7 +17,7 @@ import java.util.List;
 @Tag(name = "Turno", description = "Contém todas as operações reletivas aos recursos de CRUD de turno.")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/semestre")
+@RequestMapping("/api/v1/turno")
 
 public class TurnoController {
 
