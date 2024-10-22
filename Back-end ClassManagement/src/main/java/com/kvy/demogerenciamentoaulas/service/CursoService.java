@@ -48,7 +48,7 @@ public class CursoService {
 
 
     @Transactional(readOnly = true)
-    public List<Curso> buscarTodos(Long id) {
+    public List<Curso> buscarTodos() {
         return cursoRepository.findAll();
     }
 }

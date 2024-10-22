@@ -138,39 +138,38 @@
         <header>
             <h1><a href="#">Turma</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="Home.html">Home</a></li>
             </nav>
         </header>
     </div>
     <div id="app">
         <form @submit.prevent="updateTurma">
-            <h2>Alterar Turma</h2>
+            <h2>Alterar turma</h2>
             <div class="form-group">
                 <label for="id">ID:</label>
                 <input type="text" id="id" v-model="id" required />
             </div>
             <div class="form-group">
-                <label for="nome">Turma:</label>
-                <input type="name" v-model="nome" required />
-            </div>
+                <label for="turma">Turma:</label>
+                <input type="text" id="turma" v-model="turma" required />
+                <div class="form-group">
+                    <label for="id_periodo">Periodo:</label>
+                    <input type="number" id="id_periodo" v-model="turma.id_periodo" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="id_periodo">Turno:</label>
+                    <input type="number" id="id_turno" v-model="turma.id_turno" required />
+                  </div>    
+                  <div class="form-group">
+                    <label for="id_periodo">Curso:</label>
+                    <input type="number" id="id_curso" v-model="turma.id_curso" required />
+                  </div>    
+                  <div class="form-group">
+                    <label for="id_periodo">Semestre:</label>
+                    <input type="number" id="id_semestre" v-model="turma.id_semestre" required />
+                  </div>
             <div class="form-group">
-                <label for="id_periodo">Periodo:</label>
-                <input type="number" v-model="id_periodo" required />
-            </div>
-            <div class="form-group">
-                <label for="id_periodo">Turno:</label>
-                <input type="number" v-model="id_turno" required />
-            </div>    
-            <div class="form-group">
-                <label for="id_periodo">Curso:</label>
-                <input type="number" v-model="id_curso" required />
-            </div>    
-            <div class="form-group">
-                <label for="id_periodo">Semestre:</label>
-                <input type="number" v-model="id_semestre" required />
-            </div>
-            <div class="form-group">
-                <button type="submit">Alterar Turma</button>
+                <button type="submit">Alterar turma</button>
             </div>
         </form>
     </div>
@@ -181,40 +180,40 @@
             el: '#app',
             data: {
                 id: '',
-                nome: '',
+                turma: '',
                 id_periodo: '',
-                id_turno: '',
+                id_turno: '', 
                 id_curso: '',
-                id_semestre: ''   
+                id_semestre: ''
             },
             methods: {
                 updateTurma() {
-                    const { id, nome, id_periodo, id_turno, id_curso, id_semestre } = this;
-                    const TurmaData = { nome, id_periodo, id_turno, id_curso, id_semestre};
+                    const { id, turma, id_periodo, id_turno, id_curso, id_semestre } = this;
+                    const turmaData = { turma, id_periodo, id_turno, id_curso, id_semestre};
 
-                    fetch(`http://localhost:8081/api/v1/turma/${id}`, {
+                    fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(TurmaData),
+                        body: JSON.stringify(turmaData),
                     })
                     .then(response => {
                         if (response.ok) {
-                            alert('Turma alterado com sucesso!');
+                            alert('turma alterado com sucesso!');
                             this.id = '';
-                            this.nome = '';
+                            this.turma = '';
                             this.id_periodo = '';
-                            this.id_turno = ''; 
-                            this.id_curso = ''; 
-                            this.id_semestre = ''; 
+                            this.id_turno = '';
+                            this.id_curso = '';
+                            this.id_semestre = '';
                         } else {
                             throw new Error('Erro ao alterar o turma');
                         }
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao alterar o turma, tente novamente.');
+                        alert('Erro ao alterar o Turma, tente novamente.');
                     });
                 }
             }

@@ -33,10 +33,8 @@ public class TurnoController {
                     @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
-    @PostMapping("/{id}")
+    @PostMapping
     public ResponseEntity<Turno> createTurno(@RequestBody Turno turno) {
-
         Turno savedTurno = turnoService.salvar(turno);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTurno);
     }
@@ -68,7 +66,6 @@ public class TurnoController {
                     @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTurno(@PathVariable Long id) {
         turnoService.excluir(id);
@@ -76,8 +73,8 @@ public class TurnoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Turno>> getTurnoAll(@PathVariable Long id) {
-        List<Turno> turnos = turnoService.buscarTodos(id);
+    public ResponseEntity<List<Turno>> getTurnoAll() {
+        List<Turno> turnos = turnoService.buscarTodos();
         return ResponseEntity.ok(turnos);
     }
 

@@ -79,7 +79,7 @@
       <header>
           <h1><a href="#">Turno</a></h1>
           <nav>
-              <li><a href="home.html">Home</a></li>
+              <li><a href="Home.html">Home</a></li>
           </nav>
       </header>
     </div>
@@ -88,7 +88,7 @@
           <h2>Criar Turno</h2>
           <div class="form-group">
             <label for="nome">Nome do Turno:</label>
-            <input type="text" v-model="turno.nome" required />
+            <input type="text" v-model="turno.turno" required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Turno</button>
@@ -102,13 +102,13 @@
             el: '#app',
             data: {
                 turno: {
-                    nome: '',                   
+                    turno: '',                   
                 }
             },
             methods: {
                 createTurno() {
                     const turnoData = {
-                        nome: this.turno.nome,
+                        turno: this.turno.turno,
                     };
 
                     fetch('http://localhost:8081/api/v1/turno', {
@@ -135,7 +135,7 @@
                 },
                 resetForm() {
                     this.turno = {
-                        nome: '',
+                        turno: '',
                     };
                 }
             }

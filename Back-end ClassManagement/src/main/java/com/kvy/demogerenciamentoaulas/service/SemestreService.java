@@ -34,6 +34,7 @@ public class SemestreService {
         existingSemestre.setSemestre(semestre.getSemestre());
         return existingSemestre;
     }
+
     @Transactional
     public void excluir(Long id) {
         Optional<Semestre> optionalSemestre = semestreRepository.findById(id);
@@ -45,7 +46,7 @@ public class SemestreService {
         }
     }
     @Transactional(readOnly = true)
-    public List<Semestre> buscarTodos(Long id) {
+    public List<Semestre> buscarTodos() {
         return semestreRepository.findAll();
     }
 }

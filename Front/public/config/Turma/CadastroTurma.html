@@ -83,12 +83,12 @@
       <header>
           <h1><a href="#">Turma</a></h1>
           <nav>
-              <li><a href="home.html">Home</a></li>
+              <li><a href="Home.html">Home</a></li>
           </nav>
       </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createAula">
+        <form @submit.prevent="createTurma">
           <h2>Criar Turma</h2>
           <div class="form-group">
             <label for="nome">Turma:</label>
@@ -160,7 +160,7 @@
                             nome: '',
                             id_periodo: '',
                             id_turno: '',
-                            id_curso: 'Lero Lero',
+                            id_curso: '',
                             id_semestre: ''
                         };
                     })

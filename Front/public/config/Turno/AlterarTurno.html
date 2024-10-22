@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alterar Turno</title>
+    <title>Alterar Login</title>
     <link rel="icon" href="../../img/icon.png">
     <style>
         * {
@@ -102,7 +102,15 @@
             color: #555;
             font-weight: bold;
         }
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        select {
             width: 100%;
             padding: 8px;
             margin: 4px 0 10px 0;
@@ -130,7 +138,7 @@
         <header>
             <h1><a href="#">Turno</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="Home.html">Home</a></li>
             </nav>
         </header>
     </div>
@@ -142,8 +150,8 @@
                 <input type="text" id="id" v-model="id" required />
             </div>
             <div class="form-group">
-                <label for="nome">Nome do Turno:</label>
-                <input type="text" v-model="nome" required />
+                <label for="login">Turno :</label>
+                <input type="text" id="turno" v-model="turno" required />
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Turno</button>
@@ -157,12 +165,13 @@
             el: '#app',
             data: {
                 id: '',
-                nome: '',   
+                turno: ''
+                
             },
             methods: {
                 updateTurno() {
-                    const { id, nome } = this;
-                    const turnoData = { nome };
+                    const { id, turno} = this;
+                    const turnoData = {turno};
 
                     fetch(`http://localhost:8081/api/v1/turno/${id}`, {
                         method: 'PUT',
@@ -174,7 +183,9 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Turno alterado com sucesso!');
-                            this.resetForm();
+                            this.id = '';
+                            this.turno = '';
+                        
                         } else {
                             throw new Error('Erro ao alterar o turno');
                         }
@@ -183,10 +194,6 @@
                         console.error('Erro:', error);
                         alert('Erro ao alterar o turno, tente novamente.');
                     });
-                },
-                resetForm() {
-                    this.id = '';
-                    this.nome = '';
                 }
             }
         });

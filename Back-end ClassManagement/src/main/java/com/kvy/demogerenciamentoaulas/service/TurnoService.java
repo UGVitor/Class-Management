@@ -43,5 +43,7 @@ public class TurnoService {
         }
     }
     @Transactional(readOnly = true)
-    public List<Turno> buscarTodos(Long id){ return turnoRepository.findAll();}
+    public List<Turno> buscarTodos(){
+        return turnoRepository.findAll();
+    }
 }

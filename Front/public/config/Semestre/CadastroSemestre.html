@@ -80,16 +80,16 @@
         <header>
             <h1><a href="#">Semestre</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="Home.html">Home</a></li>
             </nav>
         </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createCurso">
+        <form @submit.prevent="createSemestre">
             <h2>Criar Semestre</h2>
             <div class="form-group">
                 <label for="turma">Semestre:</label>
-                <input type="text" v-model="curso.nome" required />
+                <input type="text" v-model="semestres.semestre" required />
             </div>
           
             <div class="form-group">
@@ -102,15 +102,15 @@
         new Vue({
             el: '#app',
             data: {
-                curso: {
+                semestres: {
                     semestre: ''
                   
                 }
             },
             methods: {
-                createCurso() {
+                createSemestre() {
                     const semestreData = {
-                        semestre: this.semestre.semestre,
+                        semestre: this.semestres.semestre,
                      
                     };
                     fetch('http://localhost:8081/api/v1/semestres', {

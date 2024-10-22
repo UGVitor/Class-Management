@@ -130,20 +130,20 @@
         <header>
             <h1><a href="#">Semestre</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="Home.html">Home</a></li>
             </nav>
         </header>
     </div>
     <div id="app">
-        <form @submit.prevent="updateCurso">
+        <form @submit.prevent="updateSemestre">
             <h2>Alterar Semestre</h2>
             <div class="form-group">
                 <label for="id">ID do Semestre:</label>
-                <input type="text" id="id" v-model="curso.id" required />
+                <input type="text" id="id" v-model="id" required />
             </div>
             <div class="form-group">
                 <label for="nome">Semestre:</label>
-                <input type="text" id="nome" v-model="curso.nome" required />
+                <input type="text" id="nome" v-model="semestre" required />
             </div>
             
            
@@ -157,17 +157,13 @@
         new Vue({
             el: '#app',
             data: {
-                curso: {
-                    id: '',
-                    nome: '',
-                    turno: '',
-                    periodo: ''
-                }
+                id: '',
+                semestre: ''
             },
             methods: {
-                updateCurso() {
-                    const { id, semestre} = this.semestre;
-                    const semestreData = { semestre };
+                updateSemestre() {
+                    const { id, semestre} = this;
+                    const semestreData = {semestre};
                     fetch(`http://localhost:8081/api/v1/semestres/${id}`, {
                         method: 'PUT',
                         headers: {
@@ -178,11 +174,8 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Semestre alterado com sucesso!');
-                            this.semestre = {
-                                id: '',
-                                semestre: ''
-        
-                            };
+                            this.id = '';
+                            this.semestre = '';
                         } else {
                             throw new Error('Erro ao alterar o semestre');
                         }
