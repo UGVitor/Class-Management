@@ -65,7 +65,7 @@ public class AulaService {
 
 
     @Transactional(readOnly = true)
-    public List<Aula> buscarTodos(Long id) {
+    public List<Aula> buscarTodos() {
         return aulaRepository.findAll();
     }
 

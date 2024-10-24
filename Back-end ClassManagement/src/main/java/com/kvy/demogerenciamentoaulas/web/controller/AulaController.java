@@ -73,8 +73,8 @@ public class AulaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Aula>> getAulaAll(@PathVariable Long id) {
-        List<Aula> aulas = aulaService.buscarTodos(id);
+    public ResponseEntity<List<Aula>> getAulaAll() {
+        List<Aula> aulas = aulaService.buscarTodos();
         return ResponseEntity.ok(aulas);
     }
 

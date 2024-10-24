@@ -2,7 +2,6 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +18,8 @@ public class LoginService {
 
     @Transactional
     public Login salvar(Login login) {
-        try {
-            return loginRepository.save(login);
-
-        } catch (org.springframework.dao.DataIntegrityViolationException ex){
-            throw new LoginUniqueViolationException(String.format("Login {%s} ja existente", login.getLogin()));
-        }
-        }
+        return loginRepository.save(login);
+    }
 
     @Transactional(readOnly = true)
     public Login buscarPorId(Long id){

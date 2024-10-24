@@ -66,7 +66,7 @@ public class DisciplinaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Disciplina> buscarTodos(Long id) {
+    public List<Disciplina> buscarTodos() {
         return disciplinaRepository.findAll();
     }
 
