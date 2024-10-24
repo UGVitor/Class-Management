@@ -72,8 +72,8 @@ public class DisciplinaController {
 
 
     @GetMapping
-    public ResponseEntity<List<Disciplina>> getDisciplinaAll(@PathVariable Long id) {
-        List<Disciplina> disciplinas = disciplinaService.buscarTodos(id);
+    public ResponseEntity<List<Disciplina>> getDisciplinaAll() {
+        List<Disciplina> disciplinas = disciplinaService.buscarTodos();
         return ResponseEntity.ok(disciplinas);
     }
 }

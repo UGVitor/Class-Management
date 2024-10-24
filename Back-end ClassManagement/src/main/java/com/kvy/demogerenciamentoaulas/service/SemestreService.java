@@ -45,7 +45,7 @@ public class SemestreService {
         }
     }
     @Transactional(readOnly = true)
-    public List<Semestre> buscarTodos(Long id) {
+    public List<Semestre> buscarTodos() {
         return semestreRepository.findAll();
     }
 }

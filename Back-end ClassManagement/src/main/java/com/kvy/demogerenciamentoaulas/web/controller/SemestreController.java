@@ -76,8 +76,8 @@ public class SemestreController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Semestre>> getSemestreAll(@PathVariable Long id) {
-        List<Semestre> semestres = semestreService.buscarTodos(id);
+    public ResponseEntity<List<Semestre>> getSemestreAll() {
+        List<Semestre> semestres = semestreService.buscarTodos();
         return ResponseEntity.ok(semestres);
     }
 }
