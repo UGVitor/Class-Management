@@ -25,7 +25,7 @@ public class DisciplinaService {
         Login professor = loginRepository.findById(disciplina.getProfessor().getId())
                 .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getProfessor().getId()));
 
-        if (professor.getRole() != Login.Role.ROLE_PROFESSOR) {
+        if (professor.getRole() != Login.Role.PROFESSOR) {
             throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
         }
 

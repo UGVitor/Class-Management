@@ -25,9 +25,9 @@ public class Login implements Serializable {
     @Enumerated(EnumType.STRING)
 
     @Column(name = "role", nullable = false, length = 25)
-    private Role role = Role.ROLE_ADMIN;
+    private Role role = Role.ADMIN;
     public enum Role {
-        ROLE_ADMIN, ROLE_PROFESSOR
+        ADMIN, PROFESSOR
     }
 
     @OneToMany(mappedBy = "professor")
