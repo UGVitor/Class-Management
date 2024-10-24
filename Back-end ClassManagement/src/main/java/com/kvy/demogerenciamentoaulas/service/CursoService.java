@@ -17,6 +17,8 @@ public class CursoService {
 
     private final CursoRepository cursoRepository;
 
+    //private final ModalidadeRepository modalidadeRepository;
+
     @Transactional
     public Curso salvar(Curso curso) {
 
@@ -32,6 +34,7 @@ public class CursoService {
         Curso existingCurso = buscarPorId(id);
 
         existingCurso.setTurma(curso.getTurma());
+        //existingCurso.setModalidade(curso.getModalidade().getId()).orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + curso.getModalidade().getId()));;
         return existingCurso;
     }
 
