@@ -66,8 +66,8 @@ public class CursoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Curso>> getCursoAll(@PathVariable Long id) {
-        List<Curso> cursos = cursoService.buscarTodos(id);
+    public ResponseEntity<List<Curso>> getCursoAll() {
+        List<Curso> cursos = cursoService.buscarTodos();
         return ResponseEntity.ok(cursos);
     }
 }

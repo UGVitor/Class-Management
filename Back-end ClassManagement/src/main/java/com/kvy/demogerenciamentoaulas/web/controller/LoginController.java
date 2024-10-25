@@ -18,19 +18,19 @@ import java.util.List;
 @Tag(name = "Logins", description = "Contém todas as operações relativas aos recursos de CRUD de login.")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/logins")
+@RequestMapping("/api/v1/logins")
 public class LoginController {
 
     private final LoginService loginService;
 
-    @Operation(summary = "Criar um novo usuário", description = "Recurso para criar um novo usuário",
+    @Operation(summary = "Criar um novo login", description = "Recurso para criar um novo login.",
             responses = {
-                @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class))),
-                @ApiResponse(responseCode = "409", description = "Login e-mail já cadastrado no sistema",
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-                @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
-                        content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+                    @ApiResponse(responseCode = "201", description = "Login criado com sucesso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class))),
+                    @ApiResponse(responseCode = "409", description = "Login já cadastrado.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
     public ResponseEntity<Login> create(@RequestBody Login login) {
@@ -38,11 +38,11 @@ public class LoginController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    @Operation(summary = "Recuperar um usuário pelo id", description = "Recuperar um usuário pelo id",
+    @Operation(summary = "Recuperar login por ID", description = "Recurso para recuperar um login pelo ID.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Recurso recuperado com sucesso",
+                    @ApiResponse(responseCode = "200", description = "Login recuperado com sucesso.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class))),
-                    @ApiResponse(responseCode = "404", description = "Recursos não encontrado",
+                    @ApiResponse(responseCode = "404", description = "Login não encontrado.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
@@ -51,17 +51,43 @@ public class LoginController {
         return ResponseEntity.ok(user);
     }
 
+    @Operation(summary = "Atualizar login", description = "Recurso para atualizar as informações de um login.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Login atualizado com sucesso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class))),
+                    @ApiResponse(responseCode = "404", description = "Login não encontrado.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Login> updateLogin(@PathVariable Long id, @RequestBody Login login) {
         Login updatedLogin = loginService.editar(id, login);
         return ResponseEntity.ok(updatedLogin);
     }
 
-    @Operation(summary = "Excluir login", description = "Excluir login pelo ID",
+    @Operation(summary = "Atualizar senha de login", description = "Recurso para atualizar a senha de um login.",
             responses = {
-                    @ApiResponse(responseCode = "204", description = "Login excluído com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
-                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                    @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class))),
+                    @ApiResponse(responseCode = "404", description = "Login não encontrado.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "400", description = "Erro de validação de senha.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
+    @PutMapping("/{id}/senha")
+    public ResponseEntity<Login> updatePassword(@PathVariable Long id,
+                                                @RequestParam String senhaAtual,
+                                                @RequestParam String novaSenha,
+                                                @RequestParam String confirmaSenha) {
+        Login updatedLogin = loginService.editarSenha(id, senhaAtual, novaSenha, confirmaSenha);
+        return ResponseEntity.ok(updatedLogin);
+    }
+
+    @Operation(summary = "Excluir login por ID", description = "Recurso para excluir um login pelo ID.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Login excluído com sucesso."),
+                    @ApiResponse(responseCode = "404", description = "Login não encontrado.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @DeleteMapping("/{id}")
@@ -70,10 +96,14 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Listar todos os logins", description = "Recurso para listar todos os logins cadastrados.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Logins listados com sucesso.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class)))
+            })
     @GetMapping
-    public ResponseEntity<List<Login>> getLoginAll() {
+    public ResponseEntity<List<Login>> getAllLogins() {
         List<Login> logins = loginService.buscarTodos();
         return ResponseEntity.ok(logins);
     }
-
 }

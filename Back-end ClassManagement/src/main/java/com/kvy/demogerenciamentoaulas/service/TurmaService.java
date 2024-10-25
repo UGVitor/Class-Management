@@ -55,7 +55,7 @@ public class TurmaService {
     }
 
     @Transactional(readOnly = true)
-    public List<Turma> buscarTodos(Long id) {
+    public List<Turma> buscarTodos() {
         return turmaRepository.findAll();
     }
 

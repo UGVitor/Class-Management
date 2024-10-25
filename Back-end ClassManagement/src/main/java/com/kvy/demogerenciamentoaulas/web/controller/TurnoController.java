@@ -76,8 +76,8 @@ public class TurnoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Turno>> getTurnoAll(@PathVariable Long id) {
-        List<Turno> turnos = turnoService.buscarTodos(id);
+    public ResponseEntity<List<Turno>> getTurnoAll() {
+        List<Turno> turnos = turnoService.buscarTodos();
         return ResponseEntity.ok(turnos);
     }
 

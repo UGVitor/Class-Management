@@ -45,8 +45,8 @@ public class TurmaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Turma>> getTurmaAll(@PathVariable Long id) {
-        List<Turma> turmas = turmaService.buscarTodos(id);
+    public ResponseEntity<List<Turma>> getTurmaAll() {
+        List<Turma> turmas = turmaService.buscarTodos();
         return ResponseEntity.ok(turmas);
     }
 
