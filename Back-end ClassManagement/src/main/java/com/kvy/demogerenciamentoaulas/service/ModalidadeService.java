@@ -21,15 +21,37 @@ public class ModalidadeService {
         return modalidadeRepository.save(modalidade);
     }
 
+    @Transactional(readOnly = true)
+    public Modalidade buscarPorId(Long id){
+        return modalidadeRepository.findById(id).orElseThrow(
+                () -> new ModalidadeEntityNotFoundException(String.format("Modalidade id=%s não encontrada", id))
+        );
+    }
     @Transactional
     public Modalidade editar(Long id, Modalidade modalidade) {
         Modalidade existingModalidade = modalidadeRepository.findById(id).orElseThrow(() -> new ModalidadeEntityNotFoundException(String.format("Modalidade id=%s não encontrado", id)));
 
         existingModalidade.setModalidade(modalidade.getModalidade());
         return modalidadeRepository.save(existingModalidade);
+
     }
 
 
+    @Transactional
+    public void excluir(Long id) {
+        Optional<Modalidade> optionalUser = modalidadeRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            modalidadeRepository.delete(optionalUser.get());
+            System.out.println("Deletado com Sucesso!");
+        } else {
+            throw new RuntimeException("Modalidade não encontrada com o ID: " + id);
+        }
+    }
 
-
+    @Transactional(readOnly = true)
+    public List<Modalidade> buscarTodos() {
+        return modalidadeRepository.findAll();
+    }
 }
+
+
