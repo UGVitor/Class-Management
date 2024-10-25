@@ -1,6 +1,6 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -10,37 +10,32 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
-@Getter
-@Setter
-@Data
+@Getter @Setter
 @NoArgsConstructor
+@Data
 @Entity
-@Table(name = "Curso")
-public class Curso implements Serializable {
+@Table(name = "Modalidade")
+public class Modalidade implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "Curso", nullable = false, length = 50)
-    private String Curso;
+    @Column(name = "modalidade", nullable = false)
+    private String modalidade;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Turma> turmas = new HashSet<>();
-
-    @ManyToOne
-    @JoinColumn(name = "id_modalidade", nullable = false)
-    @JsonBackReference("modalidade-curso")
-    private Modalidade modalidade;
+    @OneToMany(mappedBy = "modalidade", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("modalidade-curso")
+    private Set<Curso> cursos = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Curso that = (Curso) o;
+        Modalidade that = (Modalidade) o;
         return Objects.equals(id, that.id);
     }
 
@@ -51,9 +46,8 @@ public class Curso implements Serializable {
 
     @Override
     public String toString() {
-        return "Curso{" +
+        return "Modalidade{" +
                 "id=" + id +
                 '}';
     }
-
 }

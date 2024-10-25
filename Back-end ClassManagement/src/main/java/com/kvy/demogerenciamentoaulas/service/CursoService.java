@@ -2,9 +2,12 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.entity.Modalidade;
+import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
+import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ public class CursoService {
 
     private final CursoRepository cursoRepository;
 
-    //private final ModalidadeRepository modalidadeRepository;
+    private final ModalidadeRepository modalidadeRepository;
 
     @Transactional
     public Curso salvar(Curso curso) {
@@ -33,8 +36,10 @@ public class CursoService {
     public Curso editar(Long id, Curso curso) {
         Curso existingCurso = buscarPorId(id);
 
-        existingCurso.setTurma(curso.getTurma());
-        //existingCurso.setModalidade(curso.getModalidade().getId()).orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + curso.getModalidade().getId()));;
+        existingCurso.setCurso(curso.getCurso());
+        Modalidade modalidade = modalidadeRepository.findById(curso.getModalidade().getId())
+                .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + curso.getModalidade().getId()));
+        existingCurso.setModalidade(modalidade);
         return existingCurso;
     }
 
