@@ -169,7 +169,7 @@
 </head>
 <body>
     <div id="app" class="container">
-        <!-- Starting Header -->
+
         <div class="navbar">
             <header>
                 <h1><a href="#">Curso</a></h1>
@@ -181,31 +181,31 @@
                 </nav>
             </header>
         </div>
-        <!-- Header terminated -->
+ 
 
         <div class="filters-display">
             <table v-if="currentEntity === 'cursos'">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nome</th>
-                        <th>Período</th>
-                        <th>Turno</th>
+                        <th>Curso</th>
+                        <th>Modalidade</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="curso in data" :key="curso.id">
                         <td>{{ curso.id }}</td>
-                        <td>{{ curso.nome }}</td>
-                        <td>{{ curso.periodo }}</td>
-                        <td>{{ curso.turno }}</td>
+                        <td>{{ curso.curso }}</td>
+                        <td>{{ curso.id_modalidade }}</td>
+                        
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Incluindo o flatpickr JS -->
+ 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>

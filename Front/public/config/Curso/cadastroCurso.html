@@ -30,7 +30,7 @@
             position: fixed;
             width: 100%;
             z-index: 100;
-            height: 60px; /* Ajuste se necessário */
+            height: 60px; 
         }
 
         header{
@@ -91,20 +91,12 @@
         <form @submit.prevent="createCurso">
             <h2>Criar Curso</h2>
             <div class="form-group">
-                <label for="turma">Nome:</label>
-                <input type="text" v-model="curso.nome" required />
+                <label for="curso">Curso:</label>
+                <input type="text" v-model="curso.curso" required />
             </div>
             <div class="form-group">
-                <label for="turno">Turno:</label>
-                <select v-model="curso.turno">
-                    <option value="ROLE_MATUTINO">Matutino</option>
-                    <option value="ROLE_DIURNO">Diurno</option>
-                    <option value="ROLE_NOTURNO">Noturno</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="periodo">Período:</label>
-                <input type="number" v-model="curso.periodo" required />
+                <label for="modalidade">Modalidade:</label>
+                <input type="number" v-model="curso.id_modalidade" required />
             </div>
             <div class="form-group">
                 <button type="submit">Criar Curso</button>
@@ -118,17 +110,17 @@
             el: '#app',
             data: {
                 curso: {
-                    nome: '',
-                    turno: '',
-                    periodo: ''
+                    curso: '',
+                    modalidade: ''
+                    
                 }
             },
             methods: {
                 createCurso() {
                     const cursoData = {
-                        nome: this.curso.nome,
-                        turno: this.curso.turno,
-                        periodo: this.curso.periodo
+                        curso: this.curso.curso,
+                        modalidade: this.curso.modalidade
+                        
                     };
                     fetch('http://localhost:8081/api/v1/curso', {
                         method: 'POST',
@@ -146,9 +138,9 @@
                     .then(data => {
                         alert('Curso criado com sucesso!');
                         this.curso = {
-                            nome: '',
-                            turno: '',
-                            periodo: ''
+                            curso: '',
+                            modalidade: '',
+                            
                         };
                     })
                     .catch(error => {
