@@ -1,0 +1,2 @@
+# Sistema de Gerenciamento de Aulas
+Este sistema de gerenciamento de aulas é uma aplicação backend projetada para auxiliar na administração e organização de turmas, cursos, semestres, turnos e disciplinas em uma instituição de ensino. Ele permite que diferentes usuários, como professores, direção e administradores, interajam com o sistema para cadastrar e gerenciar dados essenciais, otimizando a alocação de aulas, horários e recursos.
