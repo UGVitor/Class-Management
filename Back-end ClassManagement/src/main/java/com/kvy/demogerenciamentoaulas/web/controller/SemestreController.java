@@ -1,6 +1,5 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
-
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.service.SemestreService;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Tag(name = "Semestres", description = "Contém todas as operações relativas aos recursos de CRUD de semestre.")
 @RequiredArgsConstructor
 @RestController
@@ -33,10 +33,8 @@ public class SemestreController {
                     @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @PostMapping
     public ResponseEntity<Semestre> createSemestre(@RequestBody Semestre semestre) {
-
         Semestre savedSemestre = semestreService.salvar(semestre);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSemestre);
     }

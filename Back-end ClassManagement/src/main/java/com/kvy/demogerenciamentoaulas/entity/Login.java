@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,20 +17,15 @@ public class Login implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "login", nullable = false, unique = true, length = 100)
     private String login;
+
     @Column(name = "password", nullable = false, length = 200)
     private String password;
     @Enumerated(EnumType.STRING)
 
-    @Column(name = "role", nullable = false, length = 25)
-    private Role role = Role.ADMIN;
-    public enum Role {
-        ADMIN, PROFESSOR
-    }
 
-    @OneToMany(mappedBy = "professor")
-    private Set<Disciplina> disciplinas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

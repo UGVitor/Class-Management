@@ -1,5 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
+
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
+import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.service.ModalidadeService;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/modalidades")
+
 public class ModalidadeController {
 
     private final ModalidadeService modalidadeService;
@@ -34,6 +36,7 @@ public class ModalidadeController {
             })
     @PostMapping
     public ResponseEntity<Modalidade> createModalidade(@RequestBody Modalidade modalidade) {
+        System.out.println(modalidade.getNome());
         Modalidade savedModalidade = modalidadeService.salvar(modalidade);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedModalidade);
     }
@@ -63,13 +66,13 @@ public class ModalidadeController {
         Modalidade modalidade = modalidadeService.buscarPorId(id);
         return ResponseEntity.ok(modalidade);
     }
+
     @Operation(summary = "Excluir modalidade por ID", description = "Recurso para excluir uma modalidade pelo ID.",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Modalidade excluída com sucesso."),
                     @ApiResponse(responseCode = "404", description = "Modalidade não encontrada.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteModalidade(@PathVariable Long id) {
         modalidadeService.excluir(id);

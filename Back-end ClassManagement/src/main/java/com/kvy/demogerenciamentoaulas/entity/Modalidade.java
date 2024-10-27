@@ -24,8 +24,8 @@ public class Modalidade implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "modalidade", nullable = false)
-    private String modalidade;
+    @Column(name = "nome", nullable = false)
+    private String nome;
 
     @OneToMany(mappedBy = "modalidade", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("modalidade-curso")
