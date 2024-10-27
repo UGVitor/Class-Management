@@ -61,7 +61,7 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Login> updateLogin(@PathVariable Long id, @RequestBody Login login) {
+    public ResponseEntity<Login> updateLogin(@PathVariable Long id, @RequestParam String login) {
         Login updatedLogin = loginService.editar(id, login);
         return ResponseEntity.ok(updatedLogin);
     }

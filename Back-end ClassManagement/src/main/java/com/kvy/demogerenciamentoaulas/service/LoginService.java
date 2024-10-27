@@ -42,11 +42,9 @@ public class LoginService {
     }
 
     @Transactional
-    public Login editar(Long id, Login login) {
+    public Login editar(Long id, String login) {
         Login existingUser = buscarPorId(id);
-
-        existingUser.setLogin(login.getLogin());
-        existingUser.setPassword(login.getPassword());
+        existingUser.setLogin(login);
         return existingUser;
     }
 

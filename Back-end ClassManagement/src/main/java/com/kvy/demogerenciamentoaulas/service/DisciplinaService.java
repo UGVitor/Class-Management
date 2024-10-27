@@ -22,15 +22,6 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(Disciplina disciplina) {
-        Login professor = loginRepository.findById(disciplina.getProfessor().getId())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getProfessor().getId()));
-
-        if (professor.getRole() != Login.Role.PROFESSOR) {
-            throw new IllegalArgumentException("O usuário associado deve ter o papel de PROFESSOR.");
-        }
-
-        disciplina.setProfessor(professor);
-
         return disciplinaRepository.save(disciplina);
     }
 
@@ -47,10 +38,6 @@ public class DisciplinaService {
         existingDisciplina.setNome(disciplina.getNome());
         existingDisciplina.setDescricao(disciplina.getDescricao());
         existingDisciplina.setCargaHoraria(disciplina.getCargaHoraria());
-        Login professor = loginRepository.findById(disciplina.getProfessor().getId())
-                .orElseThrow(() -> new RuntimeException("Professor não encontrado com o ID: " + disciplina.getProfessor().getId()));
-        existingDisciplina.setProfessor(professor);
-
         return existingDisciplina;
     }
 

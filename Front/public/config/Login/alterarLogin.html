@@ -19,14 +19,14 @@
             list-style: none;
         }
         body {
-            background: linear-gradient(135deg, #44679F, #DDF5F7);
+            background: white;
         }
         .navbar {
             background-color: #44679F;
             position: fixed;
             width: 100%;
             z-index: 100;
-            height: 60px; /* Ajuste se necessário */
+            height: 60px; 
         }
         header {
             display: flex;
@@ -75,7 +75,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 60px); /* Subtraia a altura da navbar */
+            height: calc(100vh - 60px); 
             margin-top: 0;
             padding: 0 20px;
             text-align: center;
@@ -87,7 +87,7 @@
             padding: 30px;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         h2 {
             margin-bottom: 20px;
@@ -154,17 +154,6 @@
                 <input type="text" id="login" v-model="login" required />
             </div>
             <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" v-model="password" required />
-            </div>
-            <div class="form-group">
-                <label for="role">Cargo:</label>
-                <select id="role" v-model="role" required>
-                    <option value="ADMIN">Admin</option>
-                    <option value="PROFESSOR">Professor</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <button type="submit">Alterar Login</button>
             </div>
         </form>
@@ -176,14 +165,12 @@
             el: '#app',
             data: {
                 id: '',
-                login: '',
-                password: '',
-                role: '' 
+                login: ''
             },
             methods: {
                 updateLogin() {
-                    const { id, login, password, role } = this;
-                    const loginData = { login, password, role};
+                    const { id, login} = this;
+                    const loginData = { login};
 
                     fetch(`http://localhost:8081/api/v1/logins/${id}`, {
                         method: 'PUT',
@@ -197,8 +184,6 @@
                             alert('Login alterado com sucesso!');
                             this.id = '';
                             this.login = '';
-                            this.password = '';
-                            this.role = ''; 
                         } else {
                             throw new Error('Erro ao alterar o login');
                         }

@@ -26,10 +26,6 @@ public class Disciplina implements Serializable {
     @Column(name = "cargaHoraria", nullable = false)
     private int cargaHoraria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "professor_id")
-    private Login professor;
-
     @OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("disciplina-aula")
     private Set<Aula> aulas = new HashSet<>();
