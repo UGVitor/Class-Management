@@ -28,7 +28,7 @@ public class SemestreController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Semestre.class))),
-                    @ApiResponse(responseCode = "409", description = "aula já cadastrado no sistema",
+                    @ApiResponse(responseCode = "409", description = "Semestre já cadastrado no sistema",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))

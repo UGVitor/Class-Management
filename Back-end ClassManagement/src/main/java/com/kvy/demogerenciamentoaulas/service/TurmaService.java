@@ -1,16 +1,13 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 
-import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.entity.Turma;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
+import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
-import com.kvy.demogerenciamentoaulas.repository.SemestreRepository;
-import com.kvy.demogerenciamentoaulas.repository.TurmaRepository;
-import com.kvy.demogerenciamentoaulas.repository.TurnoRepository;
+import com.kvy.demogerenciamentoaulas.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,14 +22,15 @@ public class TurmaService {
     private CursoRepository cursoRepository;
     private SemestreRepository semestreRepository;
     private TurnoRepository turnoRepository;
+    private PeriodoRepository periodoRepository;
 
     @Transactional
     public Turma salvar(Turma turma) {
 
-        /* Periodo periodo = periodoRepository.findById(turma.getPeriodo().getId())
+        Periodo periodo = periodoRepository.findById(turma.getPeriodo().getId())
                 .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turma.getPeriodo().getId()));
         turma.setPeriodo(periodo);
-        */
+
         Turno turno = turnoRepository.findById(turma.getTurno().getId())
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turma.getTurno().getId()));
         turma.setTurno(turno);
@@ -66,10 +64,10 @@ public class TurmaService {
     public Turma editar(Long id, Turma turma){
         Turma existingTurma = buscarPorId(id);
 
-        /*Periodo periodo = periodoRepository.findById(turma.getPeriodo().getId())
+        Periodo periodo = periodoRepository.findById(turma.getPeriodo().getId())
                 .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turma.getPeriodo().getId()));
         existingTurma.setPeriodo(periodo);
-         */
+
         Turno turno = turnoRepository.findById(turma.getTurno().getId())
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turma.getTurno().getId()));
         existingTurma.setTurno(turno);
