@@ -14,12 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @Tag(name = "Modalidades", description = "Contém todas as operações relativas aos recursos de CRUD de modalidade.")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/modalidades")
+//@CrossOrigin(origins = "*")
 
 public class ModalidadeController {
 
@@ -73,10 +75,16 @@ public class ModalidadeController {
                     @ApiResponse(responseCode = "404", description = "Modalidade não encontrada.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteModalidade(@PathVariable Long id) {
-        modalidadeService.excluir(id);
-        return ResponseEntity.noContent().build();
+
+
+    @DeleteMapping("{nome}")
+    public ResponseEntity<String> deleteModalidade(@PathVariable String nome) {
+        try {
+            modalidadeService.excluir(nome);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
     }
 
     @Operation(summary = "Listar todos as modalidades", description = "Recurso para listar todas as modalidades cadastradas.",

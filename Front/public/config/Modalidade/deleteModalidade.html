@@ -21,8 +21,8 @@
         <form @submit.prevent="deleteModalidade">
             <h2>Deletar Modalidade</h2>
             <div class="form-group">
-                <label for="id">ID da Modalidade:</label>
-                <input type="text" id="id" v-model="modalidadeId" required />
+                <label for="nome">Nome da Modalidade:</label>
+                <input type="text" nome="nome" v-model="modalidadeNome" required />
             </div>
             <div class="form-group">
                 <button class="button" type="submit">
@@ -37,19 +37,19 @@
         new Vue({
             el: '#app',
             data: {
-                modalidadeId: ''
+                modalidadeNome: ''
             },
             methods: {
                 deleteModalidade() {
-                    const id = this.modalidadeId;  
+                    const nome = this.modalidadeNome;  
 
-                    fetch(`http://localhost:8081/api/v1/modalidades/${id}`, {
+                    fetch(`http://localhost:8081/api/v1/modalidades/${nome}`, {
                         method: 'DELETE',
                     })
                     .then(response => {
                         if (response.ok) {
                             alert('Modalidade deletada com sucesso!');
-                            this.modalidadeId = '';  
+                            this.modalidadeNome = '';  
                         } else {
                             throw new Error('Erro ao deletar a modalidade');  
                         }
