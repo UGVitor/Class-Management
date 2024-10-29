@@ -38,13 +38,13 @@ public class ModalidadeService {
     }
 
     @Transactional
-    public void excluir(Long id) {
-        Optional<Modalidade> optionalUser = modalidadeRepository.findById(id);
+    public void excluir(String nome) {
+        Optional<Modalidade> optionalUser = modalidadeRepository.findByNome(nome);
         if (optionalUser.isPresent()) {
             modalidadeRepository.delete(optionalUser.get());
             System.out.println("Deletado com Sucesso!");
         } else {
-            throw new RuntimeException("Modalidade não encontrada com o ID: " + id);
+            throw new RuntimeException("Modalidade não encontrada com o nome: " + nome);
         }
     }
 
