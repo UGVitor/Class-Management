@@ -20,7 +20,7 @@
           list-style: none;
       }
       body {
-          background: linear-gradient(135deg, #44679F, #DDF5F7);
+          background: white;
       }
       .navbar {
           background-color: #44679F;
@@ -88,7 +88,7 @@
           <h2>Criar Periodo</h2>
           <div class="form-group">
             <label for="nome">Nome do Periodo:</label>
-            <input type="text" v-model="periodo.nome" required />
+            <input type="text" v-model="periodos.nome" required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Periodo</button>
@@ -101,14 +101,14 @@
         new Vue({
             el: '#app',
             data: {
-                periodo: {
-                    nome: '',                   
+                periodos: {
+                    nome: ''                   
                 }
             },
             methods: {
                 createPeriodo() {
                     const periodoData = {
-                        nome: this.periodo.nome,
+                        nome: this.periodos.nome,
                     };
 
                     fetch('http://localhost:8081/api/v1/periodos', {
@@ -134,7 +134,7 @@
                     });
                 },
                 resetForm() {
-                    this.periodo = {
+                    this.periodos = {
                         nome: '',
                     };
                 }
