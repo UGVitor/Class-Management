@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
     * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
     }
 
     a {
@@ -118,7 +118,7 @@
     }
 
     .filters-display table {
-        width: 35%;
+        width: 30%;
         border-collapse: separate;
         border-spacing: 0;
         margin: 20px auto; 
@@ -136,17 +136,13 @@
     }
 
     .filters-display table th {
-        background-color: #3498DB;
+        background-color: #44679f;
         color: #FFFFFF;
         font-weight: bold;
     }
 
     .filters-display table tr:nth-child(even) {
         background-color: #ECF0F1;
-    }
-
-    .filters-display table tr:hover {
-        background-color: #DCE5EC;
     }
 
     .filters-display table tr:last-child td {
@@ -169,11 +165,42 @@
         border-bottom-right-radius: 12px;
     }
     .filters-display table th:nth-child(1) {
-        width: 25%; 
+        width: 65%; 
     }
 
     .filters-display table th:nth-child(2) {
         width: 40%; 
+    }
+
+    .button-group {
+        display: flex;             
+        gap: 10px;               
+    }
+
+    .delete-btn, .altera-btn {
+        padding: 8px 15px;       
+        border: none;            
+        border-radius: 5px;     
+        cursor: pointer;        
+        transition: background-color 0.3s ease;
+    }
+
+    .delete-btn {
+        background-color: #E74C3C; 
+        color: white;
+    }
+
+    .delete-btn:hover {
+        background-color: #C0392B; 
+    }
+
+    .altera-btn {
+        background-color: #3498DB; 
+        color: white;
+    }
+
+    .altera-btn:hover {
+        background-color: #2980B9; 
     }
 </style>
 
@@ -187,8 +214,6 @@
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
                     <li><a href="cadastroModalidade.html">Criar</a></li>
-                    <li><a href="deleteModalidade.html">Deletar</a></li>
-                    <li><a href="alterarModalidade.html">Alterar</a></li>
                 </nav>
             </header>
         </div>
@@ -198,16 +223,21 @@
             <table v-if="currentEntity === 'modalidades'">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Modalidade</th>
-                        
+                        <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="modalidade in data" :key="modalidade.id">
-                        <td>{{ modalidade.id }}</td>
                         <td>{{ modalidade.nome }}</td>
-                        
+                        <td>
+                            <div class="button-group">
+                                <button @click="deleteModalidade(modalidade.id)" class="delete-btn">Deletar</button>
+                                <button @click="editModalidade(modalidade.id)" class="altera-btn">Alterar</button>  
+                            </div>
+                        </td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -242,10 +272,29 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                       modalidades: 'http://localhost:8081/api/v1/modalidades'
+                        modalidades: 'http://localhost:8081/api/v1/modalidades'
                     };
-    
                     this.data = await this.fetchData(endpoints[entity]);
+                },
+                async deleteModalidade(id) {
+                    if (confirm("Tem certeza que deseja deletar esta modalidade?")) {
+                        try {
+                            const response = await fetch(`http://localhost:8081/api/v1/modalidades/${id}`, {
+                                method: 'DELETE',
+                            });
+                            if (response.ok) {
+                                alert("Modalidade deletada com sucesso!");
+                                this.data = this.data.filter(modalidade => modalidade.id !== id); // Atualiza a tabela removendo o item deletado
+                            } else {
+                                alert("Erro ao deletar a modalidade.");
+                            }
+                        } catch (error) {
+                            console.error('Erro ao deletar a modalidade:', error);
+                        }
+                    }
+                },
+                editModalidade(id) {
+                    window.location.href = `alterarModalidade.html?id=${id}`;
                 }
             },
             mounted(){

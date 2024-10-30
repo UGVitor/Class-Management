@@ -116,7 +116,7 @@
 
             const user = logins.find(user => user.login === loginInput);
 
-            if (user && user.password === passwordInput && user.role === 'ADMIN') {
+            if (user && user.password === passwordInput) {
                 window.location.href = 'index2.html';
             } else {
                 errorMessage.style.display = 'block';

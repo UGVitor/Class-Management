@@ -122,10 +122,6 @@
         <form @submit.prevent="updateModalidade">
             <h2>Alterar Modalidade</h2>
             <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id" required />
-            </div>
-            <div class="form-group">
                 <label for="modalidade">Modalidade:</label>
                 <input type="text" id="modalidade" v-model="nome" required />
             </div>
@@ -140,15 +136,18 @@
         new Vue({
             el: '#app',
             data: {
-                id: '',
-                nome: ''
+                nome: '' 
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
             },
             methods: {
                 updateModalidade() {
-                    const { id, nome } = this;
-                    const modalidadeData = { nome };
+                    const modalidadeData = { nome: this.nome };
 
-                    fetch(`http://localhost:8081/api/v1/modalidades/${id}`, {
+                    // Faz a requisição para atualizar a modalidade usando o ID da URL
+                    fetch(`http://localhost:8081/api/v1/modalidades/${this.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -158,8 +157,7 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Modalidade alterada com sucesso!');
-                            this.id = '';
-                            this.nome = ''; 
+                            this.nome = ''; // Limpa o nome
                         } else {
                             throw new Error('Erro ao alterar a modalidade');
                         }

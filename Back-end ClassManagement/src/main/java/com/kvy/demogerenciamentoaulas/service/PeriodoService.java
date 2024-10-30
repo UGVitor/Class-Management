@@ -34,7 +34,8 @@ public class PeriodoService {
 
         existingPeriodo.setNome(periodo.getNome());
         return periodoRepository.save(existingPeriodo);
-}
+    }
+
     @Transactional
     public void excluir(Long id) {
         Optional<Periodo> optionalPeriodo = periodoRepository.findById(id);
@@ -45,6 +46,7 @@ public class PeriodoService {
             throw new RuntimeException("Periodo não encontrado com o ID: " + id);
         }
     }
+
     @Transactional(readOnly = true)
     public List<Periodo> buscarTodos() {
         return periodoRepository.findAll();

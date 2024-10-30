@@ -180,14 +180,19 @@
             methods: {
                 updateSenha() {
                     const { id, senhaAtual, novaSenha, confirmaSenha } = this;
-                    const loginData = { senhaAtual, novaSenha, confirmaSenha};
 
-                    fetch(`http://localhost:8081/api/v1/logins/${id}/senha`, {
+                    if (novaSenha !== confirmaSenha) {
+                        alert("As senhas não coincidem!");
+                        return;
+                    }
+
+                    const queryString = `senhaAtual=${encodeURIComponent(senhaAtual)}&novaSenha=${encodeURIComponent(novaSenha)}&confirmaSenha=${encodeURIComponent(confirmaSenha)}`;
+
+                    fetch(`http://localhost:8081/api/v1/logins/${id}/senha?${queryString}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(loginData),
+                        }
                     })
                     .then(response => {
                         if (response.ok) {
@@ -197,16 +202,19 @@
                             this.novaSenha = '';
                             this.confirmaSenha = ''; 
                         } else {
-                            throw new Error('Erro ao alterar o login');
+                            return response.json().then(data => {
+                                throw new Error(data.message || 'Erro ao alterar o login');
+                            });
                         }
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao alterar o login, tente novamente.');
+                        alert(`Erro ao alterar o login: ${error.message}`);
                     });
                 }
             }
         });
+
     </script>
 </body>
 </html>

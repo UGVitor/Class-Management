@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
+import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +39,13 @@ public class ModalidadeService {
     }
 
     @Transactional
-    public void excluir(String nome) {
-        Optional<Modalidade> optionalUser = modalidadeRepository.findByNome(nome);
-        if (optionalUser.isPresent()) {
-            modalidadeRepository.delete(optionalUser.get());
+    public void excluir(Long id) {
+        Optional<Modalidade> optionalModalidade = modalidadeRepository.findById(id);
+        if (optionalModalidade.isPresent()) {
+            modalidadeRepository.delete(optionalModalidade.get());
             System.out.println("Deletado com Sucesso!");
         } else {
-            throw new RuntimeException("Modalidade não encontrada com o nome: " + nome);
+            throw new RuntimeException("Modalidade não encontrado com o ID: " + id);
         }
     }
 

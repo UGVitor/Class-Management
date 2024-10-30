@@ -190,14 +190,12 @@
                     <tr>
                         <th>ID</th>
                         <th>Login</th>
-                        <th>Tipo</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="login in data" :key="login.id">
                         <td>{{ login.id }}</td>
                         <td>{{ login.login }}</td>
-                        <td>{{ login.role }}</td>
                     </tr>
                 </tbody>
             </table>
