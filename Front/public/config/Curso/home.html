@@ -168,7 +168,6 @@
 </head>
 <body>
     <div id="app" class="container">
-
         <div class="navbar">
             <header>
                 <h1><a href="#">Curso</a></h1>
@@ -180,7 +179,6 @@
                 </nav>
             </header>
         </div>
- 
 
         <div class="filters-display">
             <table v-if="currentEntity === 'cursos'">
@@ -189,22 +187,19 @@
                         <th>ID</th>
                         <th>Curso</th>
                         <th>Modalidade</th>
-                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="curso in data" :key="curso.id">
                         <td>{{ curso.id }}</td>
                         <td>{{ curso.curso }}</td>
-                        <td>{{ curso.id_modalidade }}</td>
-                        
+                        <td>{{ curso.modalidadeNome }}</td> <!-- Nome da Modalidade -->
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
- 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
@@ -232,13 +227,13 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                       cursos: 'http://localhost:8081/api/v1/curso'
+                        cursos: 'http://localhost:8081/api/v1/curso'
                     };
-    
+
                     this.data = await this.fetchData(endpoints[entity]);
                 }
             },
-            mounted(){
+            mounted() {
                 this.showAll('cursos');
             }
         });

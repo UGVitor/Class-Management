@@ -14,10 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@Tag(name = "Turno", description = "Contém todas as operações reletivas aos recursos de CRUD de turno.")
+@Tag(name = "Turnos", description = "Contém todas as operações reletivas aos recursos de CRUD de turno.")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/turno")
+@RequestMapping("/api/v1/turnos")
 
 public class TurnoController {
 
@@ -34,7 +34,7 @@ public class TurnoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
 
-    @PostMapping("/{id}")
+    @PostMapping
     public ResponseEntity<Turno> createTurno(@RequestBody Turno turno) {
 
         Turno savedTurno = turnoService.salvar(turno);

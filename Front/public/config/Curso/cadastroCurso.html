@@ -96,7 +96,10 @@
             </div>
             <div class="form-group">
                 <label for="modalidade">Modalidade:</label>
-                <input type="number" v-model="curso.id_modalidade" required />
+                <select v-model="curso.modalidade" required>
+                    <option disabled value="">Selecione uma Modalidade</option>
+                    <option v-for="modalidade in modalidades" :key="modalidade.id" :value="modalidade.id">{{ modalidade.nome }}</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit">Criar Curso</button>
@@ -111,16 +114,28 @@
             data: {
                 curso: {
                     curso: '',
-                    modalidade: ''
-                    
-                }
+                    modalidade: '' // Mudou para correspondência com o backend
+                },
+                modalidades: [] // Adiciona uma lista de modalidades
+            },
+            created() {
+                this.fetchModalidades(); // Chama a função ao iniciar
             },
             methods: {
+                fetchModalidades() {
+                    fetch('http://localhost:8081/api/v1/modalidades') // Endpoint para pegar modalidades
+                        .then(response => response.json())
+                        .then(data => {
+                            this.modalidades = data; // Armazena as modalidades no estado
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar modalidades:', error);
+                        });
+                },
                 createCurso() {
                     const cursoData = {
                         curso: this.curso.curso,
                         modalidade: this.curso.modalidade
-                        
                     };
                     fetch('http://localhost:8081/api/v1/curso', {
                         method: 'POST',
@@ -139,8 +154,7 @@
                         alert('Curso criado com sucesso!');
                         this.curso = {
                             curso: '',
-                            modalidade: '',
-                            
+                            modalidade: ''
                         };
                     })
                     .catch(error => {

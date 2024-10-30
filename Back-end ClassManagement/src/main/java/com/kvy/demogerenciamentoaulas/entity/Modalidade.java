@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class Modalidade implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("id")
     @Column(name = "id")
     private Long id;
 
@@ -50,4 +52,9 @@ public class Modalidade implements Serializable {
                 "id=" + id +
                 '}';
     }
+
+    public Modalidade(String nome) {
+        this.nome = nome;
+    }
+
 }

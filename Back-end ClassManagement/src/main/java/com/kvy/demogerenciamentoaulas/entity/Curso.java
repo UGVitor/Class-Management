@@ -28,10 +28,7 @@ public class Curso implements Serializable {
     @Column(name = "Curso", nullable = false, length = 50)
     private String Curso;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Turma> turmas = new HashSet<>();
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_modalidade", nullable = false)
     @JsonBackReference("modalidade-curso")
     private Modalidade modalidade;
@@ -55,5 +52,7 @@ public class Curso implements Serializable {
                 "id=" + id +
                 '}';
     }
-
+    public String getModalidadeNome() {
+        return modalidade != null ? modalidade.getNome() : null;
+    }
 }

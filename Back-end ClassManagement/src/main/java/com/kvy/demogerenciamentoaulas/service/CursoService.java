@@ -8,6 +8,7 @@ import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +24,22 @@ public class CursoService {
     private final ModalidadeRepository modalidadeRepository;
 
     @Transactional
-    public Curso salvar(Curso curso) {
+    public Curso salvar(CursoDTO cursoDTO) {
+        Curso curso = new Curso();
+        curso.setCurso(cursoDTO.getCurso());
+
+        // Busca a modalidade pelo ID
+        if (cursoDTO.getModalidade() != null) {
+            Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())
+                    .orElseThrow(() -> new IllegalArgumentException("Modalidade não encontrada"));
+            curso.setModalidade(modalidade);
+        } else {
+            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo"); // Adiciona uma validação adicional
+        }
 
         return cursoRepository.save(curso);
     }
+
     @Transactional
     public Curso buscarPorId(Long id) {
         return cursoRepository.findById(id)

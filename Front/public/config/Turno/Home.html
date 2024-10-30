@@ -195,9 +195,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="turno in data" :key="turno.id">
-                        <td>{{ turno.id }}</td>
-                        <td>{{ turno.nome }}</td>
+                    <tr v-for="turnos in data" :key="turnos.id">
+                        <td>{{ turnos.id }}</td>
+                        <td>{{ turnos.turno }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -231,7 +231,7 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        turno: 'http://localhost:8081/api/v1/turno'
+                        turno: 'http://localhost:8081/api/v1/turnos'
                     };
 
                     this.data = await this.fetchData(endpoints[entity]);
