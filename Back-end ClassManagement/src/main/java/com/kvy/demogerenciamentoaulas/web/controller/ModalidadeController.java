@@ -75,16 +75,10 @@ public class ModalidadeController {
                     @ApiResponse(responseCode = "404", description = "Modalidade não encontrada.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
-
-    @DeleteMapping("{nome}")
-    public ResponseEntity<String> deleteModalidade(@PathVariable String nome) {
-        try {
-            modalidadeService.excluir(nome);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (Exception exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePeriodo(@PathVariable Long id) {
+        modalidadeService.excluir(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Listar todos as modalidades", description = "Recurso para listar todas as modalidades cadastradas.",
