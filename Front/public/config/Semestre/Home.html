@@ -230,7 +230,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="semestre in data" :key="semestre.id">
-                        <td>{{ semestre.nome }}</td>
+                        <td>{{ semestre.semestre }}</td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteSemestre(semestre.id)" class="delete-btn">Deletar</button>
@@ -284,7 +284,7 @@
                             });
                             if (response.ok) {
                                 alert("Semestre deletado com sucesso!");
-                                this.data = this.data.filter(semestres => semestres.id !== id); // Atualiza a tabela removendo o item deletado
+                                this.data = this.data.filter(semestres => semestres.id !== id);
                             } else {
                                 alert("Erro ao deletar o semestre.");
                             }
