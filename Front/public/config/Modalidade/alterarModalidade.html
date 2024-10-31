@@ -19,7 +19,7 @@
             list-style: none;
         }
         body {
-            background: linear-gradient(135deg, #44679F, #DDF5F7);
+            background: white;
         }
         .navbar {
             background-color: #44679F;
@@ -71,7 +71,7 @@
             padding: 30px;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         h2 {
             margin-bottom: 20px;
@@ -140,13 +140,11 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id'); 
             },
             methods: {
                 updateModalidade() {
                     const modalidadeData = { nome: this.nome };
-
-                    // Faz a requisição para atualizar a modalidade usando o ID da URL
                     fetch(`http://localhost:8081/api/v1/modalidades/${this.id}`, {
                         method: 'PUT',
                         headers: {

@@ -31,6 +31,7 @@ public class TurnoService {
         existingTurno.setTurno(turno.getTurno());
         return existingTurno;
     }
+
     @Transactional
     public void excluir(Long id) {
         Optional<Turno> optionalTurno = turnoRepository.findById(id);
@@ -42,6 +43,7 @@ public class TurnoService {
 
         }
     }
+
     @Transactional(readOnly = true)
     public List<Turno> buscarTodos(){ return turnoRepository.findAll();}
 }
