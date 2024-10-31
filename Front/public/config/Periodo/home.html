@@ -138,6 +138,8 @@
         background-color: #44679f;
         color: #FFFFFF;
         font-weight: bold;
+        text-align: center; 
+        padding: 12px; 
     }
 
     .filters-display table tr:nth-child(even) {
@@ -172,34 +174,41 @@
     }
 
     .button-group {
-        display: flex;             
-        gap: 10px;               
+        display: flex;
+        gap: 3px;
+        justify-content: flex-end; 
     }
 
     .delete-btn, .altera-btn {
-        padding: 8px 15px;       
-        border: none;            
-        border-radius: 5px;     
-        cursor: pointer;        
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
         transition: background-color 0.3s ease;
     }
 
     .delete-btn {
-        background-color: #E74C3C; 
+        background-color: #E74C3C;
         color: white;
     }
 
     .delete-btn:hover {
-        background-color: #C0392B; 
+        background-color: #C0392B;
     }
 
     .altera-btn {
-        background-color: #3498DB; 
+        background-color: #3498DB;
         color: white;
     }
 
     .altera-btn:hover {
-        background-color: #2980B9; 
+        background-color: #2980B9;
+    }
+
+    .delete-btn i, .altera-btn i {
+        margin: 0;
+        font-size: 16px;
+        color: white;
     }
       
     </style>
@@ -210,7 +219,7 @@
 
         <div class="navbar">
             <header>
-                <h1><a href="#">Periodo</a></h1>
+                <h1><a href="#">Período</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
                     <li><a href="CadastroPeriodo.html">Criar</a></li>
@@ -223,21 +232,23 @@
             <table v-if="currentEntity === 'periodos'">
                 <thead>
                     <tr>
-                        <th>Periodo</th>
-                        <th></th>
-                        <th></th>
+                        <th colspan="3">Período</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="periodo in data" :key="periodo.id">
                         <td>{{ periodo.nome }}</td>
+                        <td></td>
                         <td>
                             <div class="button-group">
-                                <button @click="deletePeriodo(periodo.id)" class="delete-btn">Deletar</button>
-                                <button @click="editPeriodo(periodo.id)" class="altera-btn">Alterar</button>  
+                                <button @click="deletePeriodo(periodo.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editPeriodo(periodo.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
                             </div>
                         </td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>

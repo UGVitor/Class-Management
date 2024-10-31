@@ -19,14 +19,14 @@
             list-style: none;
         }
         body {
-            background: linear-gradient(135deg, #44679F, #DDF5F7);
+            background: white;
         }
         .navbar {
             background-color: #44679F;
             position: fixed;
             width: 100%;
             z-index: 100;
-            height: 60px; /* Ajuste se necessário */
+            height: 60px; 
         }
         header {
             display: flex;
@@ -75,7 +75,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 60px); /* Subtraia a altura da navbar */
+            height: calc(100vh - 60px); 
             margin-top: 0;
             padding: 0 20px;
             text-align: center;
@@ -87,7 +87,7 @@
             padding: 30px;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         h2 {
             margin-bottom: 20px;
@@ -138,12 +138,8 @@
         <form @submit.prevent="updateTurno">
             <h2>Alterar Turno</h2>
             <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id" required />
-            </div>
-            <div class="form-group">
                 <label for="nome">Nome do Turno:</label>
-                <input type="text" v-model="nome" required />
+                <input type="text" v-model="turno" required />
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Turno</button>
@@ -156,15 +152,17 @@
         new Vue({
             el: '#app',
             data: {
-                id: '',
-                nome: '',   
+                turno: ''   
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id'); 
             },
             methods: {
                 updateTurno() {
-                    const { id, nome } = this;
-                    const turnoData = { nome };
+                    const turnoData = { turno: this.turno };
 
-                    fetch(`http://localhost:8081/api/v1/turno/${id}`, {
+                    fetch(`http://localhost:8081/api/v1/turnos/${this.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -174,7 +172,7 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Turno alterado com sucesso!');
-                            this.resetForm();
+                            this.turno = '';
                         } else {
                             throw new Error('Erro ao alterar o turno');
                         }
@@ -184,10 +182,6 @@
                         alert('Erro ao alterar o turno, tente novamente.');
                     });
                 },
-                resetForm() {
-                    this.id = '';
-                    this.nome = '';
-                }
             }
         });
     </script>
