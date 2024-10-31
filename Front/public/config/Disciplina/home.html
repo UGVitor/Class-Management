@@ -186,17 +186,17 @@
             <table v-if="currentEntity === 'disciplinas'">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                       
                         <th>Nome</th>
                         <th>Descrição</th>
                         <th>Carga Horária</th>
-                        <th>Código Professor</th>
-                        <th>Código Curso</th>
+                        <th> Professor</th>
+                        <th> Curso</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="disciplina in data" :key="disciplina.id">
-                        <td>{{ disciplina.id }}</td>
+                        
                         <td>{{ disciplina.nome }}</td>
                         <td>{{ disciplina.descricao }}</td>
                         <td>{{ disciplina.cargaHoraria }}</td>
