@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Cadastro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Link para Font Awesome -->
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('img/background.png') no-repeat center center fixed; /* Mantém a imagem de fundo fixa */
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .login-container1 {
+            background: rgba(255, 255, 255, 0.6); 
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-container2 {
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.9); 
+        }
+
+        .login-container2 h2 {
+            margin-top: 0;
+            font-size: 2.4rem;
+            background: linear-gradient(20deg, #37baad, #268178);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem; /* Adiciona espaçamento abaixo do título */
+        }
+
+        .login-container2 .input-group {
+            position: relative;
+            margin-bottom: 1.5rem; /* Aumenta o espaçamento entre os campos */
+        }
+
+        .login-container2 input[type="text"],
+        .login-container2 input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 2.5rem; /* Adiciona espaço para o ícone */
+            margin-bottom: 0.0rem;
+            border: 1px solid #d1d9e6;
+            border-radius: 4px;
+            background-color: #f7fafc;
+            transition: border-color 0.3s; /* Adiciona transição ao foco */
+        }
+
+        .login-container2 input[type="text"]:focus,
+        .login-container2 input[type="password"]:focus {
+            border-color: #37baad; /* Muda a cor da borda no foco */
+            outline: none; /* Remove o contorno padrão do navegador */
+        }
+
+        .login-container2 button {
+            width: 80%;
+            padding: 0.8rem 1.6rem;
+            margin: 0.5rem auto; /* Centraliza o botão */
+            display: block;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 137, 123, 0.3);
+            background-color: #00897b;
+            color: #fff;
+            border: none; 
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 5px; /* Adiciona bordas arredondadas ao botão */
+        }
+
+        .login-container2 button:hover {
+            background-color: #00695c;
+            transform: scale(1.05);
+            box-shadow: 0px 8px 20px rgba(0, 137, 123, 0.5);
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            display: none;
+            text-align: center; /* Centraliza a mensagem de erro */
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 42%;
+            transform: translateY(-50%);
+            color: #d1d9e6; /* Cor do ícone */
+            pointer-events: none; /* Cor do ícone */
+        }
+
+        /* Estilo para o "ou" */
+        .or-divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .or-divider:before, .or-divider:after {
+            content: '';
+            width: 40%;
+            height: 1px;
+            background: #d1d9e6;
+            position: absolute;
+            top: 50%;
+        }
+
+        .or-divider:before {
+            left: 0;
+        }
+
+        .or-divider:after {
+            right: 0;
+        }
+
+        .or-divider span {
+            background: rgba(255, 255, 255, 0); 
+            padding: 0 10px; 
+            color: #555; 
+            font-weight: 600; 
+        }
+
+        @media (max-width: 480px) {
+            .login-container2 {
+                padding: 1rem;
+            }
+
+            .login-container2 h2 {
+                font-size: 1.8rem;
+            }
+
+            .login-container2 button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container1">
+        <div class="login-container2">
+            <h2>Cadastro</h2>
+            <div class="input-group">
+                <i class="fas fa-user iconss"></i>
+                <input type="text" id="login" placeholder="Login" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock iconss"></i>
+                <input type="password" id="password" placeholder="Senha" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock iconss"></i>
+                <input type="password" id="confirm-password" placeholder="Confirme a Senha" required>
+            </div>
+            <button onclick="cadastrar()">Cadastrar</button>
+            <div class="or-divider">
+                <span>ou</span>
+            </div>
+            <button onclick="window.location.href='login.html'">Voltar para Login</button> <!-- Botão Voltar -->
+            <p class="error-message" id="error-message">Erro ao criar login!</p>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                login: {
+                    login: '',
+                    password: '',
+                    confirmPassword: '',
+                }
+            },
+            methods: {
+                createLogin() {
+                    const loginData = {
+                        login: this.login.login,
+                        password: this.login.password,
+                    };
+
+                    if (this.login.password !== this.login.confirmPassword) {
+                        alert('As senhas não coincidem!');
+                        return;
+                    }
+
+                    fetch('http://localhost:8081/api/v1/logins', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(loginData)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Erro ao criar o login');
+                    })
+                    .then(data => {
+                        alert('Login criado com sucesso!');
+                        this.login = {
+                                login: '',
+                                password: '',
+                        };
+                        window.location.href = 'login.html';
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao criar o login, tente novamente.');
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
