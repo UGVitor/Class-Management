@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Aula</title>
     <link rel="icon" href="../../img/icon.png">
@@ -132,6 +133,8 @@
         background-color: #3498DB;
         color: #FFFFFF;
         font-weight: bold;
+        text-align: center; 
+        padding: 12px;
     }
     
     .filters-display table tr:nth-child(even) {
@@ -161,6 +164,44 @@
     .filters-display table tr:last-child td:last-child {
         border-bottom-right-radius: 12px;
     }
+
+    .button-group {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-end; 
+        }
+    
+        .delete-btn, .altera-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .delete-btn {
+            background-color: #E74C3C;
+            color: white;
+        }
+    
+        .delete-btn:hover {
+            background-color: #C0392B;
+        }
+    
+        .altera-btn {
+            background-color: #3498DB;
+            color: white;
+        }
+    
+        .altera-btn:hover {
+            background-color: #2980B9;
+        }
+    
+        .delete-btn i, .altera-btn i {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+        }
     
       
     </style>
@@ -174,8 +215,6 @@
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
                     <li><a href="cadastroAula.html">Criar</a></li>
-                    <li><a href="deleteAula.html">Deletar</a></li>
-                    <li><a href="alterarAula.html">Alterar</a></li>
                 </nav>
             </header>
         </div>
@@ -190,15 +229,27 @@
                         <th>Horário</th>
                         <th>Duração (min)</th>
                         <th>Código Disciplina</th>
+                        <th> </th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="aula in data" :key="aula.id">
-                        <td>{{ aula.id }}</td>
-                        <td>{{ aula.dia }}</td>
-                        <td>{{ aula.horario }}</td>
-                        <td>{{ aula.duracao }}</td>
-                        <td>{{ aula.cod_disciplina }}</td>
+                        <td></td>
+                        <td> </td>
+                        <td> </td>
+                        <td> </td>
+                        <td> </td>
+                        <td>
+                            <div class="button-group">
+                                <button @click="deleteAula(aula.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editAula(aula.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -237,6 +288,26 @@
                     };
     
                     this.data = await this.fetchData(endpoints[entity]);
+                }
+            },async deleteAula(id) {
+                    if (confirm("Tem certeza que deseja deletar esta Aula?")) {
+                        try {
+                            const response = await fetch(`http://localhost:8081/api/v1/aulas/${id}`, {
+                                method: 'DELETE',
+                            });
+                            if (response.ok) {
+                                alert("Aula deletado com sucesso!");
+                                this.data = this.data.filter(aulas => aulas.id !== id);
+                            } else {
+                                alert("Erro ao deletar o aula.");
+                            }
+                        } catch (error) {
+                            console.error('Erro ao deletar a aula:', error);
+                        }
+                    }
+                },
+                editAula(id) {
+                    window.location.href = `alterarAula.html?id=${id}`;
                 }
             },
             mounted(){
