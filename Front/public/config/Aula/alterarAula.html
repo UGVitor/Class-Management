@@ -187,10 +187,13 @@
                     status: true
                 }
             },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+            },
             methods: {
                 updateAula() {
                     const { id, dia, horario, duracao, topico, cod_disciplina, status } = this.aula;
-                    const aulaData = { dia, horario, duracao, topico, cod_disciplina, status };
 
                     fetch(`http://localhost:8081/api/v1/aulas/${id}`, {
                         method: 'PUT',
