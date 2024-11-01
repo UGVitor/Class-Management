@@ -4,20 +4,248 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="#">
-    <title>Inicio</title>
-    <link rel="icon" href="img/icon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style/nav_bar.css">
+    <title>Início</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-      
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('img/background.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container-home1 {
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 22px;
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.1);
+            padding: 1.8rem;
+            max-width: 1100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+        .container-home2 {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.3);
+            padding: 3rem;
+            max-width: 1100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-content {
+            max-width: 600px;
+            color: #333;
+        }
+
+        .text-content h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(20deg, #37baad, #268178);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+        }
+
+        .text-content p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-home {
+            padding: 0.8rem 1.6rem;
+            border-radius: 30px;
+            margin: 0 0.5rem;
+            font-weight: 600;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 137, 123, 0.3);
+        }
+
+        .btn-login {
+            background-color: #00897b;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-login:hover {
+            background-color: #00695c;
+            transform: scale(1.08);
+            box-shadow: 0px 8px 20px rgba(0, 137, 123, 0.5);
+        }
+
+        .btn-register {
+            background-color: #e0f2f1;
+            color: #00897b;
+            border: none;
+        }
+
+        .btn-register:hover {
+            background-color: #b2dfdb;
+            transform: scale(1.08);
+            box-shadow: 0px 8px 20px rgba(0, 137, 123, 0.3);
+        }
+
+        .illustration img {
+            max-width: 420px;
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.4s ease;
+        }
+
+        .illustration:hover img {
+            transform: scale(1.05);
+        }
+
+        .circle-decor1 {
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 260px;
+            height: 260px;
+            background-color: rgba(224, 247, 249, 0.8);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .circle-decor2 {
+            position: absolute;
+            top: 700px;
+            right: 250px;
+            width: 260px;
+            height: 260px;
+            background-color: rgba(224, 247, 249, 0.8);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+        .circle-decor3 {
+            position: absolute;
+            top: -50px;
+            right: 1750px;
+            width: 260px;
+            height: 260px;
+            background-color: rgba(224, 247, 249, 0.8);
+            border-radius: 50%;
+            z-index: -1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .circle-decor4 {
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 15px;
+            width: 10px;
+            height: 10px;
+            background-color: #5be2a7;
+            border-radius: 50%;
+        }
+        .circle-decor5 {
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 30px;
+            width: 10px;
+            height: 10px;
+            background-color: #58b28c;
+            border-radius: 50%;
+        }
+        .circle-decor6 {
+            position: absolute;
+            margin-top: 30px;
+            margin-left: 45px;
+            width: 10px;
+            height: 10px;
+            background-color: #2c5c4c;
+            border-radius: 50%;
+        }
+
+        .line-decor {
+            position: absolute;
+            bottom: 30px;
+            left: -50px;
+            width: 150px;
+            height: 10px;
+            background-color: #009688;
+            border-radius: 5px;
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container-home {
+                flex-direction: column;
+                padding: 2rem;
+                text-align: center;
+            }
+
+            .text-content h1 {
+                font-size: 2.4rem;
+            }
+
+            .illustration {
+                margin-top: 2rem;
+            }
+
+            .circle-decor {
+                width: 160px;
+                height: 160px;
+                top: -40px;
+                right: -40px;
+            }
+
+            .line-decor {
+                width: 80px;
+                height: 6px;
+                bottom: 10px;
+                left: -20px;
+            }
+        }
     </style>
 </head>
 <body>
-  <div class="centered-div">
-    <h1>Bem-vindo ao Sistema de Gerenciamento de Aulas</h1>
-    <button onclick="location.href='login.html'">Fazer Login</button>
-  </div>
+    <div class="container-home1">
+      <div class="container-home2">
+        <div class="text-content">
+          <h1>Sistema de Gerenciamento de Aula</h1>
+          <p>Facilitando a visualização e monitoramento das aulas.</p>
+          <a href="login.html" class="btn btn-home btn-login">Login</a>
+          <a href="" class="btn btn-home btn-register">Cadastre-se</a>
+          <div class="circle-decor4"></div>
+          <div class="circle-decor5"></div>
+          <div class="circle-decor6"></div>
+        </div>
+        <div class="illustration">
+            <img src="img/img_home.png" alt="Ilustração">
+        </div>
+      </div>
+    </div>
+    <div class="circle-decor1"></div>
+    <div class="circle-decor2"></div>
+    <div class="circle-decor3"></div>
+    <div class="line-decor"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
