@@ -100,13 +100,6 @@
                 <input type="password" id="password" v-model="login.password" required />
             </div>
             <div class="form-group">
-                <label for="role">Papel:</label>
-                <select id="role" v-model="login.role">
-                    <option value="ADMIN">Admin</option>
-                    <option value="PROFESSOR">Professor</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <button type="submit">Criar Login</button>
             </div>
         </form>
@@ -120,7 +113,7 @@
                 login: {
                     login: '',
                     password: '',
-                    role: ''
+                    
                 }
             },
             methods: {
@@ -128,7 +121,6 @@
                     const loginData = {
                         login: this.login.login,
                         password: this.login.password,
-                        role: this.login.role
                     };
 
                     fetch('http://localhost:8081/api/v1/logins', {
@@ -149,7 +141,6 @@
                         this.login = {
                             login: '',
                             password: '',
-                            role: ''
                         };
                     })
                     .catch(error => {
