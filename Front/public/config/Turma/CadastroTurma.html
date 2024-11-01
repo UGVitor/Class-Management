@@ -80,97 +80,162 @@
 </head>
 <body>
     <div class="navbar">
-      <header>
-          <h1><a href="#">Turma</a></h1>
-          <nav>
-              <li><a href="home.html">Home</a></li>
-          </nav>
-      </header>
+        <header>
+            <h1><a href="#">Turma</a></h1>
+            <nav>
+                <li><a href="home.html">Home</a></li>
+            </nav>
+        </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createAula">
-          <h2>Criar Turma</h2>
-          <div class="form-group">
-            <label for="nome">Turma:</label>
-            <input type="name" v-model="turma.nome" required />
-          </div>
-          <div class="form-group">
-            <label for="id_periodo">Periodo:</label>
-            <input type="number" v-model="turma.id_periodo" required />
-          </div>
-          <div class="form-group">
-            <label for="id_turno">Turno:</label>
-            <input type="number" v-model="turma.id_turno" required />
-          </div>    
-          <div class="form-group">
-            <label for="id_curso">Curso:</label>
-            <input type="number" v-model="turma.id_curso" required />
-          </div>    
-          <div class="form-group">
-            <label for="id_semestre">Semestre:</label>
-            <input type="number" v-model="turma.id_semestre" required />
-          </div>
-          <div class="form-group">
-            <button type="submit">Criar Turma</button>
-          </div>
+        <form @submit.prevent="createCurso">
+            <h2>Criar Turma</h2>
+            <div class="form-group">
+                <label for="nome">Turma:</label>
+                <input type="text" v-model="turma.nome" required />
+            </div>
+            <div class="form-group">
+                <label for="periodo">Periodo:</label>
+                <select v-model="turma.periodo" required>
+                    <option disabled value="">Selecione um Periodo</option>
+                    <option v-for="periodo in periodos" :key="periodo.id" :value="periodo.id">{{ periodo.nome }}</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="nome">Turno:</label>
+                <select v-model="turma.turno" required>
+                    <option disabled value="">Selecione um Turno</option>
+                    <option v-for="turno in turnos" :key="turno.id" :value="turno.id">{{ turno.nome }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="curso">Curso:</label>
+                <select v-model="turma.curso" required>
+                    <option disabled value="">Selecione um Curso</option>
+                    <option v-for="curso in cursos" :key="curso.id" :value="curso.id">{{ curso.nome }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="nome">Semestre:</label>
+                <select v-model="turma.semestre" required>
+                    <option disabled value="">Selecione um Semstre</option>
+                    <option v-for="semestre in semestres" :key="semestre.id" :value="semestre.id">{{ semestre.nome }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Criar Curso</button>
+            </div>
         </form>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
-            el: '#app',
-            data: {
-                turma: {
+    el: '#app',
+    data: {
+        turma: {
+            nome: '',
+            id_periodo: '',
+            id_turno: '',
+            id_curso: '',
+            id_semestre: ''                    
+        },
+        id_periodo: [],
+        id_turno: [],
+        id_semestre: [],
+        id_curso: []
+    },
+    created() {
+        this.fetchPeriodos();
+        this.fetchTurnos();
+        this.fetchCursos();
+        this.fetchSemestres();
+    },
+    methods: {
+        fetchPeriodos() {
+            fetch('http://localhost:8081/api/v1/periodos')
+                .then(response => response.json())
+                .then(data => {
+                    this.id_periodo = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar periodos:', error);
+                });
+        },
+
+        fetchTurnos() {
+            fetch('http://localhost:8081/api/v1/turnos')
+                .then(response => response.json())
+                .then(data => {
+                    this.id_turno = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar turnos:', error);
+                });
+        },
+
+        fetchCursos() {
+            fetch('http://localhost:8081/api/v1/curso')
+                .then(response => response.json())
+                .then(data => {
+                    this.id_curso = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar cursos:', error);
+                });
+        },
+
+        fetchSemestres() {
+            fetch('http://localhost:8081/api/v1/semestres')
+                .then(response => response.json())
+                .then(data => {
+                    this.id_semestre = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar semestres:', error);
+                });
+        },
+
+        createTurma() {
+            const turmaData = {
+                nome: this.turma.nome,
+                id_periodo: this.turma.id_periodo,
+                id_turno: this.turma.id_turno,
+                id_curso: this.turma.id_curso,
+                id_semestre: this.turma.id_semestre
+            };
+
+            fetch('http://localhost:8081/api/v1/turma', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(turmaData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Erro ao criar a turma');
+            })
+            .then(data => {
+                alert('Turma criada com sucesso!');
+                this.turma = {
                     nome: '',
                     id_periodo: '',
                     id_turno: '',
                     id_curso: '',
-                    id_semestre: ''                    
-                }
-                
-            },
-            methods: {
-                createTurma() {
-                    const turmaData = {
-                        nome: this.turma.nome,
-                        id_periodo: this.turma.id_periodo,
-                        id_turno: this.turma.id_turno,
-                        id_curso: this.turma.id_curso,
-                        id_semestre: this.turma.id_semestre,
-                       
-                    };
+                    id_semestre: ''
+                };
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao criar a turma, tente novamente.');
+            });
+        }
+    }
+});
 
-                    fetch('http://localhost:8081/api/v1/turma', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(turmaData)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error('Erro ao criar a turma');
-                    })
-                    .then(data => {
-                        alert('Turma criada com sucesso!');
-                        this.turma = {
-                            nome: '',
-                            id_periodo: '',
-                            id_turno: '',
-                            id_curso: 'Lero Lero',
-                            id_semestre: ''
-                        };
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar a turma, tente novamente.');
-                    });
-                }
-            }
-        });
     </script>
 
 </body>
