@@ -39,7 +39,6 @@ public class CursoController {
                     @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @PostMapping
     public ResponseEntity<Curso> createCurso(@RequestBody CursoDTO cursoDTO) {
         try {
@@ -73,6 +72,11 @@ public class CursoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Curso> editarCurso(@PathVariable Long id, @RequestBody CursoDTO cursoDTO) {
+        Curso cursoAtualizado = cursoService.editar(id, cursoDTO);
+        return ResponseEntity.ok(cursoAtualizado);
+    }
     @GetMapping
     public ResponseEntity<List<CursoProjection>> getAllCursos() {
         List<CursoProjection> cursos = cursoRepository.findAllCursosWithModalidadeNome();

@@ -182,10 +182,9 @@
         <!-- Header terminated -->
 
         <div class="filters-display">
-            <table v-if="currentEntity === 'turmas'">
+            <table v-if="currentEntity === 'turma'">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Turma</th>
                         <th>Periodo</th>
                         <th>Turno</th>
@@ -195,12 +194,11 @@
                 </thead>
                 <tbody>
                     <tr v-for="turma in data" :key="turma.id">
-                        <td>{{ turma.id }}</td>
-                        <td>{{ turma.nome }}</td>
-                        <td>{{ turma.id_periodo }}</td>
-                        <td>{{ turma.id_turno }}</td>
-                        <td>{{ turma.id_curso }}</td>
-                        <td>{{ turma.id_semestre }}</td>
+                        <td>{{ turma.nomeTurma }}</td>
+                        <td>{{ turma.nomePeriodo }}</td>
+                        <td>{{ turma.nomeTurno }}</td>
+                        <td>{{ turma.nomeCurso }}</td>
+                        <td>{{ turma.nomeSemestre }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -235,7 +233,7 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        aulas: 'http://localhost:8081/api/v1/turma'
+                        turma: 'http://localhost:8081/api/v1/turma'
                     };
     
                     this.data = await this.fetchData(endpoints[entity]);

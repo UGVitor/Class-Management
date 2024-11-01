@@ -1,5 +1,6 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -7,7 +8,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 
 @Getter
@@ -25,6 +28,10 @@ public class Turno implements Serializable {
 
     @Column(name = "turno", nullable = false)
     private String turno;
+
+    @OneToMany(mappedBy = "turno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("turno-turma")
+    private Set<Turma> turmas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

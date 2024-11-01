@@ -8,11 +8,15 @@ import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.*;
+import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
+import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -51,14 +55,29 @@ public class TurmaService {
         return turmaRepository.findById(id)
                 .orElseThrow(() -> new TurmaEntityNotFoundException(String.format("Turma id=%s não encontrado", id)));
     }
-
-    @Transactional(readOnly = true)
-    public List<Turma> buscarTodos() {
-        return turmaRepository.findAll();
+    @Transactional
+    public List<TurmaDTO> buscarTodasTurmasComDetalhes() {
+        return turmaRepository.findAll().stream()
+                .map(turma -> new TurmaDTO(
+                        turma.getId(),
+                        turma.getNome(), // Nome da turma
+                        turma.getPeriodo().getNome(), // Nome do período
+                        turma.getSemestre().getSemestre(), // Nome do semestre
+                        turma.getTurno().getTurno(), // Nome do turno
+                        turma.getCurso().getCurso() // Nome do curso
+                ))
+                .collect(Collectors.toList());
     }
 
 
-
+    @Autowired
+    public TurmaService(PeriodoRepository periodoRepository, TurnoRepository turnoRepository, TurmaRepository turmaRepository ,CursoRepository cursoRepository, SemestreRepository semestreRepository) {
+        this.periodoRepository = periodoRepository;
+        this.turnoRepository = turnoRepository;
+        this.cursoRepository = cursoRepository;
+        this.semestreRepository = semestreRepository;
+        this.turmaRepository = turmaRepository;
+    }
 
     @Transactional
     public Turma editar(Long id, Turma turma){

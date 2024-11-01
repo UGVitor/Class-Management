@@ -26,22 +26,22 @@ public class Turma implements Serializable {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_periodo", nullable = false)
     @JsonBackReference("periodo-turma")
     private Periodo periodo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_turno", nullable = false)
     @JsonBackReference("turno-turma")
     private Turno turno;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_curso", nullable = false)
     @JsonBackReference("curso-turma")
     private Curso curso;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_semestre", nullable = false)
     @JsonBackReference("semestre-turma")
     private Semestre semestre;

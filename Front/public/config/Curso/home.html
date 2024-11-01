@@ -185,15 +185,26 @@
                 <thead>
                     <tr>
                        
-                        <th>Curso</th>
+                        <th >Curso</th>
                         <th>Modalidade</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="curso in data" :key="curso.id">
                         
                         <td>{{ curso.curso }}</td>
-                        <td>{{ curso.modalidadeNome }}</td> <!-- Nome da Modalidade -->
+                        <td>{{ curso.modalidadeNome }}</td>
+                        <td>
+                            <div class="button-group">
+                                <button @click="deleteCurso(curso.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editCurso(curso.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -231,6 +242,26 @@
                     };
 
                     this.data = await this.fetchData(endpoints[entity]);
+                },
+                async deleteCurso(id) {
+                    if (confirm("Tem certeza que deseja deletar este curso?")) {
+                        try {
+                            const response = await fetch(`http://localhost:8081/api/v1/curso/${id}`, {
+                                method: 'DELETE',
+                            });
+                            if (response.ok) {
+                                alert("Curso deletada com sucesso!");
+                                this.data = this.data.filter(curso => curso.id !== id); 
+                            } else {
+                                alert("Erro ao deletar a curso.");
+                            }
+                        } catch (error) {
+                            console.error('Erro ao deletar a curso:', error);
+                        }
+                    }
+                },
+                editCurso(id) {
+                    window.location.href = `alterarCurso.html?id=${id}`;
                 }
             },
             mounted() {

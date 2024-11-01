@@ -138,16 +138,15 @@
         <form @submit.prevent="updateCurso">
             <h2>Alterar Curso</h2>
             <div class="form-group">
-                <label for="id">ID do Curso:</label>
-                <input type="text" id="id" v-model="curso.id" required />
-            </div>
-            <div class="form-group">
                 <label for="curso">Curso:</label>
-                <input type="text" id="curso" v-model="curso.curso" required />
+                <input type="text" v-model="curso.curso" required />
             </div>
             <div class="form-group">
-                <label for="id_modalidade">Modalidade:</label>
-                <input type="number" id="id_modalidade" v-model="curso.id_modalidade" required />
+                <label for="modalidade">Modalidade:</label>
+                <select v-model="curso.modalidade" required>
+                    <option disabled value="">Selecione uma Modalidade</option>
+                    <option v-for="modalidade in modalidades" :key="modalidade.id" :value="modalidade.id">{{ modalidade.nome }}</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Curso</button>
@@ -161,18 +160,34 @@
             el: '#app',
             data: {
                 curso: {
-                    id: '',
+                    id: '', // ID do curso obtido via URL
                     curso: '',
                     modalidade: '',
-
-                }
+                },
+                modalidades: []
+            },
+            created() {
+                // Carrega as modalidades e o ID do curso ao iniciar o componente
+                this.fetchModalidades();
+                const params = new URLSearchParams(window.location.search);
+                this.curso.id = params.get('id'); // Obtém o ID do curso da URL
             },
             methods: {
+                fetchModalidades() {
+                    fetch('http://localhost:8081/api/v1/modalidades')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.modalidades = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar modalidades:', error);
+                        });
+                },
                 updateCurso() {
                     const { id, curso, modalidade } = this.curso;
-                    const cursoData = { nome, modalidade};
+                    const cursoData = { curso, modalidade };
 
-                    fetch(`http://localhost:8081/api/v1/cursos/${id}`, {
+                    fetch(`http://localhost:8081/api/v1/curso/${id}`, { // Corrigido para usar o ID correto
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -184,9 +199,8 @@
                             alert('Curso alterado com sucesso!');
                             this.curso = {
                                 id: '',
-                                turno: '',
+                                curso: '',
                                 modalidade: ''
-
                             };
                         } else {
                             throw new Error('Erro ao alterar o curso');

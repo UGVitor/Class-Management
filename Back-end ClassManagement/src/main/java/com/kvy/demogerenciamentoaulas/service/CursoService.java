@@ -28,7 +28,6 @@ public class CursoService {
         Curso curso = new Curso();
         curso.setCurso(cursoDTO.getCurso());
 
-        // Busca a modalidade pelo ID
         if (cursoDTO.getModalidade() != null) {
             Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())
                     .orElseThrow(() -> new IllegalArgumentException("Modalidade não encontrada"));
@@ -46,14 +45,18 @@ public class CursoService {
                 .orElseThrow(() -> new CursoEntityNotFoundException(String.format("Curso id=%s não encontrado", id)));
     }
     @Transactional
-    public Curso editar(Long id, Curso curso) {
+    public Curso editar(Long id, CursoDTO cursoDTO) {
         Curso existingCurso = buscarPorId(id);
+        existingCurso.setCurso(cursoDTO.getCurso());
+        if (cursoDTO.getModalidade() != null) {
+            Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())
+                    .orElseThrow(() -> new IllegalArgumentException("Modalidade não encontrada com o ID: " + cursoDTO.getModalidade()));
+            existingCurso.setModalidade(modalidade);
+        } else {
+            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo");
+        }
 
-        existingCurso.setCurso(curso.getCurso());
-        Modalidade modalidade = modalidadeRepository.findById(curso.getModalidade().getId())
-                .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + curso.getModalidade().getId()));
-        existingCurso.setModalidade(modalidade);
-        return existingCurso;
+        return cursoRepository.save(existingCurso);
     }
 
     @Transactional

@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -32,6 +33,10 @@ public class Curso implements Serializable {
     @JoinColumn(name = "id_modalidade", nullable = false)
     @JsonBackReference("modalidade-curso")
     private Modalidade modalidade;
+
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("curso-turma")
+    private Set<Turma> turmas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

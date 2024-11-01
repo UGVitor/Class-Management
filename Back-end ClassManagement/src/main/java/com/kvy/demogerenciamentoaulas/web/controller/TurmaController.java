@@ -2,7 +2,9 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 
 import com.kvy.demogerenciamentoaulas.entity.Turma;
+import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
 import com.kvy.demogerenciamentoaulas.service.TurmaService;
+import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,9 +47,8 @@ public class TurmaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Turma>> getTurmaAll() {
-        List<Turma> turmas = turmaService.buscarTodos();
-        return ResponseEntity.ok(turmas);
+    public List<TurmaDTO> getAllTurmas() {
+        return turmaService.buscarTodasTurmasComDetalhes();
     }
 
     @PutMapping("/{id}")
