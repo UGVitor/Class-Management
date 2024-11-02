@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,11 +52,27 @@ public class TurmaController {
         return turmaService.buscarTodasTurmasComDetalhes();
     }
 
+    @Operation(summary = "Atualizar uma turma existente", description = "Recurso para atualizar uma turma existente",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Turma.class))),
+                    @ApiResponse(responseCode = "404", description = "Turma não encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada inválidos",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Turma> updateTurma(@PathVariable Long id, @RequestBody Turma turma) {
-        Turma updateTurma = turmaService.editar(id, turma);
-        return ResponseEntity.ok(updateTurma);
+        try {
+            Turma updatedTurma = turmaService.editar(id, turma);
+            return ResponseEntity.ok(updatedTurma);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+        }
     }
+
 
     @Operation(summary = "Excluir turma", description = "Recurso para excluir uma turma pelo ID",
             responses = {

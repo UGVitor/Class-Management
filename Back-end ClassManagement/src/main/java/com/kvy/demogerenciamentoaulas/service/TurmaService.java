@@ -80,20 +80,25 @@ public class TurmaService {
     }
 
     @Transactional
-    public Turma editar(Long id, Turma turma){
+    public Turma editar(Long id, Turma turma) {
+
         Turma existingTurma = buscarPorId(id);
 
+
         Periodo periodo = periodoRepository.findById(turma.getPeriodo().getId())
-                .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turma.getPeriodo().getId()));
+                .orElseThrow(() -> new RuntimeException("Período não encontrado com o ID: " + turma.getPeriodo().getId()));
         existingTurma.setPeriodo(periodo);
+
 
         Turno turno = turnoRepository.findById(turma.getTurno().getId())
                 .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turma.getTurno().getId()));
         existingTurma.setTurno(turno);
 
+
         Semestre semestre = semestreRepository.findById(turma.getSemestre().getId())
                 .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turma.getSemestre().getId()));
         existingTurma.setSemestre(semestre);
+
 
         Curso curso = cursoRepository.findById(turma.getCurso().getId())
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + turma.getCurso().getId()));
@@ -101,8 +106,9 @@ public class TurmaService {
 
         existingTurma.setNome(turma.getNome());
 
-        return existingTurma;
+        return turmaRepository.save(existingTurma);
     }
+
 
     @Transactional
     public void excluir(Long id){
