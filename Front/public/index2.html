@@ -9,34 +9,35 @@
     <link rel="icon" href="img/icon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style/index2Stylo.css">
+    <link rel="stylesheet" href="style/index2.css">
 </head>
 <body>
     <div id="app" class="container">
         <div class="navbar-wrapper"> 
-            <div class="navbar">
-                <header>
-                    <div class="user-login">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    
-                    <nav>
-                        <li>
-                            <a href="#" class="has-submenu" id="cadastro-link">Configurações</a>
-                            <ul class="submenu" id="cadastros-submenu">
-                                <li><a href="config/Aula/home.html">Aula</a></li>
-                                <li><a href="config/Curso/home.html">Curso</a></li>
-                                <li><a href="config/Disciplina/home.html">Disciplina</a></li>
-                                <li><a href="config/Login/home.html">Login</a></li>
-                                <li><a href="config/Semestre/Home.html">Semestre</a></li>
-                                <li><a href="config/Turno/Home.html">Turno</a></li>
-                                <li><a href="config/Turma/Home.html">Turma</a></li>
-                                <li><a href="config/Periodo/home.html">Periodo</a></li>
-                                <li><a href="config/Modalidade/home.html">Modalidade</a></li>
-                            </ul>
-                        </li>
-                    </nav>
-                </header>
+            <div class="navbar1">
+                <div class="navbar2">
+                    <header>
+                        <div class="user-login">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <nav>
+                            <li>
+                                <a href="#" class="has-submenu" id="cadastro-link">Configurações</a>
+                                <ul class="submenu" id="cadastros-submenu">
+                                    <li><a href="config/Aula/home.html">Aula</a></li>
+                                    <li><a href="config/Curso/home.html">Curso</a></li>
+                                    <li><a href="config/Disciplina/home.html">Disciplina</a></li>
+                                    <li><a href="config/Login/home.html">Login</a></li>
+                                    <li><a href="config/Semestre/Home.html">Semestre</a></li>
+                                    <li><a href="config/Turno/Home.html">Turno</a></li>
+                                    <li><a href="config/Turma/Home.html">Turma</a></li>
+                                    <li><a href="config/Periodo/home.html">Periodo</a></li>
+                                    <li><a href="config/Modalidade/home.html">Modalidade</a></li>
+                                </ul>
+                            </li>
+                        </nav>
+                    </header>
+                </div>
             </div>
         </div>
     </div>
@@ -49,7 +50,7 @@
             el: '#app',
             data() {
                 return {
-                    currentEntity: null,  // Entidade atualmente selecionada
+                    currentEntity: null,  
                 };
             },
             methods: {
@@ -67,7 +68,6 @@
                 }
             },
             mounted() {
-                // Inicializando o flatpickr (remova se não precisar)
                 flatpickr("#datepicker", {
                     dateFormat: "d/m/Y",
                     onChange: (selectedDates, dateStr) => {

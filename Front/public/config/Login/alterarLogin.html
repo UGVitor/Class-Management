@@ -146,10 +146,6 @@
         <form @submit.prevent="updateLogin">
             <h2>Alterar Login</h2>
             <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id" required />
-            </div>
-            <div class="form-group">
                 <label for="login">Login:</label>
                 <input type="text" id="login" v-model="login" required />
             </div>
@@ -164,26 +160,29 @@
         new Vue({
             el: '#app',
             data: {
-                id: '',
                 login: ''
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id'); 
             },
             methods: {
                 updateLogin() {
-                    const { id, login} = this;
-                    const loginData = { login};
+                    const { login } = this;
 
-                    fetch(`http://localhost:8081/api/v1/logins/${id}`, {
+                    const queryString = `login=${encodeURIComponent(login)}`;
+
+                    fetch(`http://localhost:8081/api/v1/logins/${this.id}?${queryString}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(loginData),
+                        }
                     })
                     .then(response => {
                         if (response.ok) {
                             alert('Login alterado com sucesso!');
-                            this.id = '';
                             this.login = '';
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar o login');
                         }

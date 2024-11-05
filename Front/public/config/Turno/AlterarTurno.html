@@ -173,6 +173,7 @@
                         if (response.ok) {
                             alert('Turno alterado com sucesso!');
                             this.turno = '';
+                            window.location.href = 'Home.html';
                         } else {
                             throw new Error('Erro ao alterar o turno');
                         }

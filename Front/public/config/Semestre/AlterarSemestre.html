@@ -157,7 +157,8 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Semestre alterado com sucesso!');
-                            this.nome = ''; // Limpa o nome
+                            this.nome = ''; 
+                            window.location.href = 'Home.html';
                         } else {
                             throw new Error('Erro ao alterar o semestre');
                         }

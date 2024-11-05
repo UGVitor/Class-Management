@@ -173,7 +173,7 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id'); 
             },
             methods: {
                 updateDisciplina() {
@@ -196,6 +196,7 @@
                                 login: '',
                                 turma: '',
                             };
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar a disciplina');
                         }

@@ -252,20 +252,20 @@
                         });
                 },
                 fetchTurma() {
-            fetch(`http://localhost:8081/api/v1/turma/${this.turma.id}`)
-                .then(response => response.json())
-                .then(data => {
-                    this.turma = {
-                        id: data.id,
-                        nome: data.nome,
-                        periodo: data.periodo.id,
-                        turno: data.turno.id,
-                        curso: data.curso.id,
-                        semestre: data.semestre.id
-                    };
-                })
-                .catch(error => console.error('Erro ao carregar turma:', error));
-        },
+                fetch(`http://localhost:8081/api/v1/turma/${this.turma.id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        this.turma = {
+                            id: data.id,
+                            nome: data.nome,
+                            periodo: data.periodo.id,
+                            turno: data.turno.id,
+                            curso: data.curso.id,
+                            semestre: data.semestre.id
+                        };
+                    })
+                    .catch(error => console.error('Erro ao carregar turma:', error));
+                },
                 updateTurma() {
                     const turmaData = {
                         nome: this.turma.nome,
@@ -296,6 +296,7 @@
                                 curso: '',
                                 semestre: ''
                             };
+                            window.location.href = 'Home.html';
                         } else {
                             throw new Error('Erro ao alterar a turma');
                         }

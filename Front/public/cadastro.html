@@ -160,36 +160,40 @@
     </style>
 </head>
 <body>
-    <div class="login-container1">
-        <div class="login-container2">
-            <h2>Cadastro</h2>
-            <div class="input-group">
-                <i class="fas fa-user iconss"></i>
-                <input type="text" id="login" placeholder="Login" required>
+    <div id="app">
+        <div class="login-container1">
+            <div class="login-container2">
+                <form @submit.prevent="createLogin">
+                    <h2>Cadastro</h2>
+                    <div class="input-group">
+                        <i class="fas fa-user iconss"></i>
+                        <input type="text" id="login" placeholder="Login" v-model="logins.login" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock iconss"></i>
+                        <input type="password" id="password" placeholder="Senha" v-model="logins.password" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock iconss"></i>
+                        <input type="password" id="confirm-password" placeholder="Confirme a Senha" v-model="logins.confirmPassword" required>
+                    </div>
+                    <button onclick="cadastrar()">Cadastrar</button>
+                    <div class="or-divider">
+                        <span>ou</span>
+                    </div>
+                    <button onclick="window.location.href='login.html'">Voltar para Login</button>
+                </form>
             </div>
-            <div class="input-group">
-                <i class="fas fa-lock iconss"></i>
-                <input type="password" id="password" placeholder="Senha" required>
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock iconss"></i>
-                <input type="password" id="confirm-password" placeholder="Confirme a Senha" required>
-            </div>
-            <button onclick="cadastrar()">Cadastrar</button>
-            <div class="or-divider">
-                <span>ou</span>
-            </div>
-            <button onclick="window.location.href='login.html'">Voltar para Login</button> <!-- Botão Voltar -->
-            <p class="error-message" id="error-message">Erro ao criar login!</p>
         </div>
     </div>
+    
     
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
             el: '#app',
             data: {
-                login: {
+                logins: {
                     login: '',
                     password: '',
                     confirmPassword: '',
@@ -198,11 +202,11 @@
             methods: {
                 createLogin() {
                     const loginData = {
-                        login: this.login.login,
-                        password: this.login.password,
+                        login: this.logins.login,
+                        password: this.logins.password,
                     };
 
-                    if (this.login.password !== this.login.confirmPassword) {
+                    if (this.logins.password !== this.logins.confirmPassword) {
                         alert('As senhas não coincidem!');
                         return;
                     }
@@ -222,7 +226,7 @@
                     })
                     .then(data => {
                         alert('Login criado com sucesso!');
-                        this.login = {
+                        this.logins = {
                                 login: '',
                                 password: '',
                         };
