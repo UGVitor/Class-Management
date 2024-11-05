@@ -1,82 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Disciplina</title>
-    <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link rel="icon" href="../../img/icon.png">
     <style>
-        *{
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-        a{
-            text-decoration: none;
-        }
-        li{
-            list-style: none;
-        }
+      *{
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          scroll-behavior: smooth;
+      }
+      a{
+          text-decoration: none;
+      }
+      li{
+          list-style: none;
+      }
 
 
-        body{
-            background: linear-gradient(135deg, #44679F, #DDF5F7);
-        }
-            
-        .navbar {
-            background-color: #44679f;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            height: 60px; /* Ajuste se necessário */
-        }
+      body{
+        background: white
+      }
+          
+      .navbar {
+          background-color: #44679f;
+          position: fixed;
+          width: 100%;
+          z-index: 100;
+          height: 60px; /* Ajuste se necessário */
+      }
 
-        header{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px 0 50px;
-            height: 60px;
-        }
-        header h1 a{
-            color: #fff;
-            font-size: 35px;
-        }
-        nav{
-            display: flex;
-            gap: 30px;
-            color: #000000;
-            font-size: 19px;
-        }
-        li a{
-            color: #fff;
-            padding: 10px;
-            transition: ease .3s;
-            cursor: pointer;
-        }
-        nav li a:hover{
-            background-color: #ffffffa8;
-            color: #000;
-            border-radius: 7px;
-        }
-        nav button {
-            color: #DDF5F7;
-            padding: 5px 10px;
-            transition: ease .3s;
-            cursor: pointer;
-            position: relative;
-            background-color: #44679F;
-            border: 0px;
-            font-size: 16px;
-        }
-        nav button:hover{
-            background-color: #C0D9E5;
-            color: #3B577D;
-            border-radius: 7px;
-        }
-    </style>
+      header{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 50px 0 50px;
+          height: 60px;
+      }
+      header h1 a{
+          color: #fff;
+          font-size: 35px;
+      }
+      nav{
+          display: flex;
+          gap: 30px;
+          color: #000000;
+          font-size: 19px;
+      }
+      li a{
+          color: #fff;
+          padding: 10px;
+          transition: ease .3s;
+          cursor: pointer;
+      }
+      nav li a:hover{
+          background-color: #ffffffa8;
+          color: #000;
+          border-radius: 7px;
+      }
+      nav button {
+          color: #DDF5F7;
+          padding: 5px 10px;
+          transition: ease .3s;
+          cursor: pointer;
+          position: relative;
+          background-color: #44679F;
+          border: 0px;
+          font-size: 16px;
+      }
+      nav button:hover{
+          background-color: #C0D9E5;
+          color: #3B577D;
+          border-radius: 7px;
+      }
+  </style>
 </head>
 <body>
     <div class="navbar">
@@ -94,54 +94,80 @@
                 <label for="nome">Nome:</label>
                 <input type="text" v-model="disciplina.nome" required />
             </div>
-            <div class="form-group" id="descr">
-                <label for="descricao">Descrição:</label>
-                <input type="text" v-model="disciplina.descricao" required />
+            <div class="form-group">
+                <label for="descrição">Descrição:</label>
+                <input type="text" v-model="disciplina.nome" required />
             </div>
             <div class="form-group">
-                <label for="cargaHoraria">Carga Horária:</label>
-                <input type="number" v-model="disciplina.cargaHoraria" required />
-            </div>
+                <label for="Login">Login:</label>
+                <select v-model="disciplina.nome" required>
+                    <option disabled value="">Selecione um login</option>
+                    <option v-for="login in logins" :key="login.id" :value="login.id">{{ login.login }}</option>
+                </select>
+            </div> 
             <div class="form-group">
-                <label for="cod_professor">Código do Professor:</label>
-                <input type="number" v-model="disciplina.cod_professor" required />
-            </div>
+                <label for="Turma">Turma:</label>
+                <select v-model="disciplina.nome" required>
+                    <option disabled value="">Selecione uma turma</option>
+                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.turma }}</option>
+                </select>
+            </div> 
+            
             <div class="form-group">
-                <label for="cod_curso">Código do Curso:</label>
-                <input type="number" v-model="disciplina.cod_curso" required />
-            </div>
-            <div class="form-group">
-                <button type="submit">Criar Disciplina</button>
+                <button type="submit">Criar Turma</button>
             </div>
         </form>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
             el: '#app',
             data: {
-                disciplina: {
+                turma: {
                     nome: '',
-                    descricao: '',
-                    cargaHoraria: '',
-                    cod_professor: '',
-                    cod_curso: ''
-                }
+                    descrição: '',
+                    login: '',
+                    turma: ''
+                },
+                disciplina: [],
+            },
+            created() {
+                this.fetchLogin();
+                this.fetchTurma();
             },
             methods: {
+                fetchLogin() {
+                    fetch('http://localhost:8081/api/v1/logins')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.disciplinas = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar logins:', error);
+                        });
+                },
+
+                fetchTurma() {
+                    fetch('http://localhost:8081/api/v1/turmas')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.disciplinas = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar turmas', error);
+                        });
+                },
+
+
                 createDisciplina() {
-                    // Construa o corpo da requisição
                     const disciplinaData = {
                         nome: this.disciplina.nome,
-                        descricao: this.disciplina.descricao,
-                        cargaHoraria: this.disciplina.cargaHoraria,
-                        cod_professor: this.disciplina.cod_professor,
-                        cod_curso: this.disciplina.cod_curso
+                        descrição: this.disciplina.descrição ,
+                        login: { id: this.disciplina.login },
+                        turma: { id: this.disciplina.turma },
                     };
 
-                    // Enviar a requisição para o back-end
-                    fetch('http://localhost:8081/api/v1/disciplinas', {
+                    fetch('http://localhost:8081/api/v1/disciplina', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -156,14 +182,12 @@
                     })
                     .then(data => {
                         alert('Disciplina criada com sucesso!');
-                        this.disciplina = {
+                        this.disciplina= {
                             nome: '',
-                            descricao: '',
-                            cargaHoraria: '',
-                            cod_professor: '',
-                            cod_curso: ''
+                            descrição: '',
+                            login: '',
+                            turma: '',
                         };
-                        window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);

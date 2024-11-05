@@ -1,90 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Aula</title>
     <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        *{
+        * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
             scroll-behavior: smooth;
         }
-    
-        a{
+
+        a {
             text-decoration: none;
         }
-        li{
+
+        li {
             list-style: none;
         }
-    
-    
-        body{
-            background: linear-gradient(135deg, #44679F, #DDF5F7);
-            height: 100%;
+
+        body {
+            background: white;
         }
-        .navbar{
+
+        .navbar {
             background-color: #44679f;
             position: fixed;
             width: 100%;
             z-index: 100;
         }
-        header{
+
+        header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 50px;
             height: 60px;
         }
-        header h1 a{
+
+        header h1 a {
             color: #fff;
             font-size: 35px;
         }
-        nav{
+
+        nav {
             display: flex;
             gap: 30px;
             color: #000000;
             font-size: 19px;
         }
-        li a{
+
+        li a {
             color: #fff;
             transition: ease .3s;
             cursor: pointer;
             padding: 0px 10px;
-            line-height: 40px
+            line-height: 40px;
         }
+
         nav li {
             display: flex;
             align-items: center;
         }
-        nav li a:hover{
+
+        nav li a:hover {
             background-color: #ffffffa8;
             color: #000;
             border-radius: 7px;
         }
+
         nav button {
             color: #fff;
-            padding: 10px 15px; 
-            transition: ease .3s;
+            padding: 10px 15px;
+            transition: ease 0.3s;
             cursor: pointer;
-            position: relative;
             background-color: #44679F;
-            border: 0px;
+            border: 0;
             font-size: 19px;
-            line-height: 40px; 
+            line-height: 40px;
         }
-        nav button:hover{
+
+        nav button:hover {
             background-color: #C0D9E5;
             color: #3B577D;
             border-radius: 7px;
         }
-    
-        /* Estilo do input de data */
+
         .flatpickr-input {
             background-color: #fff;
             color: #000;
@@ -92,160 +97,171 @@
             padding: 5px;
             font-size: 16px;
         }
-        
-        /* Container principal */
+
         .container {
             display: flex;
         }
-        
-        .filters-display {
-        margin-top: 50px;
-        margin-left: 240px;
-        padding: 20px;
-        flex: 1;
-    }
-    
-    .filters-display h3 {
-        margin-bottom: 15px;
-        font-family: 'Arial', sans-serif;
-        color: #34495E;
-    }
-    
-    .filters-display table {
-        width: 85%;
-        border-collapse: separate;
-        border-spacing: 0;
-        margin-top: 20px;
-        background-color: #FFFFFF;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-    }
-    
-    .filters-display table th,
-    .filters-display table td {
-        padding: 12px 15px;
-        text-align: center;
-        font-family: 'Arial', sans-serif;
-    }
-    
-    .filters-display table th {
-        background-color: #3498DB;
-        color: #FFFFFF;
-        font-weight: bold;
-        text-align: center; 
-        padding: 12px;
-    }
-    
-    .filters-display table tr:nth-child(even) {
-        background-color: #ECF0F1;
-    }
-    
-    .filters-display table tr:hover {
-        background-color: #DCE5EC;
-    }
-    
-    .filters-display table tr:last-child td {
-        border-bottom: none;
-    }
-    
-    .filters-display table tr:first-child th:first-child {
-        border-top-left-radius: 12px;
-    }
-    
-    .filters-display table tr:first-child th:last-child {
-        border-top-right-radius: 12px;
-    }
-    
-    .filters-display table tr:last-child td:first-child {
-        border-bottom-left-radius: 12px;
-    }
-    
-    .filters-display table tr:last-child td:last-child {
-        border-bottom-right-radius: 12px;
-    }
 
-    .button-group {
+        .filters-display {
+            margin-top: 70px; 
+            padding: 20px;
+            flex: 1;
+            display: flex; 
+            justify-content: center; 
+        }
+
+        .filters-display h3 {
+            margin-bottom: 15px;
+            font-family: 'Arial', sans-serif;
+            color: #34495E;
+        }
+
+        .filters-display table {
+            width: 70%; /* Altere conforme necessário */
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 20px auto; 
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .filters-display table th,
+        .filters-display table td {
+            padding: 12px 25px;
+            text-align: left;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .filters-display table th {
+            background-color: #44679f;
+            color: #FFFFFF;
+            font-weight: bold;
+            text-align: center; 
+            padding: 12px; 
+        }
+
+        .filters-display table tr:nth-child(even) {
+            background-color: #ECF0F1;
+        }
+
+        .filters-display table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .filters-display table tr:first-child th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .filters-display table tr:first-child th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .filters-display table tr:last-child td:first-child {
+            border-bottom-left-radius: 12px;
+        }
+
+        .filters-display table tr:last-child td:last-child {
+            border-bottom-right-radius: 12px;
+        }
+
+        .filters-display table th:nth-child(1) {
+            width: 20%; 
+        }
+
+        .filters-display table th:nth-child(2) {
+            width: 20%; 
+        }
+
+        .filters-display table th:nth-child(3) {
+            width: 20%; 
+        }
+
+        .filters-display table th:nth-child(4) {
+            width: 20%; 
+        }
+
+        .filters-display table th:nth-child(5) {
+            width: 20%; 
+        }
+
+        .button-group {
             display: flex;
             gap: 3px;
             justify-content: flex-end; 
         }
-    
-        .delete-btn, .altera-btn {
+
+        .delete-btn, .edit-btn {
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-    
+
         .delete-btn {
             background-color: #E74C3C;
             color: white;
         }
-    
+
         .delete-btn:hover {
             background-color: #C0392B;
         }
-    
-        .altera-btn {
+
+        .edit-btn {
             background-color: #3498DB;
             color: white;
         }
-    
-        .altera-btn:hover {
+
+        .edit-btn:hover {
             background-color: #2980B9;
         }
-    
-        .delete-btn i, .altera-btn i {
+
+        .delete-btn i, .edit-btn i {
             margin: 0;
             font-size: 16px;
             color: white;
         }
-    
-      
     </style>
 </head>
 <body>
     <div id="app" class="container">
-        <!-- Starting Header -->
         <div class="navbar">
             <header>
                 <h1><a href="index.html">Aula</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="cadastroAula.html">Criar</a></li>
+                    <li><a href="CadastroAula.html">Criar</a></li>
                 </nav>
             </header>
         </div>
-        <!-- Header terminated -->
 
         <div class="filters-display">
-            <table v-if="currentEntity === 'aulas'">
+            <table v-if="currentEntity === 'aula'">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Dia</th>
+                        <th>Descrição</th>
+                        <th>Disciplina</th>
+                        <th>Dias da Semana</th>
                         <th>Horário</th>
-                        <th>Duração (min)</th>
-                        <th>Código Disciplina</th>
-                        <th> </th>
-                        
+                        <th>Sala</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="aula in data" :key="aula.id">
-                        <td></td>
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
-                        <td> </td>
+                        <td>{{ aula.nomeDescrição }}</td>
+                        <td>{{ aula.nomeDisciplina }}</td>
+                        <td>{{ aula.nomeDiasdaSemana}}</td>
+                        <td>{{ aula.nomeHorário}}</td>
+                        <td>{{ aula.nomeSala }}</td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteAula(aula.id)" class="delete-btn">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                <button @click="editAula(aula.id)" class="altera-btn">
+                                <button @click="editAula(aula.id)" class="edit-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
@@ -256,7 +272,7 @@
         </div>
     </div>
 
-    <!-- Incluindo o flatpickr JS -->
+   
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
@@ -265,7 +281,7 @@
             data() {
                 return {
                     data: [],
-                    currentEntity: 'aulas',
+                    currentEntity: 'aula',
                 };
             },
             methods: {
@@ -284,22 +300,22 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        aulas: 'http://localhost:8081/api/v1/aulas'
+                        aula: 'http://localhost:8081/api/v1/aula'
                     };
     
                     this.data = await this.fetchData(endpoints[entity]);
-                }
-            },async deleteAula(id) {
-                    if (confirm("Tem certeza que deseja deletar esta Aula?")) {
+                },
+                async deleteAula(id) {
+                    if (confirm("Tem certeza que deseja deletar esta aula?")) {
                         try {
-                            const response = await fetch(`http://localhost:8081/api/v1/aulas/${id}`, {
+                            const response = await fetch(`http://localhost:8081/api/v1/aula/${id}`, {
                                 method: 'DELETE',
                             });
                             if (response.ok) {
-                                alert("Aula deletado com sucesso!");
-                                this.data = this.data.filter(aulas => aulas.id !== id);
+                                alert("Aula deletada com sucesso!");
+                                this.data = this.data.filter(aula => aula.id !== id); 
                             } else {
-                                alert("Erro ao deletar o aula.");
+                                alert("Erro ao deletar a aula.");
                             }
                         } catch (error) {
                             console.error('Erro ao deletar a aula:', error);
@@ -307,11 +323,11 @@
                     }
                 },
                 editAula(id) {
-                    window.location.href = `alterarAula.html?id=${id}`;
+                    window.location.href = `AlterarAula.html?id=${id}`;
                 }
             },
-            mounted(){
-                this.showAll('aulas');
+            mounted() {
+                this.showAll('aula');
             }
         });
     </script>
