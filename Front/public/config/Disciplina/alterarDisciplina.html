@@ -138,10 +138,6 @@
         <form @submit.prevent="updateDisciplina">
             <h2>Alterar Disciplina</h2>
             <div class="form-group">
-                <label for="id">ID da Disciplina:</label>
-                <input type="text" id="id" v-model="disciplina.id" required />
-            </div>
-            <div class="form-group">
                 <label for="nome">Nome:</label>
                 <input type="text" id="nome" v-model="disciplina.nome" required />
             </div>
@@ -150,16 +146,12 @@
                 <input type="text" id="descricao" v-model="disciplina.descricao" required />
             </div>
             <div class="form-group">
-                <label for="cargaHoraria">Carga Horária:</label>
-                <input type="number" id="cargaHoraria" v-model="disciplina.cargaHoraria" required />
+                <label for="login">Login:</label>
+                <input type="text" id="login" v-model="disciplina.login" required />
             </div>
             <div class="form-group">
-                <label for="cod_professor">Código do Professor:</label>
-                <input type="number" id="cod_professor" v-model="disciplina.cod_professor" required />
-            </div>
-            <div class="form-group">
-                <label for="cod_curso">Código do Curso:</label>
-                <input type="number" id="cod_curso" v-model="disciplina.cod_curso" required />
+                <label for="turma">Turma:</label>
+                <input type="text" id="turma" v-model="disciplina.turma" required />
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Disciplina</button>
@@ -173,17 +165,19 @@
             el: '#app',
             data: {
                 disciplina: {
-                    id: '',
                     nome: '',
                     descricao: '',
-                    cargaHoraria: '',
-                    cod_professor: '',
-                    cod_curso: ''
+                    login: '',
+                    turma: '',
                 }
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
             },
             methods: {
                 updateDisciplina() {
-                    const { id, nome, descricao, cargaHoraria, cod_professor, cod_curso } = this.disciplina;
+                    const { nome, descricao, login, turma } = this.disciplina;
                     const disciplinaData = { nome, descricao, cargaHoraria, cod_professor, cod_curso };
 
                     fetch(`http://localhost:8081/api/v1/disciplinas/${id}`, {
@@ -197,12 +191,10 @@
                         if (response.ok) {
                             alert('Disciplina alterada com sucesso!');
                             this.disciplina = {
-                                id: '',
                                 nome: '',
                                 descricao: '',
-                                cargaHoraria: '',
-                                cod_professor: '',
-                                cod_curso: ''
+                                login: '',
+                                turma: '',
                             };
                         } else {
                             throw new Error('Erro ao alterar a disciplina');

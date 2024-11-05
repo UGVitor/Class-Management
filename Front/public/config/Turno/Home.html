@@ -292,7 +292,7 @@
                             });
                             if (response.ok) {
                                 alert("turno deletada com sucesso!");
-                                this.data = this.data.filter(modalidade => modalidade.id !== id); 
+                                this.data = this.data.filter(turno => turno.id !== id); 
                             } else {
                                 alert("Erro ao deletar a turno.");
                             }
@@ -301,7 +301,7 @@
                         }
                     }
                 },
-                editModalidade(id) {
+                editTurno(id) {
                     window.location.href = `AlterarTurno.html?id=${id}`;
                 }
             },
