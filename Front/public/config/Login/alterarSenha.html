@@ -146,10 +146,6 @@
         <form @submit.prevent="updateSenha">
             <h2>Alterar Senha</h2>
             <div class="form-group">
-                <label for="id">ID:</label>
-                <input type="text" id="id" v-model="id" required />
-            </div>
-            <div class="form-group">
                 <label for="login">Senha Atual:</label>
                 <input type="text" id="senhaAtual" v-model="senhaAtual" required />
             </div>
@@ -172,14 +168,17 @@
         new Vue({
             el: '#app',
             data: {
-                id: '',
                 senhaAtual: '',
                 novaSenha: '',
-                confirmaSenha: '' 
+                confirmaSenha: '',
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search)
+                this.id = params.get('id')
             },
             methods: {
                 updateSenha() {
-                    const { id, senhaAtual, novaSenha, confirmaSenha } = this;
+                    const { senhaAtual, novaSenha, confirmaSenha } = this;
 
                     if (novaSenha !== confirmaSenha) {
                         alert("As senhas não coincidem!");
@@ -187,8 +186,8 @@
                     }
 
                     const queryString = `senhaAtual=${encodeURIComponent(senhaAtual)}&novaSenha=${encodeURIComponent(novaSenha)}&confirmaSenha=${encodeURIComponent(confirmaSenha)}`;
-
-                    fetch(`http://localhost:8081/api/v1/logins/${id}/senha?${queryString}`, {
+                    
+                    fetch(`http://localhost:8081/api/v1/logins/${this.id}/senha?${queryString}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -197,10 +196,10 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Login alterado com sucesso!');
-                            this.id = '';
                             this.senhaAtual = '';
                             this.novaSenha = '';
                             this.confirmaSenha = ''; 
+                            window.location.href = 'home.html';
                         } else {
                             return response.json().then(data => {
                                 throw new Error(data.message || 'Erro ao alterar o login');

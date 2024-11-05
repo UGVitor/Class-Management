@@ -167,10 +167,9 @@
                 modalidades: []
             },
             created() {
-                // Carrega as modalidades e o ID do curso ao iniciar o componente
                 this.fetchModalidades();
                 const params = new URLSearchParams(window.location.search);
-                this.curso.id = params.get('id'); // Obtém o ID do curso da URL
+                this.curso.id = params.get('id'); 
             },
             methods: {
                 fetchModalidades() {
@@ -202,6 +201,7 @@
                                 curso: '',
                                 modalidade: ''
                             };
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar o curso');
                         }

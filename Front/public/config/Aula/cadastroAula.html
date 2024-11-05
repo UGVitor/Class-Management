@@ -124,7 +124,7 @@
                     dia: '',
                     horario: '',
                     duracao: '',
-                    topico: 'Lero Lero',
+                    topico: '',
                     cod_disciplina: '',
                     status: true
                 }
@@ -156,6 +156,7 @@
                     .then(data => {
                         alert('Aula criada com sucesso!');
                         this.resetForm();
+                        window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);
@@ -167,7 +168,7 @@
                         dia: '',
                         horario: '',
                         duracao: '',
-                        topico: 'Lero Lero',
+                        topico: '',
                         cod_disciplina: '',
                         status: true
                     };

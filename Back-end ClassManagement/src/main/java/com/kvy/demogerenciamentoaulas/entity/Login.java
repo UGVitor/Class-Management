@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
@@ -23,9 +21,6 @@ public class Login implements Serializable {
 
     @Column(name = "password", nullable = false, length = 200)
     private String password;
-    @Enumerated(EnumType.STRING)
-
-
 
     @Override
     public boolean equals(Object o) {

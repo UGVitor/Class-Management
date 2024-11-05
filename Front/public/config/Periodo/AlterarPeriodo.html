@@ -157,7 +157,8 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Periodo alterado com sucesso!');
-                            this.nome = ''; // Limpa o nome
+                            this.nome = ''; 
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar o periodo');
                         }

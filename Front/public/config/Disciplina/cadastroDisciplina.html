@@ -156,7 +156,6 @@
                     })
                     .then(data => {
                         alert('Disciplina criada com sucesso!');
-                        // Aqui você pode limpar os campos do formulário ou redirecionar para outra página
                         this.disciplina = {
                             nome: '',
                             descricao: '',
@@ -164,6 +163,7 @@
                             cod_professor: '',
                             cod_curso: ''
                         };
+                        window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);

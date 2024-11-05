@@ -127,6 +127,7 @@
                     .then(data => {
                         alert('Modalidade criado com sucesso!');
                         this.resetForm();
+                        window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);
