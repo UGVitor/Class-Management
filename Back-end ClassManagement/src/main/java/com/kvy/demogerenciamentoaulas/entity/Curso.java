@@ -57,6 +57,7 @@ public class Curso implements Serializable {
                 "id=" + id +
                 '}';
     }
+
     public String getModalidadeNome() {
         return modalidade != null ? modalidade.getNome() : null;
     }

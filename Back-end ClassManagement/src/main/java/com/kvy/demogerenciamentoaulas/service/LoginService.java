@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
+import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,7 @@ public class LoginService {
     }
 
     @Transactional(readOnly = true)
-    public List<Login> buscarTodos() {
-        return loginRepository.findAll();
+    public List<LoginProjection> buscarTodos() {
+        return loginRepository.findAllLoginsWithPerfilNome();
     }
 }
