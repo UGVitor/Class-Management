@@ -28,15 +28,16 @@ import java.util.stream.Collectors;
 public class CursoController {
 
     private final CursoService cursoService;
-    private final CursoRepository cursoRepository;
 
     @Operation(summary = "Criar um novo curso", description = "Recurso para criar um novo curso",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Curso.class))),
-                    @ApiResponse(responseCode = "409", description = "curso já cadastrado no sistema",
+                    @ApiResponse(responseCode = "400", description = "Requisição inválida",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
-                    @ApiResponse(responseCode = "422", description = "Recursos não processado por dados de entrada invalidos",
+                    @ApiResponse(responseCode = "409", description = "Curso já cadastrado no sistema",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
@@ -53,17 +54,24 @@ public class CursoController {
         }
     }
 
+    @Operation(summary = "Recuperar curso pelo ID", description = "Recurso para recuperar um curso específico pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Curso recuperado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Curso.class))),
+                    @ApiResponse(responseCode = "404", description = "Curso não encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @GetMapping("/{id}")
     public ResponseEntity<Curso> getById(@PathVariable Long id) {
         Curso curso = cursoService.buscarPorId(id);
         return ResponseEntity.ok(curso);
     }
 
-    @Operation(summary = "Excluir curso", description = "Recurso para excluir um curso pelo ID",
+    @Operation(summary = "Excluir curso pelo ID", description = "Recurso para excluir um curso pelo ID",
             responses = {
                     @ApiResponse(responseCode = "204", description = "Curso excluído com sucesso",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class))),
-                    @ApiResponse(responseCode = "404", description = "Recurso não encontrado",
+                            content = @Content(mediaType = "application/json")),
+                    @ApiResponse(responseCode = "404", description = "Curso não encontrado",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @DeleteMapping("/{id}")
@@ -72,16 +80,33 @@ public class CursoController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Editar curso pelo ID", description = "Recurso para editar um curso específico pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Curso atualizado com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Curso.class))),
+                    @ApiResponse(responseCode = "404", description = "Curso não encontrado",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @PutMapping("/{id}")
     public ResponseEntity<Curso> editarCurso(@PathVariable Long id, @RequestBody CursoDTO cursoDTO) {
         Curso cursoAtualizado = cursoService.editar(id, cursoDTO);
         return ResponseEntity.ok(cursoAtualizado);
     }
+
+    @Operation(summary = "Listar todos os cursos", description = "Recurso para listar todos os cursos com o nome da modalidade",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de cursos recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = CursoProjection.class)))
+            })
     @GetMapping
     public ResponseEntity<List<CursoProjection>> getAllCursos() {
-        List<CursoProjection> cursos = cursoRepository.findAllCursosWithModalidadeNome();
+        List<CursoProjection> cursos = cursoService.buscarTodos();
         return ResponseEntity.ok(cursos);
     }
+
+    /*
     public List<CursoResponseDTO> listarCursos() {
         List<Curso> cursos = cursoRepository.findAll();
         return cursos.stream()
@@ -90,5 +115,5 @@ public class CursoController {
                         curso.getCurso(),
                         curso.getModalidade() != null ? curso.getModalidade().getNome() : "N/A")) // Ou outra lógica apropriada
                 .collect(Collectors.toList());
-    }
+    }*/
 }

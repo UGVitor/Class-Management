@@ -8,6 +8,7 @@ import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
+import com.kvy.demogerenciamentoaulas.repository.Projection.CursoProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class CursoService {
 
 
     @Transactional(readOnly = true)
-    public List<Curso> buscarTodos() {
-        return cursoRepository.findAll();
+    public List<CursoProjection> buscarTodos() {
+        return cursoRepository.findAllCursosWithModalidadeNome();
     }
 }

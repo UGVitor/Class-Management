@@ -1,40 +1,38 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
-@Table(name = "login")
-public class Login implements Serializable {
+@Table(name = "perfil")
+public class Perfil implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "login", nullable = false, unique = true, length = 100)
-    private String login;
+    @Column(name = "nome", nullable = false, unique = true, length = 50)
+    private String nome;
 
-    @Column(name = "password", nullable = false, length = 200)
-    private String password;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "perfil_id", nullable = false)
-    @JsonBackReference("perfil-login")
-    private Perfil perfil;
+    @OneToMany(mappedBy = "perfil", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("perfil-login")
+    private Set<Login> logins = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Login login = (Login) o;
-        return Objects.equals(id, login.id);
+        Perfil perfil = (Perfil) o;
+        return Objects.equals(id, perfil.id);
     }
 
     @Override
@@ -44,12 +42,12 @@ public class Login implements Serializable {
 
     @Override
     public String toString() {
-        return "Login{" +
+        return "Perfil{" +
                 "id=" + id +
                 '}';
     }
 
-    public String getPerfilNome() {
-        return perfil != null ? perfil.getNome() : null;
+    public Perfil(String nome) {
+        this.nome = nome;
     }
 }

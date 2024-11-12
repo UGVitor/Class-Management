@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.service.LoginService;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -102,8 +103,8 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Login.class)))
             })
     @GetMapping
-    public ResponseEntity<List<Login>> getAllLogins() {
-        List<Login> logins = loginService.buscarTodos();
+    public ResponseEntity<List<LoginProjection>> getAllLogins() {
+        List<LoginProjection> logins = loginService.buscarTodos();
         return ResponseEntity.ok(logins);
     }
 }
