@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Sala</title>
+    <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link rel="icon" href="../../img/icon.png">
+    <style>
+      * {
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          scroll-behavior: smooth;
+      }
+      a {
+          text-decoration: none;
+      }
+      li {
+          list-style: none;
+      }
+      body {
+        background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
+      }
+      .navbar {
+          background-color: #019c5c;
+          position: fixed;
+          width: 100%;
+          z-index: 100;
+          height: 60px; 
+      }
+      header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 50px;
+          height: 60px;
+      }
+      header h1 a {
+          color: #fff;
+          font-size: 35px;
+      }
+      nav {
+          display: flex;
+          gap: 30px;
+          color: #000000;
+          font-size: 19px;
+      }
+      li a {
+          color: #fff;
+          padding: 10px;
+          transition: ease .3s;
+          cursor: pointer;
+      }
+      nav li a:hover {
+          background-color: #ffffffa8;
+          color: #000;
+          border-radius: 7px;
+      }
+      nav button {
+          color: #DDF5F7;
+          padding: 5px 10px;
+          transition: ease .3s;
+          cursor: pointer;
+          position: relative;
+          background-color: #019c5c;
+          border: 0px;
+          font-size: 16px;
+      }
+      nav button:hover {
+          background-color: #ffffff;
+          color: #019c5c;
+          border-radius: 7px;
+      }
+      h2 {
+          color: #000000;
+      }
+          .form-group label {
+          color: #333; 
+      }
+
+         .form-group input {
+          color: #333; /
+      }
+
+        .form-group button {
+         color: #fff; 
+         background-color: #019c5c; 
+        }
+  </style>
+</head>
+<body>
+    <div class="navbar">
+      <header>
+          <h1><a href="#">Sala</a></h1>
+          <nav>
+              <li><a href="HomeSala.html">Home</a></li>
+          </nav>
+      </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="createSemestre">
+          <h2>Criar Sala</h2>
+          <div class="form-group">
+            <label for="semestre">Nome da Sala:</label>
+            <input type="text" v-model="semestres.semestre" required />
+          </div>
+          <div class="form-group">
+            <button type="submit">Criar Sala</button>
+          </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                semestres: {
+                    semestre: ''                   
+                }
+            },
+            methods: {
+                createSemestre() {
+                    const semestreData = {
+                        semestre: this.semestres.semestre,
+                    };
+
+                    fetch('http://localhost:8081/api/v1/semestres', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(semestreData)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Erro ao criar o semestre');
+                    })
+                    .then(data => {
+                        alert('Semestre criado com sucesso!');
+                        this.resetForm();
+                        window.location.href = 'Home.html';
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao criar o semestre, tente novamente.');
+                    });
+                },
+                resetForm() {
+                    this.semestres = {
+                        semestre: '',
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+</html>
