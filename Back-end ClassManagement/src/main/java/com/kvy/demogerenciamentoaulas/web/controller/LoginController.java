@@ -3,6 +3,8 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.service.LoginService;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginSenhaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,9 +36,10 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Login> create(@RequestBody Login login) {
-        Login user = loginService.salvar(login);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<LoginDTO> create(@RequestBody LoginDTO loginDTO) {
+        Login login = loginService.convertToEntity(loginDTO);
+        Login savedLogin  = loginService.salvar(login);
+        return ResponseEntity.status(HttpStatus.CREATED).body(loginService.convertToDTO(savedLogin));
     }
 
     @Operation(summary = "Recuperar login por ID", description = "Recurso para recuperar um login pelo ID.",
@@ -47,9 +50,9 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<Login> getById(@PathVariable Long id) {
-        Login user = loginService.buscarPorId(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<LoginDTO> getById(@PathVariable Long id) {
+        Login login = loginService.buscarPorId(id);
+        return ResponseEntity.ok(loginService.convertToDTO(login));
     }
 
     @Operation(summary = "Atualizar login", description = "Recurso para atualizar as informações de um login.",
@@ -62,9 +65,10 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Login> updateLogin(@PathVariable Long id, @RequestParam String login) {
+    public ResponseEntity<LoginDTO> updateLogin(@PathVariable Long id, @RequestBody LoginDTO loginDTO) {
+        Login login = loginService.convertToEntity(loginDTO);
         Login updatedLogin = loginService.editar(id, login);
-        return ResponseEntity.ok(updatedLogin);
+        return ResponseEntity.ok(loginService.convertToDTO(updatedLogin));
     }
 
     @Operation(summary = "Atualizar senha de login", description = "Recurso para atualizar a senha de um login.",
@@ -77,12 +81,9 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}/senha")
-    public ResponseEntity<Login> updatePassword(@PathVariable Long id,
-                                                @RequestParam String senhaAtual,
-                                                @RequestParam String novaSenha,
-                                                @RequestParam String confirmaSenha) {
-        Login updatedLogin = loginService.editarSenha(id, senhaAtual, novaSenha, confirmaSenha);
-        return ResponseEntity.ok(updatedLogin);
+    public ResponseEntity<LoginDTO> updatePassword(@PathVariable Long id, @RequestBody LoginSenhaDTO loginSenhaDTO) {
+        Login updatedLogin = loginService.editarSenha(id, loginSenhaDTO);
+        return ResponseEntity.ok(loginService.convertToDTO(updatedLogin));
     }
 
     @Operation(summary = "Excluir login por ID", description = "Recurso para excluir um login pelo ID.",

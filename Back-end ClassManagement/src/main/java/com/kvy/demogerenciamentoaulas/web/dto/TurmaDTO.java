@@ -3,7 +3,6 @@ package com.kvy.demogerenciamentoaulas.web.dto;
 import lombok.Data;
 
 @Data
-
 public class TurmaDTO {
     private Long id;
     private String nomeTurma;

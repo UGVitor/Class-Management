@@ -13,8 +13,6 @@ public class CursoDTO {
     private String curso;
     private Long modalidade;
 
-
-
     public Long getModalidade() {
         return modalidade;
     }
@@ -23,5 +21,3 @@ public class CursoDTO {
         this.modalidade = modalidade;
     }
 }
-
-
