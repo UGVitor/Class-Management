@@ -94,16 +94,16 @@
       <header>
           <h1><a href="#">Tipo de Sala</a></h1>
           <nav>
-              <li><a href="HomeSala.html">Home</a></li>
+              <li><a href="HomeTipoSala.html">Home</a></li>
           </nav>
       </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createSemestre">
+        <form @submit.prevent="createTipoSala">
           <h2>Criar Tipo de Sala</h2>
           <div class="form-group">
-            <label for="semestre">Nome do Tipo de Sala:</label>
-            <input type="text" v-model="semestres.semestre" required />
+            <label for="tiposala">Nome do Tipo de Sala:</label>
+            <input type="text" v-model="tiposalas.tipoSala" required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Tipo de Sala</button>
@@ -114,48 +114,48 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
-            el: '#app',
-            data: {
-                semestres: {
-                    semestre: ''                   
-                }
-            },
-            methods: {
-                createSemestre() {
-                    const semestreData = {
-                        semestre: this.semestres.semestre,
-                    };
-
-                    fetch('http://localhost:8081/api/v1/semestres', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(semestreData)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error('Erro ao criar o semestre');
-                    })
-                    .then(data => {
-                        alert('Semestre criado com sucesso!');
-                        this.resetForm();
-                        window.location.href = 'Home.html';
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar o semestre, tente novamente.');
-                    });
-                },
-                resetForm() {
-                    this.semestres = {
-                        semestre: '',
-                    };
-                }
+        el: '#app',
+        data: {
+            tiposalas: {
+                tipoSala: '' 
             }
-        });
+        },
+        methods: {
+            createTipoSala() {
+                const Data = {
+                    tipoSala: this.tiposalas.tipoSala 
+                };
+
+                fetch('http://localhost:8081/api/v1/tiposalas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(Data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error('Erro ao criar o Tipo de Sala');
+                })
+                .then(data => {
+                    alert('Tipo de Sala criado com sucesso!');
+                    this.resetForm();
+                    window.location.href = 'HomeTipoSala.html';
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao criar o Tipo de Sala, tente novamente.');
+                });
+            },
+            resetForm() {
+                this.tiposalas = {
+                    tipoSala: ''
+                };
+            }
+        }
+    });
     </script>
 </body>
 </html>
