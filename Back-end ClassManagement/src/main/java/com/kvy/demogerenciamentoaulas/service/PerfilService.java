@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.PerfilEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.PerfilDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,17 @@ import java.util.Optional;
 public class PerfilService {
 
     private final PerfilRepository perfilRepository;
+
+    public PerfilDTO convertToDTO(Perfil perfil) {
+        return new PerfilDTO(perfil.getId(), perfil.getNome());
+    }
+
+    public Perfil convertToEntity(PerfilDTO perfilDTO) {
+        Perfil perfil = new Perfil();
+        perfil.setId(perfilDTO.getId());
+        perfil.setNome(perfilDTO.getNome());
+        return perfil;
+    }
 
     @Transactional
     public Perfil salvar(Perfil perfil) {

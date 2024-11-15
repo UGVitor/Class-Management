@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Horario;
 import com.kvy.demogerenciamentoaulas.exception.HorarioEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,18 @@ import java.util.Optional;
 public class HorarioService {
 
     private final HorarioRepository horarioRepository;
+
+    public HorarioDTO convertToDTO(Horario horario) {
+        return new HorarioDTO(horario.getId(), horario.getHoraInicio(), horario.getHoraTermino());
+    }
+
+    public Horario convertToEntity(HorarioDTO horarioDTO) {
+        Horario horario = new Horario();
+        horario.setId(horarioDTO.getId());
+        horario.setHoraInicio(horarioDTO.getHoraInicio());
+        horario.setHoraTermino(horarioDTO.getHoraTermino());
+        return horario;
+    }
 
     @Transactional
     public Horario salvar(Horario horario) {

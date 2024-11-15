@@ -1,9 +1,13 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
+import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginSenhaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +20,27 @@ import java.util.Optional;
 public class LoginService {
 
     private final LoginRepository loginRepository;
+    private final PerfilRepository perfilRepository;
+
+    public LoginDTO convertToDTO(Login login) {
+        return new LoginDTO(login.getId(), login.getLogin(), login.getPerfil().getId());
+    }
+
+    public Login convertToEntity(LoginDTO loginDTO) {
+        Login login = new Login();
+        login.setId(loginDTO.getId());
+        login.setLogin(loginDTO.getLogin());
+
+        Perfil perfil = perfilRepository.findById(loginDTO.getPerfil())
+                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + loginDTO.getPerfil()));
+        login.setPerfil(perfil);
+
+        return login;
+    }
+
+    public LoginSenhaDTO convertToSenhaDTO(String senhaAtual, String novaSenha, String confirmaSenha){
+        return new LoginSenhaDTO(senhaAtual, novaSenha, confirmaSenha);
+    }
 
     @Transactional
     public Login salvar(Login login) {
@@ -30,23 +55,24 @@ public class LoginService {
     }
 
     @Transactional
-    public Login editarSenha(Long id, String senhaAtual, String novaSenha, String confirmaSenha) {
-        if (!novaSenha.equals(confirmaSenha)){
+    public Login editarSenha(Long id, LoginSenhaDTO loginSenhaDTO) {
+        if (!loginSenhaDTO.getNovaSenha().equals(loginSenhaDTO.getConfirmaSenha())){
             throw new RuntimeException("Nova senha não confere com confirmação senha.");
         }
         Login user = buscarPorId(id);
-        if (!user.getPassword().equals(senhaAtual)){
+        if (!user.getPassword().equals(loginSenhaDTO.getSenhaAtual())){
             throw new RuntimeException("Sua senha não confere.");
         }
-        user.setPassword(novaSenha);
+        user.setPassword(loginSenhaDTO.getNovaSenha());
         return user;
     }
 
     @Transactional
-    public Login editar(Long id, String login) {
+    public Login editar(Long id, Login login) {
         Login existingUser = buscarPorId(id);
-        existingUser.setLogin(login);
-        return existingUser;
+        existingUser.setLogin(login.getLogin());
+        existingUser.setPerfil(login.getPerfil());
+        return loginRepository.save(existingUser);
     }
 
     @Transactional

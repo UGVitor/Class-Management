@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Horario;
 import com.kvy.demogerenciamentoaulas.service.HorarioService;
+import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,9 +34,10 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Horario> createHorario(@RequestBody Horario horario) {
+    public ResponseEntity<HorarioDTO> createHorario(@RequestBody HorarioDTO horarioDTO) {
+        Horario horario = horarioService.convertToEntity(horarioDTO);
         Horario savedHorario = horarioService.salvar(horario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedHorario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(horarioService.convertToDTO(savedHorario));
     }
 
     @Operation(summary = "Recuperar um horario pelo id", description = "Recuperar um horario pelo id",
@@ -46,9 +48,9 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<Horario> getHorarioById(@PathVariable Long id) {
+    public ResponseEntity<HorarioDTO> getHorarioById(@PathVariable Long id) {
         Horario horario = horarioService.buscarPorId(id);
-        return ResponseEntity.ok(horario);
+        return ResponseEntity.ok(horarioService.convertToDTO(horario));
     }
 
     @Operation(summary = "Atualizar horario", description = "Recurso para atualizar um horario pelo ID",
@@ -59,9 +61,10 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Horario> updateHorario(@PathVariable Long id, @RequestBody Horario horario) {
+    public ResponseEntity<HorarioDTO> updateHorario(@PathVariable Long id, @RequestBody HorarioDTO horarioDTO) {
+        Horario horario = horarioService.convertToEntity(horarioDTO);
         Horario updatedHorario = horarioService.editar(id, horario);
-        return ResponseEntity.ok(updatedHorario);
+        return ResponseEntity.ok(horarioService.convertToDTO(updatedHorario));
     }
 
     @Operation(summary = "Excluir Horario", description = "Recurso para excluir um Horario pelo ID",
@@ -83,8 +86,9 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Horario.class)))
             })
     @GetMapping
-    public ResponseEntity<List<Horario>> getHorarioAll() {
+    public ResponseEntity<List<HorarioDTO>> getHorarioAll() {
         List<Horario> horarios = horarioService.buscarTodos();
-        return ResponseEntity.ok(horarios);
+        List<HorarioDTO> horarioDTOs = horarios.stream().map(horarioService::convertToDTO).toList();
+        return ResponseEntity.ok(horarioDTOs);
     }
 }

@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.service.PerfilService;
+import com.kvy.demogerenciamentoaulas.web.dto.PerfilDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,9 +34,10 @@ public class PerfilController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Perfil> createPerfil(@RequestBody Perfil perfil) {
+    public ResponseEntity<PerfilDTO> createPerfil(@RequestBody PerfilDTO perfilDTO) {
+        Perfil perfil = perfilService.convertToEntity(perfilDTO);
         Perfil savedPerfil = perfilService.salvar(perfil);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPerfil);
+        return ResponseEntity.status(HttpStatus.CREATED).body(perfilService.convertToDTO(savedPerfil));
     }
 
     @Operation(summary = "Recuperar um perfil pelo id", description = "Recuperar um perfil pelo id",
@@ -46,9 +48,9 @@ public class PerfilController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<Perfil> getPerfilById(@PathVariable Long id) {
+    public ResponseEntity<PerfilDTO> getPerfilById(@PathVariable Long id) {
         Perfil perfil = perfilService.buscarPorId(id);
-        return ResponseEntity.ok(perfil);
+        return ResponseEntity.ok(perfilService.convertToDTO(perfil));
     }
 
     @Operation(summary = "Atualizar perfil", description = "Recurso para atualizar um perfil pelo ID",
@@ -59,9 +61,10 @@ public class PerfilController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Perfil> updatePerfil(@PathVariable Long id, @RequestBody Perfil perfil) {
+    public ResponseEntity<PerfilDTO> updatePerfil(@PathVariable Long id, @RequestBody PerfilDTO perfilDTO) {
+        Perfil perfil = perfilService.convertToEntity(perfilDTO);
         Perfil updatedPerfil = perfilService.editar(id, perfil);
-        return ResponseEntity.ok(updatedPerfil);
+        return ResponseEntity.ok(perfilService.convertToDTO(updatedPerfil));
     }
 
     @Operation(summary = "Excluir perfil", description = "Recurso para excluir um perfil pelo ID",
@@ -83,8 +86,9 @@ public class PerfilController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Perfil.class)))
             })
     @GetMapping
-    public ResponseEntity<List<Perfil>> getPerfilAll() {
+    public ResponseEntity<List<PerfilDTO>> getPerfilAll() {
         List<Perfil> perfis = perfilService.buscarTodos();
-        return ResponseEntity.ok(perfis);
+        List<PerfilDTO> perfilDTOS = perfis.stream().map(perfilService::convertToDTO).toList();
+        return ResponseEntity.ok(perfilDTOS);
     }
 }

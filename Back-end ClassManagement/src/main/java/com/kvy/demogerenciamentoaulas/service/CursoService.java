@@ -45,6 +45,7 @@ public class CursoService {
         return cursoRepository.findById(id)
                 .orElseThrow(() -> new CursoEntityNotFoundException(String.format("Curso id=%s não encontrado", id)));
     }
+
     @Transactional
     public Curso editar(Long id, CursoDTO cursoDTO) {
         Curso existingCurso = buscarPorId(id);
