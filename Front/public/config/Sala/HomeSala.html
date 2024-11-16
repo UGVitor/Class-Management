@@ -4,37 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Salas</title>
+    <title>Sala</title>
     <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
+          * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
             scroll-behavior: smooth;
         }
-
+ 
         a {
             text-decoration: none;
         }
-
+ 
         li {
             list-style: none;
         }
-
+ 
         body {
             background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
         }
-
+    
         .navbar {
             background-color: #019c5c;
             position: fixed;
             width: 100%;
             z-index: 100;
         }
-
+    
         header {
             display: flex;
             align-items: center;
@@ -42,38 +42,38 @@
             padding: 0 50px;
             height: 60px;
         }
-
+    
         header h1 a {
             color: #fff;
             font-size: 35px;
         }
-
+    
         nav {
             display: flex;
             gap: 30px;
             color: #000000;
             font-size: 19px;
         }
-
-        li a {
+    
+        li a{
             color: #fff;
             transition: ease .3s;
             cursor: pointer;
             padding: 0px 10px;
-            line-height: 40px;
+            line-height: 40px
         }
-
+    
         nav li {
             display: flex;
             align-items: center;
         }
-
+    
         nav li a:hover {
             background-color: #ffffffa8;
             color: #000;
             border-radius: 7px;
         }
-
+    
         nav button {
             color: #fff;
             padding: 10px 15px;
@@ -84,13 +84,13 @@
             font-size: 19px;
             line-height: 40px;
         }
-
+    
         nav button:hover {
             background-color: #C0D9E5;
             color: #019c5c;
             border-radius: 7px;
         }
-
+    
         .flatpickr-input {
             background-color: #fff;
             color: #000;
@@ -98,119 +98,126 @@
             padding: 5px;
             font-size: 16px;
         }
-
+    
         .container {
             display: flex;
         }
-
+    
         .filters-display {
-            margin-top: 70px;
+            margin-top: 70px; 
             padding: 20px;
             flex: 1;
-            display: flex;
-            justify-content: center;
+            display: flex; 
+            justify-content: center; 
         }
-
+    
         .filters-display h3 {
             margin-bottom: 15px;
             font-family: 'Arial', sans-serif;
-            color: #019c5c;
+            color: #34495E;
         }
-
+    
         .filters-display table {
-            width: 70%;
+            width: 30%;
             border-collapse: separate;
             border-spacing: 0;
-            margin: 20px auto;
+            margin: 20px auto; 
             background-color: #FFFFFF;
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
             overflow: hidden;
         }
-
+    
         .filters-display table th,
         .filters-display table td {
             padding: 12px 25px;
             text-align: left;
             font-family: 'Arial', sans-serif;
         }
-
+    
         .filters-display table th {
             background-color: #019c5c;
             color: #FFFFFF;
             font-weight: bold;
-            text-align: center;
+            text-align: center; 
+            padding: 12px;
         }
-
+    
         .filters-display table tr:nth-child(even) {
             background-color: #ECF0F1;
         }
-
+    
         .filters-display table tr:last-child td {
             border-bottom: none;
         }
-
+    
         .filters-display table tr:first-child th:first-child {
             border-top-left-radius: 12px;
         }
-
+    
         .filters-display table tr:first-child th:last-child {
             border-top-right-radius: 12px;
         }
-
+    
         .filters-display table tr:last-child td:first-child {
             border-bottom-left-radius: 12px;
         }
-
+    
         .filters-display table tr:last-child td:last-child {
             border-bottom-right-radius: 12px;
         }
-
+        .filters-display table th:nth-child(1) {
+            width: 65%; 
+        }
+    
+        .filters-display table th:nth-child(2) {
+            width: 40%; 
+        }
+    
         .button-group {
             display: flex;
             gap: 3px;
             justify-content: flex-end; 
         }
-
-        .delete-btn, .edit-btn {
+    
+        .delete-btn, .altera-btn {
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-
+    
         .delete-btn {
             background-color: #E74C3C;
             color: white;
         }
-
+    
         .delete-btn:hover {
             background-color: #C0392B;
         }
-
-        .edit-btn {
-            background-color: #3498DB;
+    
+        .altera-btn {
+            background-color: #019c5c;
             color: white;
         }
-
-        .edit-btn:hover {
-            background-color: #2980B9;
+    
+        .altera-btn:hover {
+            background-color: #019c5c;
         }
-
-        .delete-btn i, .edit-btn i {
+    
+        .delete-btn i, .altera-btn i {
             margin: 0;
             font-size: 16px;
             color: white;
         }
     </style>
-
 </head>
 <body>
     <div id="app" class="container">
         <div class="navbar">
             <header>
-                <h1><a href="../../index2.html">Salas</a></h1>
+                <h1><a href="../../index2.html">Sala</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
                     <li><a href="CadastroSala.html">Criar</a></li>
@@ -222,23 +229,21 @@
             <table v-if="currentEntity === 'salas'">
                 <thead>
                     <tr>
-                       
-                        <th>Tipo</th>
-                        
+                        <th>Nome da Sala</th>
+                        <th>Tipo de Sala</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="salas in data" :key="salas.id">
-                        
-                        <td>{{ salas.id }}</td>
-                        
+                    <tr v-for="sala in data" :key="sala.id">
+                        <td>{{ sala.sala }}</td>
+                        <td>{{ sala.tipoSalaNome }}</td>
                         <td>
                             <div class="button-group">
-                                <button @click="deleteTipoSala(salas.id)" class="delete-btn">
+                                <button @click="deleteSala(sala.id)" class="delete-btn">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
-                                <button @click="editSala(salas.id)" class="edit-btn">
+                                <button @click="editSala(sala.id)" class="altera-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>
                             </div>
@@ -249,7 +254,6 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
@@ -257,16 +261,14 @@
             data() {
                 return {
                     data: [],
-                    currentEntity: 'salas',
+                    currentEntity: 'salas', // Entidade ativa
                 };
             },
             methods: {
                 async fetchData(endpoint) {
                     try {
                         const response = await fetch(endpoint);
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
+                        if (!response.ok) throw new Error('Erro ao buscar dados');
                         return await response.json();
                     } catch (error) {
                         console.error('Erro ao buscar dados:', error);
@@ -276,34 +278,31 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        cursos: 'http://localhost:8081/api/v1/curso'
+                        salas: 'http://localhost:8081/api/v1/salas',
                     };
-
                     this.data = await this.fetchData(endpoints[entity]);
                 },
-                async deleteCurso(id) {
-                    if (confirm("Tem certeza que deseja deletar este curso?")) {
+                async deleteSala(id) {
+                    if (confirm("Tem certeza que deseja excluir esta sala?")) {
                         try {
-                            const response = await fetch(`http://localhost:8081/api/v1/curso/${id}`, {
-                                method: 'DELETE',
-                            });
+                            const response = await fetch(`http://localhost:8081/api/v1/salas/${id}`, { method: 'DELETE' });
                             if (response.ok) {
-                                alert("Curso deletada com sucesso!");
-                                this.data = this.data.filter(curso => curso.id !== id); 
+                                alert("Sala excluída com sucesso!");
+                                this.data = this.data.filter(sala => sala.id !== id);
                             } else {
-                                alert("Erro ao deletar a curso.");
+                                alert("Erro ao excluir a sala.");
                             }
                         } catch (error) {
-                            console.error('Erro ao deletar a curso:', error);
+                            console.error('Erro ao excluir sala:', error);
                         }
                     }
                 },
-                editCurso(id) {
-                    window.location.href = `alterarCurso.html?id=${id}`;
+                editSala(id) {
+                    window.location.href = `AlterarSala.html?id=${id}`;
                 }
             },
             mounted() {
-                this.showAll('cursos');
+                this.showAll('salas');
             }
         });
     </script>
