@@ -22,11 +22,11 @@
             background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
         }
         .navbar {
-            background-color: #019c5c; ;
+            background-color: #019c5c;
             position: fixed;
             width: 100%;
             z-index: 100;
-            height: 60px; 
+            height: 60px;
         }
         header {
             display: flex;
@@ -60,7 +60,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 60px); 
+            height: calc(100vh - 60px);
             margin-top: 0;
             padding: 20px;
             text-align: center;
@@ -86,7 +86,7 @@
             color: #555;
             font-weight: bold;
         }
-        input[type="text"], input[type="email"], input[type="password"] {
+        input[type="text"] {
             width: 100%;
             padding: 8px;
             margin: 4px 0 10px 0;
@@ -96,7 +96,7 @@
         }
         button[type="submit"] {
             width: 100%;
-            background-color: #019c5c; 
+            background-color: #019c5c;
             color: white;
             padding: 10px;
             border: none;
@@ -119,11 +119,11 @@
         </header>
     </div>
     <div id="app">
-        <form @submit.prevent="updateSemestre">
-            <h2>Alterar Tipo Salas</h2>
+        <form @submit.prevent="updateTipoSala">
+            <h2>Alterar Tipo de Sala</h2>
             <div class="form-group">
-                <label for="semestre">Tipo de Sala:</label>
-                <input type="text" id="semestre" v-model="semestre" required />
+                <label for="tipoSala">Tipo de Sala:</label>
+                <input type="text" id="tipoSala" v-model="tipoSala" required />
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Tipo da Sala</button>
@@ -136,37 +136,49 @@
         new Vue({
             el: '#app',
             data: {
-                semestre: '' 
+                tipoSala: ''
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id');
+                this.fetchTipoSala();
             },
             methods: {
-                updateSemestre() {
-                    const semestreData = { semestre: this.semestre };
-
-                    // Faz a requisição para atualizar o Semestre usando o ID da URL
-                    fetch(`http://localhost:8081/api/v1/semestres/${this.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(semestreData),
-                    })
-                    .then(response => {
+                async fetchTipoSala() {
+                    try {
+                        const response = await fetch(`http://localhost:8081/api/v1/tiposalas/${this.id}`);
                         if (response.ok) {
-                            alert('Semestre alterado com sucesso!');
-                            this.semestre = ''; 
-                            window.location.href = 'Home.html';
+                            const data = await response.json();
+                            this.tipoSala = data.tipoSala;
                         } else {
-                            throw new Error('Erro ao alterar o semestre');
+                            alert('Erro ao carregar o tipo de sala.');
                         }
-                    })
-                    .catch(error => {
+                    } catch (error) {
                         console.error('Erro:', error);
-                        alert('Erro ao alterar o semestre, tente novamente.');
-                    });
+                    }
+                },
+                async updateTipoSala() {
+                    const tipoSalaData = { tipoSala: this.tipoSala };
+
+                    try {
+                        const response = await fetch(`http://localhost:8081/api/v1/tiposalas/${this.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(tipoSalaData),
+                        });
+
+                        if (response.ok) {
+                            alert('Tipo de Sala alterado com sucesso!');
+                            window.location.href = 'HomeTipoSala.html';
+                        } else {
+                            throw new Error('Erro ao alterar o tipo de sala.');
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Erro ao alterar o tipo de sala, tente novamente.');
+                    }
                 }
             }
         });
