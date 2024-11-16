@@ -6,8 +6,9 @@ import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
-import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
-import com.kvy.demogerenciamentoaulas.web.dto.LoginSenhaDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.CreateLoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginSenhaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,10 @@ public class LoginService {
         return new LoginDTO(login.getId(), login.getLogin(), login.getPerfil().getId());
     }
 
+    public LoginSenhaDTO convertToSenhaDTO(String senhaAtual, String novaSenha, String confirmaSenha){
+        return new LoginSenhaDTO(senhaAtual, novaSenha, confirmaSenha);
+    }
+
     public Login convertToEntity(LoginDTO loginDTO) {
         Login login = new Login();
         login.setId(loginDTO.getId());
@@ -38,9 +43,19 @@ public class LoginService {
         return login;
     }
 
-    public LoginSenhaDTO convertToSenhaDTO(String senhaAtual, String novaSenha, String confirmaSenha){
-        return new LoginSenhaDTO(senhaAtual, novaSenha, confirmaSenha);
+    public Login convertToEntityCreate(CreateLoginDTO createLoginDTO) {
+        Login login = new Login();
+        login.setLogin(createLoginDTO.getLogin());
+        login.setPassword(createLoginDTO.getPassword());
+
+        Perfil perfil = perfilRepository.findById(createLoginDTO.getPerfilId())
+                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + createLoginDTO.getPerfilId()));
+        login.setPerfil(perfil);
+
+        return login;
     }
+
+
 
     @Transactional
     public Login salvar(Login login) {
@@ -89,5 +104,11 @@ public class LoginService {
     @Transactional(readOnly = true)
     public List<LoginProjection> buscarTodos() {
         return loginRepository.findAllLoginsWithPerfilNome();
+    }
+
+
+    public boolean validateLogin(String login, String password) {
+        Login user = loginRepository.findByLogin(login);
+        return user != null && user.getPassword().equals(password);
     }
 }

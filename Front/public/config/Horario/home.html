@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Horário</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../style/telasHomes.css">
+    
+</head>
+<body>
+    <div id="app" class="container">
+
+        <div class="navbar">
+            <header>
+                <h1><a href="../../index2.html">Horário</a></h1>
+                <nav>
+                    <li><a href="../../index2.html">Home Principal</a></li>
+                    <li><a href="cadastroHorario.html">Criar</a></li>
+                </nav>
+            </header>
+        </div>
+ 
+
+        <div class="filters-display">
+            <table v-if="currentEntity === 'horarios'">
+                <thead>
+                    <tr>
+                        <th>Hora Início</th>
+                        <th>Hora Término</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="horario in data" :key="horario.id">
+                        <td>{{ horario.horaInicio }}</td>
+                        <td>{{ horario.horaTermino }}</td>
+                        <td>
+                            <div class="button-group">
+                                <button @click="deleteHorario(horario.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editHorario(horario.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+ 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+        el: '#app',
+        data() {
+            return {
+                data: [], 
+                currentEntity: 'horarios', 
+            };
+        },
+        methods: {
+            async fetchData(endpoint) {
+                try {
+                    const response = await fetch(endpoint);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error('Erro ao buscar dados:', error);
+                    return [];
+                }
+            },
+            async showAll(entity) {
+                this.currentEntity = entity;
+                const endpoints = {
+                    horarios: 'http://localhost:8081/api/v1/horarios' // Atualizado para horários
+                };
+                this.data = await this.fetchData(endpoints[entity]);
+            },
+            async deleteHorario(id) { // Alterado de deletePerfil para deleteHorario
+                if (confirm("Tem certeza que deseja deletar este horário?")) {
+                    try {
+                        const response = await fetch(`http://localhost:8081/api/v1/horarios/${id}`, {
+                            method: 'DELETE',
+                        });
+                        if (response.ok) {
+                            alert("Horário deletado com sucesso!");
+                            this.data = this.data.filter(horario => horario.id !== id); 
+                        } else {
+                            alert("Erro ao deletar o horário.");
+                        }
+                    } catch (error) {
+                        console.error('Erro ao deletar o horário:', error);
+                    }
+                }
+            },
+            editHorario(id) { // Alterado de editPerfil para editHorario
+                window.location.href = `alterarHorario.html?id=${id}`;
+            }
+        },
+        mounted(){
+            this.showAll('horarios'); // Atualizado para carregar horários
+        }
+    });
+    </script>
+</body>
+</html>

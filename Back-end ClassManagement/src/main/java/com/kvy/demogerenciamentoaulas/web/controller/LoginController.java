@@ -3,8 +3,10 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.service.LoginService;
-import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
-import com.kvy.demogerenciamentoaulas.web.dto.LoginSenhaDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.CreateLoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginAuthenticateDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginSenhaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,8 +38,8 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<LoginDTO> create(@RequestBody LoginDTO loginDTO) {
-        Login login = loginService.convertToEntity(loginDTO);
+    public ResponseEntity<LoginDTO> create(@RequestBody CreateLoginDTO createLoginDTO) {
+        Login login = loginService.convertToEntityCreate(createLoginDTO);
         Login savedLogin  = loginService.salvar(login);
         return ResponseEntity.status(HttpStatus.CREATED).body(loginService.convertToDTO(savedLogin));
     }
@@ -107,5 +109,23 @@ public class LoginController {
     public ResponseEntity<List<LoginProjection>> getAllLogins() {
         List<LoginProjection> logins = loginService.buscarTodos();
         return ResponseEntity.ok(logins);
+    }
+
+
+    @Operation(summary = "Autenticar login", description = "Valida o login e senha do usuário.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Login bem-sucedido."),
+                    @ApiResponse(responseCode = "401", description = "Login ou senha inválidos.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
+    @PostMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestBody LoginAuthenticateDTO loginAuthenticateDTO) {
+        boolean isAuthenticated = loginService.validateLogin(loginAuthenticateDTO.getLogin(), loginAuthenticateDTO.getSenha());
+
+        if (isAuthenticated) {
+            return ResponseEntity.ok("Login aprovado");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login ou senha incorretos.");
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.kvy.demogerenciamentoaulas.web.dto;
+package com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

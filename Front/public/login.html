@@ -182,32 +182,32 @@
     
     <script>
         async function login() {
-            const loginInput = document.getElementById('login').value;
-            const passwordInput = document.getElementById('password').value;
-            const errorMessage = document.getElementById('error-message');
+        const loginInput = document.getElementById('login').value;
+        const passwordInput = document.getElementById('password').value;
+        const errorMessage = document.getElementById('error-message');
 
-            try {
-                const response = await fetch('http://localhost:8081/api/v1/logins');
+        try {
+            const response = await fetch('http://localhost:8081/api/v1/logins/authenticate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ login: loginInput, senha: passwordInput })
+            });
 
-                if (!response.ok) {
-                    throw new Error(`Erro ao obter dados: ${response.status}`);
-                }
-
-                const logins = await response.json();
-
-                const user = logins.find(user => user.login === loginInput);
-
-                if (user && user.password === passwordInput) {
-                    window.location.href = 'index2.html';
-                } else {
-                    errorMessage.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('Erro na autenticação:', error);
-                errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+            if (response.ok) {
+                window.location.href = 'index2.html';
+            } else {
+                const errorText = await response.text();
+                errorMessage.textContent = errorText;
                 errorMessage.style.display = 'block';
             }
+        } catch (error) {
+            console.error('Erro na autenticação:', error);
+            errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+            errorMessage.style.display = 'block';
         }
+    }
     </script>
 </body>
 </html>

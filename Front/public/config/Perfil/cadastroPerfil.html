@@ -3,29 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Periodo</title>
+    <title>Cadastro Perfil</title>
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
-    <link rel="stylesheet" href="../../style/telasCadastro.css">
 </head>
 <body>
     <div class="navbar">
       <header>
-          <h1><a href="#">Periodo</a></h1>
+          <h1><a href="#">Perfil</a></h1>
           <nav>
               <li><a href="home.html">Home</a></li>
           </nav>
       </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createPeriodo">
-          <h2>Criar Periodo</h2>
+        <form @submit.prevent="createPerfil">
+          <h2>Criar Perfil</h2>
           <div class="form-group">
-            <label for="nome">Nome do Periodo:</label>
-            <input type="text" v-model="periodos.nome" required />
+            <label for="nome">Nome do Perfil:</label>
+            <input type="text" v-model="perfis.nome" required />
           </div>
           <div class="form-group">
-            <button type="submit">Criar Periodo</button>
+            <button type="submit">Criar Perfil</button>
           </div>
         </form>
     </div>
@@ -35,41 +34,41 @@
         new Vue({
             el: '#app',
             data: {
-                periodos: {
+                perfis: {
                     nome: ''                   
                 }
             },
             methods: {
-                createPeriodo() {
-                    const periodoData = {
-                        nome: this.periodos.nome,
+                createPerfil() {
+                    const perfilData = {
+                        nome: this.perfis.nome,
                     };
 
-                    fetch('http://localhost:8081/api/v1/periodos', {
+                    fetch('http://localhost:8081/api/v1/perfis', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(periodoData)
+                        body: JSON.stringify(perfilData)
                     })
                     .then(response => {
                         if (response.ok) {
                             return response.json();
                         }
-                        throw new Error('Erro ao criar o periodo');
+                        throw new Error('Erro ao criar o perfil');
                     })
                     .then(data => {
-                        alert('Periodo criado com sucesso!');
+                        alert('Perfil criado com sucesso!');
                         this.resetForm();
                         window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao criar o periodo, tente novamente.');
+                        alert('Erro ao criar o perfil, tente novamente.');
                     });
                 },
                 resetForm() {
-                    this.periodos = {
+                    this.perfis = {
                         nome: '',
                     };
                 }

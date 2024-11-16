@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alterar Periodo</title>
+    <title>Alterar Perfil</title>
     <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="../../style/telasAlterar.css">
 </head>
 <body>
     <div class="navbar">
         <header>
-            <h1><a href="#">Periodo</a></h1>
+            <h1><a href="#">Perfil</a></h1>
             <nav>
                 <li><a href="home.html">Home</a></li>
             </nav>
         </header>
     </div>
     <div id="app">
-        <form @submit.prevent="updatePeriodo">
-            <h2>Alterar Periodo</h2>
+        <form @submit.prevent="updatePerfil">
+            <h2>Alterar Perfil</h2>
             <div class="form-group">
-                <label for="periodo">Periodo:</label>
-                <input type="text" id="periodo" v-model="nome" required />
+                <label for="perfil">Nome do Perfil:</label>
+                <input type="text" id="perfil" v-model="nome" required />
             </div>
             <div class="form-group">
-                <button type="submit">Alterar Periodo</button>
+                <button type="submit">Alterar Perfil</button>
             </div>
         </form>
     </div>
@@ -38,32 +38,30 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id'); 
             },
             methods: {
-                updatePeriodo() {
-                    const periodoData = { nome: this.nome };
-
-                    // Faz a requisição para atualizar a modalidade usando o ID da URL
-                    fetch(`http://localhost:8081/api/v1/periodos/${this.id}`, {
+                updatePerfil() {
+                    const perfilData = { nome: this.nome };
+                    fetch(`http://localhost:8081/api/v1/perfis/${this.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(periodoData),
+                        body: JSON.stringify(perfilData),
                     })
                     .then(response => {
                         if (response.ok) {
-                            alert('Periodo alterado com sucesso!');
+                            alert('Perfil alterada com sucesso!');
                             this.nome = ''; 
                             window.location.href = 'home.html';
                         } else {
-                            throw new Error('Erro ao alterar o periodo');
+                            throw new Error('Erro ao alterar a perfil');
                         }
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao alterar o periodo, tente novamente.');
+                        alert('Erro ao alterar a perfil, tente novamente.');
                     });
                 }
             }

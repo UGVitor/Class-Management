@@ -3,29 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro Periodo</title>
+    <title>Cadastro Horário</title>
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
-    <link rel="stylesheet" href="../../style/telasCadastro.css">
 </head>
 <body>
     <div class="navbar">
       <header>
-          <h1><a href="#">Periodo</a></h1>
+          <h1><a href="#">Horário</a></h1>
           <nav>
               <li><a href="home.html">Home</a></li>
           </nav>
       </header>
     </div>
     <div id="app">
-        <form @submit.prevent="createPeriodo">
-          <h2>Criar Periodo</h2>
+        <form @submit.prevent="createHorario">
+          <h2>Criar Horário</h2>
           <div class="form-group">
-            <label for="nome">Nome do Periodo:</label>
-            <input type="text" v-model="periodos.nome" required />
+            <label for="horaInicio">Hora de Início:</label>
+            <input type="time" v-model="horarios.horaInicio" required />
           </div>
           <div class="form-group">
-            <button type="submit">Criar Periodo</button>
+            <label for="horaTermino">Hora de Término:</label>
+            <input type="time" v-model="horarios.horaTermino" required />
+          </div>
+          <div class="form-group">
+            <button type="submit">Criar Horário</button>
           </div>
         </form>
     </div>
@@ -35,42 +38,45 @@
         new Vue({
             el: '#app',
             data: {
-                periodos: {
-                    nome: ''                   
+                horarios: {
+                    horaInicio: '',
+                    horaTermino: ''
                 }
             },
             methods: {
-                createPeriodo() {
-                    const periodoData = {
-                        nome: this.periodos.nome,
+                createHorario() {
+                    const horarioData = {
+                        horaInicio: this.horarios.horaInicio,
+                        horaTermino: this.horarios.horaTermino
                     };
 
-                    fetch('http://localhost:8081/api/v1/periodos', {
+                    fetch('http://localhost:8081/api/v1/horarios', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(periodoData)
+                        body: JSON.stringify(horarioData)
                     })
                     .then(response => {
                         if (response.ok) {
                             return response.json();
                         }
-                        throw new Error('Erro ao criar o periodo');
+                        throw new Error('Erro ao criar o horário');
                     })
                     .then(data => {
-                        alert('Periodo criado com sucesso!');
+                        alert('Horário criado com sucesso!');
                         this.resetForm();
-                        window.location.href = 'home.html';
+                        window.location.href = 'home.html';  // Redireciona para a home após criação
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao criar o periodo, tente novamente.');
+                        alert('Erro ao criar o horário, tente novamente.');
                     });
                 },
                 resetForm() {
-                    this.periodos = {
-                        nome: '',
+                    this.horarios = {
+                        horaInicio: '',
+                        horaTermino: ''
                     };
                 }
             }
