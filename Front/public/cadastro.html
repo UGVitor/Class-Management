@@ -93,6 +93,35 @@
             box-shadow: 0px 8px 20px rgba(0, 137, 123, 0.5);
         }
 
+        .login-container2 select {
+            width: 100%;
+            padding: 0.75rem 2.5rem; /* Adiciona espaço para o ícone */
+            margin-bottom: 0.0rem;
+            border: 1px solid #d1d9e6;
+            border-radius: 4px;
+            background-color: #f7fafc;
+            appearance: none; /* Remove o estilo padrão do select */
+            -webkit-appearance: none; /* Remove o estilo padrão no Safari */
+            transition: border-color 0.3s; /* Transição suave no foco */
+            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/caret-down.svg');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+
+        .login-container2 select:focus {
+            border-color: #37baad; /* Muda a cor da borda no foco */
+            outline: none; /* Remove o contorno padrão do navegador */
+        }
+
+        .login-container2 .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555; /* Cor do texto da label */
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         .error-message {
             color: red;
             margin-top: 10px;
@@ -107,13 +136,32 @@
         .input-group i {
             position: absolute;
             left: 15px;
-            top: 42%;
+            top: 45%;
             transform: translateY(-50%);
             color: #d1d9e6; /* Cor do ícone */
             pointer-events: none; /* Cor do ícone */
         }
 
-        /* Estilo para o "ou" */
+        .input-group .iconss {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #d1d9e6; /* Cor do ícone */
+            pointer-events: none; /* Ícone não interfere no clique */
+            transition: transform 0.3s ease; /* Suaviza a rotação */
+        }
+
+        .input-group select:focus + .iconss {
+            transform: translateY(-50%) rotate(90deg); /* Rotação de 90 graus */
+            color: #37baad; /* Opcional: muda a cor do ícone */
+        }
+
+       
+        .input-group select:hover + .iconss {
+            color: #37baad; 
+        }
+
         .or-divider {
             text-align: center;
             margin: 1.5rem 0;
@@ -166,27 +214,33 @@
                 <form @submit.prevent="createLogin">
                     <h2>Cadastro</h2>
                     <div class="input-group">
-                        <i class="fas fa-user iconss"></i>
+                        <i class="fas fa-user"></i>
                         <input type="text" id="login" placeholder="Login" v-model="logins.login" required>
                     </div>
                     <div class="input-group">
-                        <i class="fas fa-lock iconss"></i>
+                        <i class="fas fa-lock"></i>
                         <input type="password" id="password" placeholder="Senha" v-model="logins.password" required>
                     </div>
                     <div class="input-group">
-                        <i class="fas fa-lock iconss"></i>
+                        <i class="fas fa-lock"></i>
                         <input type="password" id="confirm-password" placeholder="Confirme a Senha" v-model="logins.confirmPassword" required>
                     </div>
-                    <button onclick="cadastrar()">Cadastrar</button>
+                    <div class="input-group">
+                        <select v-model="logins.perfil" required>
+                            <option disabled value="">Selecione um Perfil</option>
+                            <option v-for="perfil in perfis" :key="perfil.id" :value="perfil.id">{{ perfil.nome }}</option>
+                        </select>
+                        <i class="fa-solid fa-arrow-right iconss"></i>
+                    </div>
+                    <button type="submit">Cadastrar</button>
                     <div class="or-divider">
                         <span>ou</span>
                     </div>
-                    <button onclick="window.location.href='login.html'">Voltar para Login</button>
+                    <button type="button" @click="goToLoginPage">Voltar para Login</button>
                 </form>
             </div>
         </div>
     </div>
-    
     
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
@@ -197,19 +251,40 @@
                     login: '',
                     password: '',
                     confirmPassword: '',
-                }
+                    perfil: ''
+                },
+                perfis: []
+            },
+            created() {
+                this.fetchPerfis(); // Carrega os perfis ao iniciar o componente
             },
             methods: {
+                fetchPerfis() {
+                    fetch('http://localhost:8081/api/v1/perfis')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.perfis = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar perfis:', error);
+                        });
+                },
                 createLogin() {
-                    const loginData = {
-                        login: this.logins.login,
-                        password: this.logins.password,
-                    };
-
                     if (this.logins.password !== this.logins.confirmPassword) {
                         alert('As senhas não coincidem!');
                         return;
                     }
+
+                    if (!this.logins.perfil) {
+                        alert('Por favor, selecione um perfil!');
+                        return;
+                    }
+
+                    const loginData = {
+                        login: this.logins.login,
+                        password: this.logins.password,
+                        perfilId: this.logins.perfil
+                    };
 
                     fetch('http://localhost:8081/api/v1/logins', {
                         method: 'POST',
@@ -224,18 +299,26 @@
                         }
                         throw new Error('Erro ao criar o login');
                     })
-                    .then(data => {
+                    .then(() => {
                         alert('Login criado com sucesso!');
-                        this.logins = {
-                                login: '',
-                                password: '',
-                        };
+                        this.resetForm();
                         window.location.href = 'login.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);
                         alert('Erro ao criar o login, tente novamente.');
                     });
+                },
+                resetForm() {
+                    this.logins = {
+                        login: '',
+                        password: '',
+                        confirmPassword: '',
+                        perfil: ''
+                    };
+                },
+                goToLoginPage() {
+                    window.location.href = 'login.html';
                 }
             }
         });
