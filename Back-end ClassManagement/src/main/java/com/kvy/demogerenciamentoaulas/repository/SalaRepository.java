@@ -1,6 +1,6 @@
 package com.kvy.demogerenciamentoaulas.repository;
 
-import com.kvy.demogerenciamentoaulas.entity.Curso;
+
 import com.kvy.demogerenciamentoaulas.entity.Sala;
 import com.kvy.demogerenciamentoaulas.repository.Projection.SalaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;

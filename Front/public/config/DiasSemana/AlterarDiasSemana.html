@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Dia da Semana</title>
+    <link rel="icon" href="../../img/icon.png">
+    <style>
+         * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        a {
+            text-decoration: none;
+        }
+        li {
+            list-style: none;
+        }
+        body {
+            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
+        }
+        .navbar {
+            background-color: #019c5c;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            height: 60px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            height: 60px;
+        }
+        header h1 a {
+            color: #fff;
+            font-size: 35px;
+        }
+        nav {
+            display: flex;
+            gap: 30px;
+            color: #000000;
+            font-size: 19px;
+        }
+        li a {
+            color: #fff;
+            padding: 10px;
+            transition: ease .3s;
+            cursor: pointer;
+        }
+        nav li a:hover {
+            background-color: #ffffffa8;
+            color: #000;
+            border-radius: 7px;
+        }
+        #app {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+            margin-top: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        form {
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0 10px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            width: 100%;
+            background-color: #019c5c;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #3b577d;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <header>
+            <h1><a href="#">Dias da Semana</a></h1>
+            <nav>
+                <li><a href="HomeDiasSemana.html">Home</a></li>
+            </nav>
+        </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="updateDiaSemana">
+            <h2>Alterar Dia da Semana</h2>
+            <div class="form-group">
+                <label for="diaSemana">Dia da Semana:</label>
+                <input type="text" id="diaSemana" v-model="diaSemana" required />
+            </div>
+            <div class="form-group">
+                <button type="submit">Alterar Dia da Semana</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                diaSemana: '',
+                id: null
+            },
+            created() {
+                const params = new URLSearchParams(window.location.search);
+                this.id = params.get('id');
+                this.fetchDiaSemana();
+            },
+            methods: {
+                async fetchDiaSemana() {
+                    try {
+                        const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            this.diaSemana = data.dia; 
+                        } else {
+                            alert('Erro ao carregar o Dia da Semana.');
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                    }
+                },
+                async updateDiaSemana() {
+                    const diaSemanaData = { dia: this.diaSemana };
+
+                    try {
+                        const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(diaSemanaData),
+                        });
+
+                        if (response.ok) {
+                            alert('Dia da Semana alterado com sucesso!');
+                            window.location.href = 'HomeDiasSemana.html';
+                        } else {
+                            throw new Error('Erro ao alterar o Dia da Semana.');
+                        }
+                    } catch (error) {
+                        console.error('Erro:', error);
+                        alert('Erro ao alterar o Dia da Semana, tente novamente.');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
