@@ -91,23 +91,32 @@
 </head>
 <body>
     <div class="navbar">
-      <header>
-          <h1><a href="#">Sala</a></h1>
-          <nav>
-              <li><a href="HomeSala.html">Home</a></li>
-          </nav>
-      </header>
+        <header>
+            <h1><a href="#">Sala</a></h1>
+            <nav>
+                <li><a href="HomeSala.html">Home</a></li>
+            </nav>
+        </header>
     </div>
-    <div id="app">
-        <form @submit.prevent="createSemestre">
-          <h2>Criar Sala</h2>
-          <div class="form-group">
-            <label for="semestre">Nome da Sala:</label>
-            <input type="text" v-model="semestres.semestre" required />
-          </div>
-          <div class="form-group">
-            <button type="submit">Criar Sala</button>
-          </div>
+    <div id="app" style="padding: 20px;">
+        <form @submit.prevent="createSala">
+            <h2>Criar Sala</h2>
+            <div class="form-group">
+                <label for="sala">Nome da Sala:</label>
+                <input type="text" id="sala" v-model="sala.sala" required />
+            </div>
+            <div class="form-group">
+                <label for="tipoSala">Tipo de Sala:</label>
+                <select id="tipoSala" v-model="sala.tipoSala" required>
+                    <option disabled value="">Selecione um Tipo de Sala</option>
+                    <option v-for="tipo in tiposSalas" :key="tipo.id" :value="tipo.id">
+                        {{ tipo.tipoSala }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Criar Sala</button>
+            </div>
         </form>
     </div>
 
@@ -115,46 +124,71 @@
     <script>
         new Vue({
             el: '#app',
-            data: {
-                semestres: {
-                    semestre: ''                   
-                }
+            data() {
+                return {
+                    sala: {
+                        sala: '',
+                        tipoSala: '',
+                    },
+                    tiposSalas: [],
+                };
+            },
+            created() {
+                this.fetchTiposSala();
             },
             methods: {
-                createSemestre() {
-                    const semestreData = {
-                        semestre: this.semestres.semestre,
+                fetchTiposSala() {
+                    fetch('http://localhost:8081/api/v1/tiposalas')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao carregar os tipos de sala');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            this.tiposSalas = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar os tipos de sala:', error);
+                            alert('Não foi possível carregar os tipos de sala.');
+                        });
+                },
+                createSala() {
+                    const salaData = {
+                        sala: this.sala.sala,
+                        tipoSala: this.sala.tipoSala,
                     };
 
-                    fetch('http://localhost:8081/api/v1/semestres', {
+                    fetch('http://localhost:8081/api/v1/salas', {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(semestreData)
+                        body: JSON.stringify(salaData),
                     })
-                    .then(response => {
-                        if (response.ok) {
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao criar a sala');
+                            }
                             return response.json();
-                        }
-                        throw new Error('Erro ao criar o semestre');
-                    })
-                    .then(data => {
-                        alert('Semestre criado com sucesso!');
-                        this.resetForm();
-                        window.location.href = 'Home.html';
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar o semestre, tente novamente.');
-                    });
+                        })
+                        .then(() => {
+                            alert('Sala criada com sucesso!');
+                            this.resetForm();
+                            window.location.href = 'HomeSala.html';
+                        })
+                        .catch(error => {
+                            console.error('Erro ao criar a sala:', error);
+                            alert('Erro ao criar a sala. Tente novamente.');
+                        });
                 },
                 resetForm() {
-                    this.semestres = {
-                        semestre: '',
+                    this.sala = {
+                        sala: '',
+                        tipoSala: '',
                     };
-                }
-            }
+                },
+            },
         });
     </script>
 </body>

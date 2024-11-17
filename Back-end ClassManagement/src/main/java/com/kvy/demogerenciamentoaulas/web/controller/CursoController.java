@@ -105,14 +105,4 @@ public class CursoController {
         return ResponseEntity.ok(cursos);
     }
 
-    /*
-    public List<CursoResponseDTO> listarCursos() {
-        List<Curso> cursos = cursoRepository.findAll();
-        return cursos.stream()
-                .map(curso -> new CursoResponseDTO(
-                        curso.getId(),
-                        curso.getCurso(),
-                        curso.getModalidade() != null ? curso.getModalidade().getNome() : "N/A")) // Ou outra lógica apropriada
-                .collect(Collectors.toList());
-    }*/
 }

@@ -34,7 +34,7 @@ public class CursoService {
                     .orElseThrow(() -> new IllegalArgumentException("Modalidade não encontrada"));
             curso.setModalidade(modalidade);
         } else {
-            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo"); // Adiciona uma validação adicional
+            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo");
         }
 
         return cursoRepository.save(curso);
