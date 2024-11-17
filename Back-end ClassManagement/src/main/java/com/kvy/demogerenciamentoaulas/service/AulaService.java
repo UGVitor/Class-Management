@@ -9,6 +9,7 @@ import com.kvy.demogerenciamentoaulas.exception.*;
 import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
+import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
 import com.kvy.demogerenciamentoaulas.repository.SalaRepository;
 import com.kvy.demogerenciamentoaulas.repository.DiaSemanaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
@@ -118,17 +119,8 @@ public class AulaService {
     }
 
     @Transactional(readOnly = true)
-    public List<AulaDTO> buscarTodos() {
-        return aulaRepository.findAll().stream()
-                .map(aula -> new AulaDTO(
-                        aula.getId(),
-                        aula.getDescricao(),
-                        aula.getDisciplina() != null ? aula.getDisciplina().getId() : null,
-                        aula.getHorario() != null ? aula.getHorario().getId() : null,
-                        aula.getSala() != null ? aula.getSala().getId() : null,
-                        aula.getDiaSemana() != null ? aula.getDiaSemana().getId() : null
-                ))
-                .collect(Collectors.toList());
+    public List<AulaProjection> buscarTodos() {
+        return aulaRepository.findAllAulasWithDisciplinaNomeAndHorario();
     }
 
     // Métodos auxiliares para busca

@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Aula;
+import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
 import com.kvy.demogerenciamentoaulas.service.AulaService;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
@@ -100,8 +101,8 @@ public class AulaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaDTO.class)))
             })
     @GetMapping
-    public ResponseEntity<List<AulaDTO>> getAllAulas() {
-        List<AulaDTO> aulas = aulaService.buscarTodos();
+    public ResponseEntity<List<AulaProjection>> getAllAulas() {
+        List<AulaProjection> aulas = aulaService.buscarTodos();
         return ResponseEntity.ok(aulas);
     }
 }
