@@ -38,7 +38,9 @@ public class AulaController {
             })
     @PostMapping
     public ResponseEntity<Aula> createAula(@RequestBody AulaDTO aulaDTO) {
+
         try {
+            System.out.println("aulaDTO recebido: " + aulaDTO);
             Aula savedAula = aulaService.salvar(aulaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
         } catch (IllegalArgumentException e) {

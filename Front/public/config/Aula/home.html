@@ -251,11 +251,11 @@
                 </thead>
                 <tbody>
                     <tr v-for="aula in data" :key="aula.id">
-                        <td>{{ aula.nomeDescrição }}</td>
-                        <td>{{ aula.nomeDisciplina }}</td>
-                        <td>{{ aula.nomeDiasdaSemana}}</td>
-                        <td>{{ aula.nomeHorário}}</td>
-                        <td>{{ aula.nomeSala }}</td>
+                        <td>{{ aula.descricao }}</td>
+                        <td>{{ aula.disciplinaNome }}</td>
+                        <td>{{ aula.diaSemana }}</td>
+                        <td>{{ aula.horario }}</td>
+                        <td>{{ aula.sala }}</td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteAula(aula.id)" class="delete-btn">
@@ -272,7 +272,6 @@
         </div>
     </div>
 
-   
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
@@ -300,15 +299,14 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        aula: 'http://localhost:8081/api/v1/aula'
+                        aula: 'http://localhost:8081/api/v1/aulas'
                     };
-    
                     this.data = await this.fetchData(endpoints[entity]);
                 },
                 async deleteAula(id) {
                     if (confirm("Tem certeza que deseja deletar esta aula?")) {
                         try {
-                            const response = await fetch(`http://localhost:8081/api/v1/aula/${id}`, {
+                            const response = await fetch(`http://localhost:8081/api/v1/aulas/${id}`, {
                                 method: 'DELETE',
                             });
                             if (response.ok) {

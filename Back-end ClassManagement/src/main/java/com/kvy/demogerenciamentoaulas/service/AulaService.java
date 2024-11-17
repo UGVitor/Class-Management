@@ -1,15 +1,9 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Aula;
-import com.kvy.demogerenciamentoaulas.entity.Disciplina;
-import com.kvy.demogerenciamentoaulas.entity.Horario;
-import com.kvy.demogerenciamentoaulas.entity.Sala;
+import com.kvy.demogerenciamentoaulas.entity.*;
 //import com.kvy.demogerenciamentoaulas.entity.DiasDaSemana;
 import com.kvy.demogerenciamentoaulas.exception.AulaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
-import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
-import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
-import com.kvy.demogerenciamentoaulas.repository.SalaRepository;
+import com.kvy.demogerenciamentoaulas.repository.*;
 //import com.kvy.demogerenciamentoaulas.repository.DiasDaSemanaRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
@@ -28,13 +22,15 @@ public class AulaService {
     private final DisciplinaRepository disciplinaRepository;
     private final HorarioRepository horarioRepository;
     private final SalaRepository salaRepository;
-    //private final DiasDaSemanaRepository diasDaSemanaRepository;
+    private final DiaSemanaRepository diaSemanaRepository;
 
     // Método para salvar uma aula
     @Transactional
     public Aula salvar(AulaDTO aulaDTO) {
         Aula aula = new Aula();
 
+
+        aula.setDescricao(aulaDTO.getDescricao());
         // Associa a disciplina
         if (aulaDTO.getDisciplinaId() != null) {
             Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
@@ -53,14 +49,13 @@ public class AulaService {
             throw new IllegalArgumentException("O ID do horário não pode ser nulo");
         }
 
-        // Associa o dia da semana
-       // if (aulaDTO.getDiaDaSemanaId() != null) {
-        //    DiasDaSemana diasDaSemana = diasDaSemanaRepository.findById(aulaDTO.getDiaDaSemanaId())
-       //             .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaDaSemanaId()));
-        //    aula.setDiaDaSemana(diasDaSemana);
-       // } else {
-      //      throw new IllegalArgumentException("O ID do dia da semana não pode ser nulo");
-      //  }
+        if (aulaDTO.getDiaSemanaId() != null) {
+            DiaSemana diaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
+                   .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaSemanaId()));
+            aula.setDiaSemana(diaSemana);
+        } else {
+            throw new IllegalArgumentException("O ID do dia da semana não pode ser nulo");
+        }
 
         // Associa a sala
         if (aulaDTO.getSalaId() != null) {
@@ -86,6 +81,8 @@ public class AulaService {
     public Aula editar(Long id, AulaDTO aulaDTO) {
         Aula existingAula = buscarPorId(id);
 
+        existingAula.setDescricao(aulaDTO.getDescricao());
+
         // Atualiza a disciplina
         if (aulaDTO.getDisciplinaId() != null) {
             Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
@@ -101,11 +98,11 @@ public class AulaService {
         }
 
         // Atualiza o dia da semana
-       // if (aulaDTO.getDiaDaSemanaId() != null) {
-       //     DiasDaSemana diasDaSemana = diasDaSemanaRepository.findById(aulaDTO.getDiaDaSemanaId())
-       //             .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaDaSemanaId()));
-      //      existingAula.setDiaDaSemana(diasDaSemana);
-      //  }
+        if (aulaDTO.getDiaSemanaId() != null) {
+            DiaSemana diasDaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
+                   .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaSemanaId()));
+            existingAula.setDiaSemana(diasDaSemana);
+        }
 
         // Atualiza a sala
         if (aulaDTO.getSalaId() != null) {

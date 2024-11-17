@@ -6,7 +6,7 @@ public interface AulaProjection {
     DisciplinaProjection getDisciplina();
     SalaProjection getSala();
     HorarioProjection getHorario();
-    //DiasDaSemanaProjection getDiasDaSemana();
+    DiaSemanaProjection getDiaSemana();
 
     interface DisciplinaProjection {
         Long getId();
@@ -23,7 +23,7 @@ public interface AulaProjection {
         String getNome();
     }
 
-    interface DiasDaSemanaProjection {
+    interface DiaSemanaProjection {
         Long getId();
         String getNome();
     }

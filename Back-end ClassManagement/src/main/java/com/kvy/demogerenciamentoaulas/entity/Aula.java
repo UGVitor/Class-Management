@@ -40,9 +40,9 @@ public class Aula implements Serializable {
     private Horario horario;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dias_da_semana_id")
-    @JsonBackReference("diasDaSemana-aula")
-    private DiasDaSemana diasDaSemana;
+    @JoinColumn(name = "dias_semana_id")
+    @JsonBackReference("diaSemana-aula")
+    private DiaSemana diaSemana;
 
 
     @Override

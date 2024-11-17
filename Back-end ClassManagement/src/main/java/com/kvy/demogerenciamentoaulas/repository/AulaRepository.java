@@ -15,12 +15,12 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
                 "d.id AS disciplinaId, d.nome AS disciplinaNome, " +
                 "s.id AS salaId, s.sala AS salaNome, " +
                 "h.id AS horarioId, h.horaInicio AS horaInicio, h.horaTermino AS horaTermino, " +
-                "ds.id AS diasDaSemanaId, ds.nome AS diasDaSemanaNome " +
+                "ds.id AS diasDaSemanaId, ds.dia AS diasDaSemanaNome " +
                 "FROM Aula a " +
                 "JOIN a.disciplina d " +
                 "JOIN a.sala s " +
                 "JOIN a.horario h " +
-                "JOIN a.diasDaSemana ds")
+                "JOIN a.diaSemana ds")
         List<AulaProjection> findAllAulasWithDisciplinaNomeAndHorario();
 
     }
