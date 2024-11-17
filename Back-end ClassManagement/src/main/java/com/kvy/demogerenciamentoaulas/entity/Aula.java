@@ -20,20 +20,30 @@ public class Aula implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
-    @Column(name = "horario", nullable = false)
-    private LocalTime horario;
-    @Column(name = "duracao", nullable = false)
-    private int duracao;
-    @Column(name = "topico", nullable = false, length = 200)
-    private String topico;
+    @Column(name = "descricao", nullable = false, length = 200)
+    private String descricao;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "disciplina_id")
     @JsonBackReference("disciplina-aula")
     private Disciplina disciplina;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sala_id")
+    @JsonBackReference("sala-aula")
+    private Sala sala;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "horario_id")
+    @JsonBackReference("horario-aula")
+    private Horario horario;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dias_da_semana_id")
+    @JsonBackReference("diasDaSemana-aula")
+    private DiasDaSemana diasDaSemana;
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Curso;
-import com.kvy.demogerenciamentoaulas.entity.Disciplina;
-import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
+
 import com.kvy.demogerenciamentoaulas.repository.Projection.CursoProjection;
 import com.kvy.demogerenciamentoaulas.service.CursoService;
 import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;

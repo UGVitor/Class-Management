@@ -1,11 +1,14 @@
 package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +28,11 @@ public class Sala {
     @JoinColumn(name = "id_tiposala", nullable = false)
     @JsonBackReference("tiposala-sala")
     private TipoSala tipoSala;
+
+
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("sala-aula")
+    private Set<Aula> aulas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

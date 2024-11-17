@@ -1,2 +1,4 @@
-package com.kvy.demogerenciamentoaulas.repository.Projection;public interface DisciplinaProjection {
+package com.kvy.demogerenciamentoaulas.repository.Projection;
+
+public interface DisciplinaProjection {
 }
