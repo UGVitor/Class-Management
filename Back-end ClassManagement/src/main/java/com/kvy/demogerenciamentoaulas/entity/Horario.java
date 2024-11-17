@@ -29,9 +29,9 @@ public class Horario {
     @Column(name = "hora_termino", nullable = false)
     private LocalTime horaTermino;
 
-    /*@OneToOne(mappedBy = "horario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "horario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("horario-aula")
-    private Set<Aula> aulas = new HashSet<>();*/
+    private Set<Aula> aulas = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {
