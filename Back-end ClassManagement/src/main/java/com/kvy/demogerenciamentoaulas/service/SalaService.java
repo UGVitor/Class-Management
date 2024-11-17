@@ -29,16 +29,19 @@ public class SalaService {
     public Sala salvar(SalaDTO salaDTO) {
         Sala sala = new Sala();
         sala.setSala(salaDTO.getSala());
+        sala.setNumero(salaDTO.getNumero()); // Setar novo atributo
+        sala.setCapacidade(salaDTO.getCapacidade()); // Setar novo atributo
 
         if (salaDTO.getTipoSala() != null) {
             TipoSala tiposala = tipoSalaRepository.findById(salaDTO.getTipoSala())
                     .orElseThrow(() -> new IllegalArgumentException("Tipo de Sala não encontrado"));
             sala.setTipoSala(tiposala);
         } else {
-            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo");
+            throw new IllegalArgumentException("O ID do Tipo de Sala não pode ser nulo");
         }
         return salaRepository.save(sala);
     }
+
 
     @Transactional
     public Sala buscarPorId(Long id) {
@@ -46,22 +49,26 @@ public class SalaService {
                 .orElseThrow(() -> new SalaEntityNotFoundException(String.format("Curso id=%s não encontrado", id)));
     }
 
-   @Transactional
-   public Sala editar(Long id, SalaDTO salaDTO) {
+    @Transactional
+    public Sala editar(Long id, SalaDTO salaDTO) {
         Sala existingSala = buscarPorId(id);
         existingSala.setSala(salaDTO.getSala());
-       if (salaDTO.getTipoSala() != null) {
-           TipoSala tipoSala = tipoSalaRepository.findById(salaDTO.getTipoSala())
-                   .orElseThrow(() -> new IllegalArgumentException("Tipo de Sala não encontrado com o ID: " + salaDTO.getTipoSala()));
-           existingSala.setTipoSala(tipoSala);
-       } else {
-           throw new IllegalArgumentException("O ID do Tipo de Sala não pode ser nulo");
-       }
+        existingSala.setNumero(salaDTO.getNumero()); // Atualizar novo atributo
+        existingSala.setCapacidade(salaDTO.getCapacidade()); // Atualizar novo atributo
 
-       return salaRepository.save(existingSala);
-   }
+        if (salaDTO.getTipoSala() != null) {
+            TipoSala tipoSala = tipoSalaRepository.findById(salaDTO.getTipoSala())
+                    .orElseThrow(() -> new IllegalArgumentException("Tipo de Sala não encontrado com o ID: " + salaDTO.getTipoSala()));
+            existingSala.setTipoSala(tipoSala);
+        } else {
+            throw new IllegalArgumentException("O ID do Tipo de Sala não pode ser nulo");
+        }
 
-   @Transactional
+        return salaRepository.save(existingSala);
+    }
+
+
+    @Transactional
     public void excluir(Long id) {
         Optional<Sala> optionalSala = salaRepository.findById(id);
         if (optionalSala.isPresent()) {

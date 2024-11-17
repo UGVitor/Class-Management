@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,26 +15,35 @@ import java.util.Objects;
 
 @Getter @Setter @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "aula")
 public class Aula implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "data", nullable = false)
-    private LocalDate data;
-    @Column(name = "horario", nullable = false)
-    private LocalTime horario;
-    @Column(name = "duracao", nullable = false)
-    private int duracao;
-    @Column(name = "topico", nullable = false, length = 200)
-    private String topico;
-
+    @Column(name = "descricao", nullable = false, length = 200)
+    private String descricao;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "disciplina_id")
+    @JoinColumn(name = "id_disciplina")
     @JsonBackReference("disciplina-aula")
     private Disciplina disciplina;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_horario", nullable = false)
+    @JsonBackReference("horario-aula")
+    private Horario horario;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_aula", nullable = false)
+    @JsonBackReference("sala-aula")
+    private Sala sala;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_dia_semana", nullable = false)
+    @JsonBackReference("diaSemana-aula")
+    private DiaSemana diaSemana;
 
     @Override
     public boolean equals(Object o) {
