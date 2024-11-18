@@ -1,97 +1,63 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Aula</title>
-    <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../style/telasCadastro.css">
     <style>
-      *{
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-          scroll-behavior: smooth;
-      }
-      a{
-          text-decoration: none;
-      }
-      li{
-          list-style: none;
-      }
-
-      body {
-        background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-      }
-          
-      .navbar {
-          background-color: #019c5c;
-          position: fixed;
-          width: 100%;
-          z-index: 100;
-          height: 60px; /* Ajuste se necessário */
-      }
-
-      header{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 50px 0 50px;
-          height: 60px;
-      }
-      header h1 a{
-          color: #fff;
-          font-size: 35px;
-      }
-      nav{
-          display: flex;
-          gap: 30px;
-          color: #000000;
-          font-size: 19px;
-      }
-      li a{
-          color: #fff;
-          padding: 10px;
-          transition: ease .3s;
-          cursor: pointer;
-      }
-      nav li a:hover{
-          background-color: #ffffffa8;
-          color: #000;
-          border-radius: 7px;
-      }
-      nav button {
-          color: #DDF5F7;
-          padding: 5px 10px;
-          transition: ease .3s;
-          cursor: pointer;
-          position: relative;
-          background-color: #019c5c;
-          border: 0px;
-          font-size: 16px;
-      }
-      nav button:hover{
-          background-color: #C0D9E5;
-          color: #019c5c;
-          border-radius: 7px;
-      }
-      h2 {
-          color: #000000;
-      }
-          .form-group label {
-          color: #333; 
-      }
-
-         .form-group input {
-          color: #333; /
-      }
-
-        .form-group button {
-         color: #fff; 
-         background-color: #019c5c; 
+        /* Estilo reaproveitado do cadastro de curso */
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
-      
-  </style>
+        a {
+            text-decoration: none;
+        }
+        li {
+            list-style: none;
+        }
+        body {
+            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
+        }
+        .navbar {
+            background-color: #019c5c;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            height: 60px;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px 0 50px;
+            height: 60px;
+        }
+        header h1 a {
+            color: #fff;
+            font-size: 35px;
+        }
+        nav {
+            display: flex;
+            gap: 30px;
+            font-size: 19px;
+        }
+        li a {
+            color: #fff;
+            padding: 10px;
+            transition: ease .3s;
+            cursor: pointer;
+        }
+        nav li a:hover {
+            background-color: #ffffffa8;
+            color: #000;
+            border-radius: 7px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar">
@@ -104,108 +70,139 @@
     </div>
     <div id="app">
         <form @submit.prevent="createAula">
-            <h2>Criar Aula</h2>
+            <h2>Cadastrar Aula</h2>
             <div class="form-group">
-                <label for="descrição">Descrição:</label>
-                <input type="text" v-model="aula.nome" required />
+                <label for="descricao">Descrição:</label>
+                <input type="text" v-model="aula.descricao" required />
             </div>
             <div class="form-group">
                 <label for="disciplina">Disciplina:</label>
-                <select v-model="aula.disciplina" required>
+                <select v-model="aula.disciplinaId" required>
                     <option disabled value="">Selecione uma Disciplina</option>
-                    <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">{{ disciplina.disciplina }}</option>
-                </select>
-            </div> 
-            <div class="form-group">
-                <label for="diasdasemana">Dias da semana:</label>
-                <select id="role" v-model="aula.dia">
-                    <option value="SEGUNDA">Segunda-feira</option>
-                    <option value="TERCA">Terça-feira</option>
-                    <option value="QUARTA">Quarta-feira</option>
-                    <option value="QUINTA">Quinta-feira</option>
-                    <option value="SEXTA">Sexta-feira</option>
-                    <option value="SABADO">Sábado</option>
+                    <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">
+                        {{ disciplina.nome }}
+                    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="horário">Horário:</label>
-                <input type="time" id="horário" v-model="aula.horario" required />
+                <label for="horario">Horário de Inicio:</label>
+                <select v-model="aula.horarioId" required>
+                    <option disabled value="">Selecione um Horário</option>
+                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
+                        {{ horario.horaInicio }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">Horário do Termino:</label>
+                <select v-model="aula.horarioId" required>
+                    <option disabled value="">Selecione um Horário</option>
+                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
+                        {{ horario.horaTermino }}
+                    </option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="sala">Sala:</label>
-                <input type="text" v-model="aula.sala" required />
+                <select v-model="aula.salaId" required>
+                    <option disabled value="">Selecione uma Sala</option>
+                    <option v-for="sala in salas" :key="sala.id" :value="sala.id">
+                        {{ sala.sala }}
+                    </option>
+                </select>
             </div>
             <div class="form-group">
-                <button type="submit">Criar Aula</button>
+                <label for="diaSemana">Dia da Semana:</label>
+                <select v-model="aula.diaSemanaId" required>
+                    <option disabled value="">Selecione um Dia</option>
+                    <option v-for="dia in diasSemana" :key="dia.id" :value="dia.id">
+                        {{ dia.dia }}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Cadastrar Aula</button>
             </div>
         </form>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
             el: '#app',
             data: {
                 aula: {
-                    descrição: '',
-                    disciplina: '',
-                    diasdasemana: '',
-                    horário: '',
-                    sala: ''
+                    descricao: '',
+                    disciplinaId: '',
+                    horarioId: '',
+                    salaId: '',
+                    diaSemanaId: ''
                 },
-                disciplina: [],
+                disciplinas: [],
+                horarios: [],
+                salas: [],
+                diasSemana: []
             },
             created() {
                 this.fetchDisciplinas();
-                this.fetchDiasdasemana();
+                this.fetchHorarios();
+                this.fetchSalas();
+                this.fetchDiasSemana();
             },
             methods: {
                 fetchDisciplinas() {
-                    fetch('http://localhost:8081/api/v1/disciplinas')
+                    fetch('http://localhost:8081/api/v1/disciplinas') // Ajuste conforme sua API
                         .then(response => response.json())
-                        .then(data => {
-                            this.disciplinas = data;
-                        })
-                        .catch(error => {
-                            console.error('Erro ao carregar disciplinas:', error);
-                        });
+                        .then(data => this.disciplinas = data)
+                        .catch(error => console.error('Erro ao carregar disciplinas:', error));
                 },
-
-
+                fetchHorarios() {
+                    fetch('http://localhost:8081/api/v1/horarios') // Ajuste conforme sua API
+                        .then(response => response.json())
+                        .then(data => this.horarios = data)
+                        .catch(error => console.error('Erro ao carregar horários:', error));
+                },
+                fetchSalas() {
+                    fetch('http://localhost:8081/api/v1/salas') // Ajuste conforme sua API
+                        .then(response => response.json())
+                        .then(data => this.salas = data)
+                        .catch(error => console.error('Erro ao carregar salas:', error));
+                },
+                fetchDiasSemana() {
+                    fetch('http://localhost:8081/api/v1/diasSemana') // Ajuste conforme sua API
+                        .then(response => response.json())
+                        .then(data => this.diasSemana = data)
+                        .catch(error => console.error('Erro ao carregar dias da semana:', error));
+                },
                 createAula() {
-                    const aulaData = {
-                        descrição: this.aula.descrição,
-                        disciplina: { id: this.aula.disciplina },
-                        diasdasemana: this.aula.diasdasemana ,
-                        horário: this.aula.horário,
-                        sala: this.aula.sala, 
-                    };
-
-                    fetch('http://localhost:8081/api/v1/aula', {
+                    fetch('http://localhost:8081/api/v1/aulas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(aulaData)
+                        body: JSON.stringify(this.aula)
                     })
                     .then(response => {
                         if (response.ok) {
                             return response.json();
                         }
-                        throw new Error('Erro ao criar a aula');
+                        throw new Error('Erro ao cadastrar a aula');
                     })
-                    .then(data => {
-                        alert('Aula criada com sucesso!');
-                        this.aula= {
-                            descrição: '',
-                            disciplina: '',
-                            diasdasemana: '',
-                            horário: '',
-                            sala:''
+                    .then(() => {
+                        alert('Aula cadastrada com sucesso!');
+                        this.aula = {
+                            descricao: '',
+                            disciplinaId: '',
+                            horarioId: '',
+                            salaId: '',
+                            diaSemanaId: ''
                         };
+                        window.location.href = 'home.html';
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao criar a aula, tente novamente.');
+                        alert('Erro ao cadastrar a aula, tente novamente.');
                     });
                 }
             }

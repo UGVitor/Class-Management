@@ -24,4 +24,8 @@ public class DiaSemana implements Serializable {
     @Column(name = "dia", nullable = false)
     private String dia;
 
+    @OneToMany(mappedBy = "diaSemana", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference("diaSemana-aula")
+    private Set<Aula> aulas = new HashSet<>();
+
 }

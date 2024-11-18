@@ -1,17 +1,18 @@
 package com.kvy.demogerenciamentoaulas.entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "Sala")
-public class Sala {
+public class Sala implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +21,12 @@ public class Sala {
 
     @Column(name = "sala", nullable = false, length = 50)
     private String sala;
+
+    @Column(name = "numero", nullable = false)
+    private int numero; // Novo atributo
+
+    @Column(name = "capacidade", nullable = false)
+    private int capacidade; // Novo atributo
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tiposala", nullable = false)
@@ -43,6 +50,9 @@ public class Sala {
     public String toString() {
         return "Sala{" +
                 "id=" + id +
+                ", sala='" + sala + '\'' +
+                ", numero=" + numero +
+                ", capacidade=" + capacidade +
                 '}';
     }
 }
