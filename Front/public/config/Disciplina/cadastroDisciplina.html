@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,92 +8,115 @@
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
     <style>
-      *{
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-          scroll-behavior: smooth;
-      }
-      a{
-          text-decoration: none;
-      }
-      li{
-          list-style: none;
-      }
-
-      body {
-        background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-      }
-          
-      .navbar {
-          background-color: #019c5c;
-          position: fixed;
-          width: 100%;
-          z-index: 100;
-          height: 60px;
-      }
-
-      header{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 50px 0 50px;
-          height: 60px;
-      }
-      header h1 a{
-          color: #fff;
-          font-size: 35px;
-      }
-      nav{
-          display: flex;
-          gap: 30px;
-          color: #000000;
-          font-size: 19px;
-      }
-      li a{
-          color: #fff;
-          padding: 10px;
-          transition: ease .3s;
-          cursor: pointer;
-      }
-      nav li a:hover{
-          background-color: #ffffffa8;
-          color: #000;
-          border-radius: 7px;
-      }
-      nav button {
-          color: #DDF5F7;
-          padding: 5px 10px;
-          transition: ease .3s;
-          cursor: pointer;
-          position: relative;
-          background-color: #019c5c;
-          border: 0px;
-          font-size: 16px;
-      }
-      nav button:hover{
-          background-color: #C0D9E5;
-          color: #019c5c;
-          border-radius: 7px;
-      }        
-      h2 {
-          color: #000000;
-      }
-          .form-group label {
-          color: #333; 
-      }
-
-         .form-group input {
-          color: #333; /
-      }
-
-        .form-group button {
-         color: #fff; 
-         background-color: #019c5c; 
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
-  </style>
+        a {
+            text-decoration: none;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
+        }
+
+        .navbar {
+            background-color: #019c5c;
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            height: 60px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+            height: 60px;
+        }
+
+        header h1 a {
+            color: #fff;
+            font-size: 35px;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            font-size: 19px;
+        }
+
+        li a {
+            color: #fff;
+            padding: 10px;
+            transition: ease .3s;
+            cursor: pointer;
+        }
+
+        nav li a:hover {
+            background-color: #ffffffa8;
+            color: #000;
+            border-radius: 7px;
+        }
+
+        nav button {
+            color: #DDF5F7;
+            padding: 5px 10px;
+            background-color: #019c5c;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: ease .3s;
+        }
+
+        nav button:hover {
+            background-color: #C0D9E5;
+            color: #019c5c;
+            border-radius: 7px;
+        }
+
+        h2 {
+            color: #000;
+        }
+
+        .form-group label {
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-group button {
+            color: #fff;
+            background-color: #019c5c;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #017a4a;
+        }
+    </style>
 </head>
+
 <body>
     <div class="navbar">
         <header>
@@ -110,26 +134,25 @@
                 <input type="text" v-model="disciplina.nome" required />
             </div>
             <div class="form-group">
-                <label for="descrição">Descrição:</label>
-                <input type="text" v-model="disciplina.nome" required />
+                <label for="descricao">Descrição:</label>
+                <input type="text" v-model="disciplina.descricao" required />
             </div>
             <div class="form-group">
-                <label for="Login">Login:</label>
-                <select v-model="disciplina.nome" required>
+                <label for="login">Login:</label>
+                <select v-model="disciplina.login" required>
                     <option disabled value="">Selecione um login</option>
                     <option v-for="login in logins" :key="login.id" :value="login.id">{{ login.login }}</option>
                 </select>
-            </div> 
+            </div>
             <div class="form-group">
-                <label for="Turma">Turma:</label>
-                <select v-model="disciplina.nome" required>
+                <label for="turma">Turma:</label>
+                <select v-model="disciplina.turma" required>
                     <option disabled value="">Selecione uma turma</option>
-                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.turma }}</option>
+                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nomeTurma }}</option>
                 </select>
-            </div> 
-            
+            </div>
             <div class="form-group">
-                <button type="submit">Criar Turma</button>
+                <button type="submit">Criar Disciplina</button>
             </div>
         </form>
     </div>
@@ -138,79 +161,80 @@
         new Vue({
             el: '#app',
             data: {
-                turma: {
+                disciplina: {
                     nome: '',
-                    descrição: '',
+                    descricao: '',
                     login: '',
                     turma: ''
                 },
-                disciplina: [],
-            },
-            created() {
-                this.fetchLogin();
-                this.fetchTurma();
+                logins: [],
+                turmas: []
             },
             methods: {
-                fetchLogin() {
+                fetchLogins() {
                     fetch('http://localhost:8081/api/v1/logins')
                         .then(response => response.json())
                         .then(data => {
-                            this.disciplinas = data;
+                            this.logins = data;
                         })
                         .catch(error => {
                             console.error('Erro ao carregar logins:', error);
                         });
                 },
-
-                fetchTurma() {
+                fetchTurmas() {
                     fetch('http://localhost:8081/api/v1/turmas')
                         .then(response => response.json())
                         .then(data => {
-                            this.disciplinas = data;
+                            this.turmas = data;
+                            console.log(data); // Adicione este log para verificar a estrutura dos dados de turmas
                         })
                         .catch(error => {
-                            console.error('Erro ao carregar turmas', error);
+                            console.error('Erro ao carregar turmas:', error);
                         });
                 },
-
 
                 createDisciplina() {
                     const disciplinaData = {
                         nome: this.disciplina.nome,
-                        descrição: this.disciplina.descrição ,
+                        descricao: this.disciplina.descricao,
                         login: { id: this.disciplina.login },
-                        turma: { id: this.disciplina.turma },
+                        turma: { id: this.disciplina.turma }
                     };
 
-                    fetch('http://localhost:8081/api/v1/disciplina', {
+                    fetch('http://localhost:8081/api/v1/disciplinas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(disciplinaData)
                     })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error('Erro ao criar a disciplina');
-                    })
-                    .then(data => {
-                        alert('Disciplina criada com sucesso!');
-                        this.disciplina= {
-                            nome: '',
-                            descrição: '',
-                            login: '',
-                            turma: '',
-                        };
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar a disciplina, tente novamente.');
-                    });
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error('Erro ao criar a disciplina');
+                        })
+                        .then(() => {
+                            alert('Disciplina criada com sucesso!');
+                            this.disciplina = {
+                                nome: '',
+                                descricao: '',
+                                login: '',
+                                turma: '',
+                            };
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro ao criar a disciplina, tente novamente.');
+                        });
                 }
+            },
+            mounted() {
+                this.fetchLogins();
+                this.fetchTurmas();
             }
         });
     </script>
 </body>
+
 </html>

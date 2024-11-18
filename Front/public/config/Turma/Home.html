@@ -300,7 +300,7 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        turma: 'http://localhost:8081/api/v1/turma'
+                        turma: 'http://localhost:8081/api/v1/turmas'
                     };
     
                     this.data = await this.fetchData(endpoints[entity]);
@@ -308,7 +308,7 @@
                 async deleteTurma(id) {
                     if (confirm("Tem certeza que deseja deletar esta turma?")) {
                         try {
-                            const response = await fetch(`http://localhost:8081/api/v1/turma/${id}`, {
+                            const response = await fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
                                 method: 'DELETE',
                             });
                             if (response.ok) {

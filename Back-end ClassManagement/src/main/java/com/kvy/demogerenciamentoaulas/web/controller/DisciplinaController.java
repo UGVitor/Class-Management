@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
 import com.kvy.demogerenciamentoaulas.service.DisciplinaService;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,8 +73,8 @@ public class DisciplinaController {
 
 
     @GetMapping
-    public ResponseEntity<List<Disciplina>> getDisciplinaAll() {
-        List<Disciplina> disciplinas = disciplinaService.buscarTodos();
+    public ResponseEntity<List<DisciplinaProjection>> getDisciplinaAll() {
+        List<DisciplinaProjection> disciplinas = disciplinaService.buscarTodos();
         return ResponseEntity.ok(disciplinas);
     }
 }

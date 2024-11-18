@@ -26,7 +26,7 @@
             position: fixed;
             width: 100%;
             z-index: 100;
-            height: 60px; 
+            height: 60px;
         }
         header {
             display: flex;
@@ -75,11 +75,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 60px); /* Subtraia a altura da navbar */
-            margin-top: 0;
-            padding: 0 20px;
+            min-height: calc(100vh - 60px);
+            padding: 20px;
             text-align: center;
-            padding: 20px 30px;
         }
         form {
             max-width: 600px;
@@ -87,7 +85,7 @@
             padding: 30px;
             background: #ffffff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         h2 {
             margin-bottom: 20px;
@@ -110,6 +108,13 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
         button[type="submit"] {
             width: 100%;
             background-color: #019c5c;
@@ -121,7 +126,7 @@
             font-size: 16px;
         }
         button[type="submit"]:hover {
-            background-color: #019c5c;
+            background-color: #018c52;
         }
     </style>
 </head>
@@ -139,19 +144,25 @@
             <h2>Alterar Disciplina</h2>
             <div class="form-group">
                 <label for="nome">Nome:</label>
-                <input type="text" id="nome" v-model="disciplina.nome" required />
+                <input type="text" id="nome" v-model="disciplina.nome" required placeholder="Digite o nome da disciplina" />
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <input type="text" id="descricao" v-model="disciplina.descricao" required />
+                <input type="text" id="descricao" v-model="disciplina.descricao" required placeholder="Digite a descrição da disciplina" />
             </div>
             <div class="form-group">
                 <label for="login">Login:</label>
-                <input type="text" id="login" v-model="disciplina.login" required />
+                <select v-model="disciplina.login" required>
+                    <option disabled value="">Selecione um login</option>
+                    <option v-for="login in logins" :key="login.id" :value="login.id">{{ login.login }}</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="turma">Turma:</label>
-                <input type="text" id="turma" v-model="disciplina.turma" required />
+                <select v-model="disciplina.turma" required>
+                    <option disabled value="">Selecione uma turma</option>
+                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nomeTurma }}</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Disciplina</button>
@@ -169,44 +180,59 @@
                     descricao: '',
                     login: '',
                     turma: '',
-                }
+                },
+                logins: [],
+                turmas: []
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
                 this.id = params.get('id'); 
+                this.fetchLogins();
+                this.fetchTurmas();
+                this.fetchDisciplina();
             },
             methods: {
+                fetchLogins() {
+                    fetch('http://localhost:8081/api/v1/logins')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.logins = data;
+                        })
+                        .catch(err => alert('Erro ao carregar logins: ' + err.message));
+                },
+                fetchTurmas() {
+                    fetch('http://localhost:8081/api/v1/turmas')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.turmas = data;
+                        })
+                        .catch(err => alert('Erro ao carregar turmas: ' + err.message));
+                },
+                fetchDisciplina() {
+                    fetch(`http://localhost:8081/api/v1/disciplinas/${this.id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.disciplina = data;
+                        })
+                        .catch(err => alert('Erro ao carregar a disciplina: ' + err.message));
+                },
                 updateDisciplina() {
-                    const { nome, descricao, login, turma } = this.disciplina;
-                    const disciplinaData = { nome, descricao, cargaHoraria, cod_professor, cod_curso };
-
-                    fetch(`http://localhost:8081/api/v1/disciplinas/${id}`, {
+                    fetch(`http://localhost:8081/api/v1/disciplinas/${this.id}`, {
                         method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(disciplinaData),
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(this.disciplina),
                     })
-                    .then(response => {
-                        if (response.ok) {
+                        .then(response => {
+                            if (!response.ok) throw new Error('Erro ao atualizar disciplina');
+                            return response.json();
+                        })
+                        .then(() => {
                             alert('Disciplina alterada com sucesso!');
-                            this.disciplina = {
-                                nome: '',
-                                descricao: '',
-                                login: '',
-                                turma: '',
-                            };
                             window.location.href = 'home.html';
-                        } else {
-                            throw new Error('Erro ao alterar a disciplina');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao alterar a disciplina, tente novamente.');
-                    });
-                }
-            }
+                        })
+                        .catch(err => alert(err.message));
+                },
+            },
         });
     </script>
 </body>
