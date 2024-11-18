@@ -65,14 +65,15 @@ public class Aula implements Serializable {
                 '}';
     }
 
-    public String getSala() {
+    public String getSalaNome() {
         return sala != null ? sala.getSala() : null;
     }
+    public int getSalaNumero() { return sala != null ? sala.getNumero() : null; }
     public String getDisciplina() {
         return disciplina != null ? disciplina.getNome() : null;
     }
-    public LocalTime getHorarioIncicio() {return horario != null ? horario.getHoraInicio() : null;}
+    public LocalTime getHorarioInicio() {return horario != null ? horario.getHoraInicio() : null;}
     public LocalTime getHorarioTermino() {return horario != null ? horario.getHoraTermino() : null;}
-    public String getDiaSemana() {return diaSemana != null ? diaSemana.getDia() : null;}
+    public String getDiaSemanaNome() {return diaSemana != null ? diaSemana.getDia() : null;}
 
 }

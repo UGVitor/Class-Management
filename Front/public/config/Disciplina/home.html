@@ -290,6 +290,7 @@
                             throw new Error('Network response was not ok');
                         }
                         return await response.json();
+                        
                     } catch (error) {
                         console.error('Erro ao buscar dados:', error);
                         return [];
@@ -300,7 +301,7 @@
                     const endpoints = {
                         disciplina: 'http://localhost:8081/api/v1/disciplinas'
                     };
-    
+                    
                     this.data = await this.fetchData(endpoints[entity]);
                 },
                 async deleteDisciplina(id) {

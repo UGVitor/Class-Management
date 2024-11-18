@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Aula</title>
     <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../style/telasAlterar.css">
     <style>
         * {
             padding: 0;
@@ -143,31 +144,41 @@
                 <input type="text" v-model="aula.descricao" required />
             </div>
             <div class="form-group">
-                <label for="diaSemana">Dias da Semana:</label>
-                <select v-model="aula.diasdasemana" required>
-                    <option disabled value="">Selecione um Dia da Semana</option>
-                    <option v-for="diaSemana in diasSemana" :key="diaSemana.id" :value="diaSemana.id">{{ diaSemana.nome }}</option>
+                <label for="disciplina">Disciplina:</label>
+                <select v-model="aula.disciplinaId" required>
+                    <option disabled value="">Selecione uma Disciplina</option>
+                    <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">
+                        {{ disciplina.nome }}
+                    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="disciplina">Disciplina:</label>
-                <select v-model="aula.disciplina" required>
-                    <option disabled value="">Selecione uma Disciplina</option>
-                    <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">{{ disciplina.nome }}</option>
+                <label for="horario">Horário : </label>
+                <select v-model="aula.horarioId" required>
+                    <option disabled value="">Selecione um Horário</option>
+                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
+                        {{ horario.horaInicio }} - {{ horario.horaTermino }}
+                    </option>
                 </select>
             </div>
+            
+            
             <div class="form-group">
                 <label for="sala">Sala:</label>
-                <select v-model="aula.sala" required>
+                <select v-model="aula.salaId" required>
                     <option disabled value="">Selecione uma Sala</option>
-                    <option v-for="sala in salas" :key="sala.id" :value="sala.id">{{ sala.sala }}</option>
+                    <option v-for="sala in salas" :key="sala.id" :value="sala.id">
+                        {{ sala.sala }} {{ sala.numero }}
+                    </option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="horario">Horário:</label>
-                <select v-model="aula.horario" required>
-                    <option disabled value="">Selecione um Horário</option>
-                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">{{ horario.nome }}</option>
+                <label for="diaSemana">Dia da Semana:</label>
+                <select v-model="aula.diaSemanaId" required>
+                    <option disabled value="">Selecione um Dia</option>
+                    <option v-for="dia in diasSemana" :key="dia.id" :value="dia.id">
+                        {{ dia.dia }}
+                    </option>
                 </select>
             </div>
             <div class="form-group">
@@ -175,7 +186,6 @@
             </div>
         </form>
     </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
@@ -183,10 +193,10 @@
             data: {
                 aula: {
                     descricao: '',
-                    diasdasemana: '',
-                    horario: '',
-                    disciplina: '',
-                    sala: ''
+                    disciplinaId: '',
+                    horarioId: '',
+                    salaId: '',
+                    diaSemanaId: ''
                 },
                 disciplinas: [],
                 horarios: [],
@@ -197,53 +207,49 @@
             created() {
                 const params = new URLSearchParams(window.location.search);
                 this.id = params.get('id');
-                this.fetchDisciplinas();
-                this.fetchHorarios();
-                this.fetchSalas();
-                this.fetchDiasSemana();
-                this.fetchAula(); // Carregar os dados da aula existente
+                this.loadData();
             },
             methods: {
+                loadData() {
+                    this.fetchDisciplinas();
+                    this.fetchHorarios();
+                    this.fetchSalas();
+                    this.fetchDiasSemana();
+                    this.fetchAula();
+                },
                 fetchDisciplinas() {
                     fetch('http://localhost:8081/api/v1/disciplinas')
-                        .then(response => response.json())
-                        .then(data => this.disciplinas = data)
-                        .catch(error => console.error('Erro ao carregar disciplinas:', error));
+                        .then(res => res.json())
+                        .then(data => this.disciplinas = data);
                 },
                 fetchHorarios() {
                     fetch('http://localhost:8081/api/v1/horarios')
-                        .then(response => response.json())
-                        .then(data => this.horarios = data)
-                        .catch(error => console.error('Erro ao carregar horários:', error));
+                        .then(res => res.json())
+                        .then(data => this.horarios = data);
                 },
                 fetchSalas() {
                     fetch('http://localhost:8081/api/v1/salas')
-                        .then(response => response.json())
-                        .then(data => this.salas = data)
-                        .catch(error => console.error('Erro ao carregar salas:', error));
+                        .then(res => res.json())
+                        .then(data => this.salas = data);
                 },
                 fetchDiasSemana() {
                     fetch('http://localhost:8081/api/v1/diasSemana')
-                        .then(response => response.json())
-                        .then(data => this.diasSemana = data)
-                        .catch(error => console.error('Erro ao carregar dias da semana:', error));
+                        .then(res => res.json())
+                        .then(data => this.diasSemana = data);
                 },
                 fetchAula() {
                     fetch(`http://localhost:8081/api/v1/aulas/${this.id}`)
-                        .then(response => {
-                            if (!response.ok) throw new Error('Erro ao carregar dados da aula');
-                            return response.json();
-                        })
+                        .then(res => res.json())
                         .then(data => {
                             this.aula = {
                                 descricao: data.descricao,
-                                diasdasemana: data.diasdasemana,
-                                horario: data.horario,
-                                disciplina: data.disciplina,
-                                sala: data.sala
+                                disciplinaId: data.disciplinaId,
+                                horarioInicioId: data.horarioInicioId,
+                                horarioFimId: data.horarioFimId,
+                                salaId: data.salaId,
+                                diaSemanaId: data.diaSemanaId
                             };
-                        })
-                        .catch(error => console.error('Erro ao carregar a aula:', error));
+                        });
                 },
                 updateAula() {
                     fetch(`http://localhost:8081/api/v1/aulas/${this.id}`, {
@@ -251,21 +257,18 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(this.aula)
                     })
-                    .then(response => {
-                        if (response.ok) {
+                    .then(res => {
+                        if (res.ok) {
                             alert('Aula alterada com sucesso!');
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar a aula');
                         }
                     })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao alterar a aula, tente novamente.');
-                    });
+                    .catch(err => alert('Erro: ' + err.message));
                 }
             }
         });
     </script>
-    
 </body>
 </html>

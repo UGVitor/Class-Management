@@ -85,30 +85,22 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="horario">Horário de Inicio:</label>
+                <label for="horario">Horário :</label>
                 <select v-model="aula.horarioId" required>
                     <option disabled value="">Selecione um Horário</option>
                     <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
-                        {{ horario.horaInicio }}
+                        {{ horario.horaInicio }} - {{ horario.horaTermino }}
                     </option>
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="horario">Horário do Termino:</label>
-                <select v-model="aula.horarioId" required>
-                    <option disabled value="">Selecione um Horário</option>
-                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
-                        {{ horario.horaTermino }}
-                    </option>
-                </select>
-            </div>
+        
             <div class="form-group">
                 <label for="sala">Sala:</label>
                 <select v-model="aula.salaId" required>
                     <option disabled value="">Selecione uma Sala</option>
                     <option v-for="sala in salas" :key="sala.id" :value="sala.id">
-                        {{ sala.sala }}
+                        {{ sala.sala }} {{sala.numero}}
                     </option>
                 </select>
             </div>
