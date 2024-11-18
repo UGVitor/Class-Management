@@ -21,7 +21,7 @@ import java.util.List;
 @Tag(name = "Turma", description = "Contém todas as operações relativas aos recursos de CRUD de Turma.")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/turma")
+@RequestMapping("/api/v1/turmas")
 public class TurmaController {
 
     private final TurmaService turmaService;
