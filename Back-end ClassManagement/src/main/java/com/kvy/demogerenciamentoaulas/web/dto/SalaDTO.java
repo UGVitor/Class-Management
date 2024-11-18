@@ -12,12 +12,15 @@ public class SalaDTO {
     private Long id;
     private String sala;
     private Long tipoSala;
+    private int numero; // Novo atributo
+    private int capacidade; // Novo atributo
 
     public Long getTipoSala() {
         return tipoSala;
     }
 
     public void setTipoSala(Long tipoSala) {
-        this.tipoSala = tipoSala;}
-
+        this.tipoSala = tipoSala;
+    }
 }
+

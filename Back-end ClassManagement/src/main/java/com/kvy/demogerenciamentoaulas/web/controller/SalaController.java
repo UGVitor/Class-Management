@@ -44,8 +44,7 @@ public class SalaController {
             })
     @PostMapping
     public ResponseEntity<Sala> save(@RequestBody SalaDTO salaDTO) {
-        try{
-            System.out.println("SalaDTO recebido : " + salaDTO);
+        try {
             Sala savedSala = salaService.salvar(salaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedSala);
         } catch (IllegalArgumentException e) {
@@ -54,6 +53,7 @@ public class SalaController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     @Operation(summary = "Recuperar uma sala pelo ID", description = "Recurso para recuperar uma sala específica pelo ID",
             responses = {
