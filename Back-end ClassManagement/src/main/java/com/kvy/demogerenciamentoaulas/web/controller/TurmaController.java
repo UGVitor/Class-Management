@@ -36,8 +36,9 @@ public class TurmaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Turma> createTurma(@RequestBody Turma turma){
-        Turma savedTurma = turmaService.salvar(turma);
+    public ResponseEntity<Turma> createTurma(@RequestBody TurmaDTO turmaDTO){
+        Turma savedTurma = turmaService.salvar(turmaDTO);
+        System.out.println(turmaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTurma);
     }
 
@@ -48,10 +49,10 @@ public class TurmaController {
     }
 
     @GetMapping
-    /*public List<TurmaDTO> getAllTurmas() {
+    public List<TurmaProjection> getAllTurmas() {
         return turmaService.buscarTodasTurmasComDetalhes();
     }
-*/
+
     @Operation(summary = "Atualizar uma turma existente", description = "Recurso para atualizar uma turma existente",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
@@ -62,9 +63,9 @@ public class TurmaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Turma> updateTurma(@PathVariable Long id, @RequestBody Turma turma) {
+    public ResponseEntity<Turma> updateTurma(@PathVariable Long id, @RequestBody TurmaDTO turmaDTO) {
         try {
-            Turma updatedTurma = turmaService.editar(id, turma);
+            Turma updatedTurma = turmaService.editar(id, turmaDTO);
             return ResponseEntity.ok(updatedTurma);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -66,5 +66,18 @@ public class Turma implements Serializable {
                 '}';
     }
 
+    private String getPeriodoNome(){
+        return periodo != null ? periodo.getNome() : null;
+    }
 
+    private String getTurnoNome(){
+        return turno != null ? turno.getTurno() : null;
+    }
+
+    private String getCursoNome(){
+        return curso != null ? curso.getCurso() : null;
+    }
+    private String getSemestreNome(){
+        return semestre != null ? semestre.getSemestre() : null;
+    }
 }

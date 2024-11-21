@@ -134,7 +134,7 @@
             <div class="form-group">
                 <label for="nome">Semestre:</label>
                 <select v-model="turma.semestre" required>
-                    <option disabled value="">Selecione um Semstre</option>
+                    <option disabled value="">Selecione um Semestre</option>
                     <option v-for="semestre in semestres" :key="semestre.id" :value="semestre.id">{{ semestre.semestre }}</option>
                 </select>
             </div>
@@ -212,20 +212,13 @@
                 },
 
                 createTurma() {
-                    const turmaData = {
-                        nome: this.turma.nome,
-                        periodo: { id: this.turma.periodo },
-                        turno: { id: this.turma.turno },
-                        curso: { id: this.turma.curso },
-                        semestre: { id: this.turma.semestre }
-                    };
-
+                    
                     fetch('http://localhost:8081/api/v1/turmas', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify(turmaData)
+                        body: JSON.stringify(this.turma)
                     })
                     .then(response => {
                         if (response.ok) {

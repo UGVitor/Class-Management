@@ -251,11 +251,11 @@
                 </thead>
                 <tbody>
                     <tr v-for="turma in data" :key="turma.id">
-                        <td>{{ turma.nomeTurma }}</td>
-                        <td>{{ turma.nomePeriodo }}</td>
-                        <td>{{ turma.nomeTurno }}</td>
-                        <td>{{ turma.nomeCurso }}</td>
-                        <td>{{ turma.nomeSemestre }}</td>
+                        <td>{{ turma.nome }}</td>
+                        <td>{{ turma.periodoNome }}</td>
+                        <td>{{ turma.turnoNome }}</td>
+                        <td>{{ turma.cursoNome }}</td>
+                        <td>{{ turma.semestreNome }}</td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteTurma(turma.id)" class="delete-btn">

@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 public class TurmaDTO {
     private Long id;
     private String nome;
-    private Long periodoId;
-    private Long turnoId;
-    private Long cursoId;
-    private Long semestreId;
+    private Long periodo;
+    private Long turno;
+    private Long curso;
+    private Long semestre;
 
 
 

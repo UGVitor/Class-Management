@@ -9,6 +9,15 @@ import java.util.List;
 
 public interface TurmaRepository extends JpaRepository<Turma, Long> {
 
-    @Query("SELECT t FROM Turma t")
-    List<TurmaProjection> findAllProjectedBy();
+    @Query("SELECT t.id AS id, t.nome AS nome, " +
+            "p.nome AS periodoNome, " +
+            "tu.turno AS turnoNome, " +
+            "c.Curso AS cursoNome, " +
+            "s.semestre AS semestreNome " +
+            "FROM Turma t " +
+            "JOIN t.periodo p " +
+            "JOIN t.turno tu " +
+            "JOIN t.curso c " +
+            "JOIN t.semestre s")
+        List<TurmaProjection> findAllTurmas();
 }
