@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.exception.TurnoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.TurnoRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.TurnoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,14 @@ public class TurnoService {
     private final TurnoRepository turnoRepository;
 
     @Transactional
-    public Turno salvar(Turno turno) { return turnoRepository.save(turno);}
+    public Turno salvar(TurnoDTO turnoDTO) {
+        if(turnoDTO.getTurno() == null || turnoDTO.getTurno().isBlank()) {
+            throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio.");
+        }
+        Turno turno = new Turno();
+        turno.setTurno(turnoDTO.getTurno());
+        return turnoRepository.save(turno);
+    }
 
     @Transactional
     public Turno buscarPorId(Long id) {
@@ -25,11 +33,15 @@ public class TurnoService {
     }
 
     @Transactional
-    public Turno editar(Long id, Turno turno) {
+    public Turno editar(Long id, TurnoDTO turnoDTO) {
         Turno existingTurno = buscarPorId(id);
 
-        existingTurno.setTurno(turno.getTurno());
-        return existingTurno;
+
+        if (turnoDTO.getTurno() == null || turnoDTO.getTurno().isBlank()) {
+            throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio");
+        }
+        existingTurno.setTurno(turnoDTO.getTurno());
+        return turnoRepository.save(existingTurno);
     }
 
     @Transactional

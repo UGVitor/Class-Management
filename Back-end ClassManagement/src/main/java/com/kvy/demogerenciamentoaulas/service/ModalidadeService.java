@@ -4,6 +4,7 @@ import com.kvy.demogerenciamentoaulas.entity.Modalidade;
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.ModalidadeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,12 @@ public class ModalidadeService {
     private final ModalidadeRepository modalidadeRepository;
 
     @Transactional
-    public Modalidade salvar(Modalidade modalidade) {
+    public Modalidade salvar(ModalidadeDTO modalidadeDTO) {
+        if (modalidadeDTO.getNome() == null || modalidadeDTO.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
+        }
+        Modalidade modalidade = new Modalidade();
+        modalidade.setNome(modalidadeDTO.getNome());
         return modalidadeRepository.save(modalidade);
     }
 
@@ -30,10 +36,13 @@ public class ModalidadeService {
     }
 
     @Transactional
-    public Modalidade editar(Long id, Modalidade modalidade) {
+    public Modalidade editar(Long id, ModalidadeDTO modalidadeDTO) {
         Modalidade existingModalidade = modalidadeRepository.findById(id).orElseThrow(() -> new ModalidadeEntityNotFoundException(String.format("Modalidade id=%s não encontrado", id)));
 
-        existingModalidade.setNome(modalidade.getNome());
+        if (modalidadeDTO.getNome() == null || modalidadeDTO.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
+        }
+        existingModalidade.setNome(modalidadeDTO.getNome());
         return modalidadeRepository.save(existingModalidade);
 
     }

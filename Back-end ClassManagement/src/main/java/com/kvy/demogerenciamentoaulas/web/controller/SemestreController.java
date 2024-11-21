@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.service.SemestreService;
+import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,8 +35,8 @@ public class SemestreController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Semestre> createSemestre(@RequestBody Semestre semestre) {
-        Semestre savedSemestre = semestreService.salvar(semestre);
+    public ResponseEntity<Semestre> createSemestre(@RequestBody SemestreDTO semestreDTO) {
+        Semestre savedSemestre = semestreService.salvar(semestreDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSemestre);
     }
 
@@ -54,8 +55,8 @@ public class SemestreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Semestre> updateSemestre(@PathVariable Long id, @RequestBody Semestre semestre) {
-        Semestre updatedSemestre = semestreService.editar(id, semestre);
+    public ResponseEntity<Semestre> updateSemestre(@PathVariable Long id, @RequestBody SemestreDTO semestreDTO) {
+        Semestre updatedSemestre = semestreService.editar(id, semestreDTO);
         return ResponseEntity.ok(updatedSemestre);
     }
 

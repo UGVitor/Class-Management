@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.service.TurnoService;
+import com.kvy.demogerenciamentoaulas.web.dto.TurnoDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,8 +35,8 @@ public class TurnoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Turno> createTurno(@RequestBody Turno turno) {
-        Turno savedTurno = turnoService.salvar(turno);
+    public ResponseEntity<Turno> createTurno(@RequestBody TurnoDTO turnoDTO) {
+        Turno savedTurno = turnoService.salvar(turnoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTurno);
     }
 
@@ -53,8 +54,8 @@ public class TurnoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Turno> updateTurno(@PathVariable Long id, @RequestBody Turno turno) {
-        Turno updatedTurno = turnoService.editar(id, turno);
+    public ResponseEntity<Turno> updateTurno(@PathVariable Long id, @RequestBody TurnoDTO turnoDTO) {
+        Turno updatedTurno = turnoService.editar(id, turnoDTO);
         return ResponseEntity.ok(updatedTurno);
     }
 

@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.service.ModalidadeService;
+import com.kvy.demogerenciamentoaulas.web.dto.ModalidadeDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -37,9 +38,9 @@ public class ModalidadeController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Modalidade> createModalidade(@RequestBody Modalidade modalidade) {
-        System.out.println(modalidade.getNome());
-        Modalidade savedModalidade = modalidadeService.salvar(modalidade);
+    public ResponseEntity<Modalidade> createModalidade(@RequestBody ModalidadeDTO modalidadeDTO) {
+
+        Modalidade savedModalidade = modalidadeService.salvar(modalidadeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedModalidade);
     }
 
@@ -51,8 +52,8 @@ public class ModalidadeController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Modalidade> updateModalidade(@PathVariable Long id, @RequestBody Modalidade modalidade) {
-        Modalidade updatedModalidade = modalidadeService.editar(id, modalidade);
+    public ResponseEntity<Modalidade> updateModalidade(@PathVariable Long id, @RequestBody ModalidadeDTO modalidadeDTO) {
+        Modalidade updatedModalidade = modalidadeService.editar(id, modalidadeDTO);
         return ResponseEntity.ok(updatedModalidade);
     }
 

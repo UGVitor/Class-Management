@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.exception.SemestreEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.SemestreRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,13 @@ public class SemestreService {
 
 
     @Transactional
-    public Semestre salvar(Semestre semestre) {
+    public Semestre salvar(SemestreDTO semestreDTO) {
+        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().isBlank()) {
+            throw new IllegalArgumentException("O nome do Semestre não pode ser nulo ou vazio");
+        }
+
+        Semestre semestre = new Semestre();
+        semestre.setSemestre(semestreDTO.getSemestre());
         return semestreRepository.save(semestre);
     }
 
@@ -28,11 +35,15 @@ public class SemestreService {
     }
 
     @Transactional
-    public Semestre editar(Long id, Semestre semestre) {
+    public Semestre editar(Long id, SemestreDTO semestreDTO) {
         Semestre existingSemestre = buscarPorId(id);
 
-        existingSemestre.setSemestre(semestre.getSemestre());
-        return existingSemestre;
+        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().isBlank()) {
+            throw new IllegalArgumentException("O nome do Semestre não pode ser nulo ou vazio");
+        }
+
+        existingSemestre.setSemestre(semestreDTO.getSemestre());
+        return semestreRepository.save(existingSemestre);
     }
     @Transactional
     public void excluir(Long id) {

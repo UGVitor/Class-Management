@@ -55,7 +55,7 @@ public class TurmaService {
         return turmaRepository.findById(id)
                 .orElseThrow(() -> new TurmaEntityNotFoundException(String.format("Turma id=%s não encontrado", id)));
     }
-    @Transactional
+    /*@Transactional
     public List<TurmaDTO> buscarTodasTurmasComDetalhes() {
         return turmaRepository.findAll().stream()
                 .map(turma -> new TurmaDTO(
@@ -69,7 +69,7 @@ public class TurmaService {
                 .collect(Collectors.toList());
     }
 
-
+*/
     @Autowired
     public TurmaService(PeriodoRepository periodoRepository, TurnoRepository turnoRepository, TurmaRepository turmaRepository ,CursoRepository cursoRepository, SemestreRepository semestreRepository) {
         this.periodoRepository = periodoRepository;

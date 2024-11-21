@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.PeriodoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.PeriodoRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.PeriodoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,13 @@ public class PeriodoService {
 
 
     @Transactional
-    public Periodo salvar(Periodo periodo) {
+    public Periodo salvar(PeriodoDTO periodoDTO) {
+        if (periodoDTO.getNome() == null || periodoDTO.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
+        }
+        Periodo periodo = new Periodo();
+        periodo.setNome(periodoDTO.getNome());
+
         return periodoRepository.save(periodo);
     }
 
@@ -29,10 +36,15 @@ public class PeriodoService {
     }
 
     @Transactional
-    public Periodo editar(Long id, Periodo periodo) {
+    public Periodo editar(Long id, PeriodoDTO periodoDTO) {
         Periodo existingPeriodo = buscarPorId(id);
 
-        existingPeriodo.setNome(periodo.getNome());
+
+        if (periodoDTO.getNome() == null || periodoDTO.getNome().isBlank()) {
+            throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
+        }
+
+        existingPeriodo.setNome(periodoDTO.getNome());
         return periodoRepository.save(existingPeriodo);
     }
 

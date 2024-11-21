@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DisciplinaDTO {
+public class PeriodoDTO {
+
     private Long id;
     private String nome;
-    private String descricao;
-    private Long loginId;
-    private Long turmaId;
-
 }

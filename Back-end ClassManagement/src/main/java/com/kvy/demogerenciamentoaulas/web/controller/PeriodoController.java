@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.service.PeriodoService;
+import com.kvy.demogerenciamentoaulas.web.dto.PeriodoDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,8 +35,8 @@ public class PeriodoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Periodo> createPeriodo(@RequestBody Periodo periodo) {
-        Periodo savedPeriodo = periodoService.salvar(periodo);
+    public ResponseEntity<Periodo> createPeriodo(@RequestBody PeriodoDTO periodoDTO) {
+        Periodo savedPeriodo = periodoService.salvar(periodoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPeriodo);
     }
 
@@ -54,8 +55,8 @@ public class PeriodoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Periodo> updatePeriodo(@PathVariable Long id, @RequestBody Periodo periodo) {
-        Periodo updatedPeriodo = periodoService.editar(id, periodo);
+    public ResponseEntity<Periodo> updatePeriodo(@PathVariable Long id, @RequestBody PeriodoDTO periodoDTO) {
+        Periodo updatedPeriodo = periodoService.editar(id, periodoDTO);
         return ResponseEntity.ok(updatedPeriodo);
     }
 

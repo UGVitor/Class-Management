@@ -48,10 +48,10 @@ public class TurmaController {
     }
 
     @GetMapping
-    public List<TurmaDTO> getAllTurmas() {
+    /*public List<TurmaDTO> getAllTurmas() {
         return turmaService.buscarTodasTurmasComDetalhes();
     }
-
+*/
     @Operation(summary = "Atualizar uma turma existente", description = "Recurso para atualizar uma turma existente",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Recurso atualizado com sucesso",
