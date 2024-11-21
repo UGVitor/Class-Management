@@ -177,16 +177,16 @@
             </div>
             <div class="form-group">
                 <label for="login">Login:</label>
-                <select v-model="disciplina.login" required>
+                <select v-model="disciplina.loginId" required>
                     <option disabled value="">Selecione um login</option>
                     <option v-for="login in logins" :key="login.id" :value="login.id">{{ login.login }}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="turma">Turma:</label>
-                <select v-model="disciplina.turma" required>
+                <select v-model="disciplina.turmaId" required>
                     <option disabled value="">Selecione uma turma</option>
-                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nomeTurma }}</option>
+                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nome }}</option>
                 </select>
             </div>
             <div class="form-group">
@@ -203,8 +203,8 @@
                 disciplina: {
                     nome: '',
                     descricao: '',
-                    login: '',
-                    turma: '',
+                    loginId: '',
+                    turmaId: '',
                 },
                 logins: [],
                 turmas: []
@@ -242,13 +242,6 @@
                         .catch(err => alert('Erro ao carregar a disciplina: ' + err.message));
                 },
                 updateDisciplina() {
-                    const disciplinaData = {
-                        nome: this.disciplina.nome,
-                        descricao: this.disciplina.descricao,
-                        login: { id: this.disciplina.login },
-                        turma: { id: this.disciplina.turma },
-                    };
-
                     const url = `http://localhost:8081/api/v1/disciplinas/${this.id}`;
 
                     fetch(url, {
@@ -256,7 +249,7 @@
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(disciplinaData),
+                        body: JSON.stringify(this.disciplina),
                     })
                         .then(response => {
                             if (response.ok) {

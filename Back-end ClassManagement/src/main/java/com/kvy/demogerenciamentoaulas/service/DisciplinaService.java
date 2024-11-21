@@ -1,10 +1,15 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.entity.Turma;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
+import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
+import com.kvy.demogerenciamentoaulas.repository.TurmaRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +25,26 @@ public class DisciplinaService {
     private static final Logger logger = LoggerFactory.getLogger(DisciplinaService.class);
 
     private final DisciplinaRepository disciplinaRepository;
+    private final LoginRepository loginRepository;
+    private final TurmaRepository turmaRepository;
 
     @Transactional
-    public Disciplina salvar(Disciplina disciplina) {
-        if (disciplinaRepository.existsByNome(disciplina.getNome())) {
-            throw new DisciplinaUniqueViolationException(
-                    String.format("Já existe uma disciplina com o nome '%s'", disciplina.getNome()));
+    public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
+    Disciplina disciplina = new Disciplina();
+    disciplina.setNome(disciplinaDTO.getNome());
+    disciplina.setDescricao(disciplinaDTO.getDescricao());
+
+    if (disciplinaDTO.getLoginId() != null) {
+        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+        disciplina.setLogin(login);
+    }
+
+        if (disciplinaDTO.getTurmaId() != null) {
+            Turma turma = turmaRepository.findById(disciplinaDTO.getTurmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada"));
+            disciplina.setTurma(turma);
         }
-        return disciplinaRepository.save(disciplina);
+
+    return disciplinaRepository.save(disciplina);
     }
 
     @Transactional(readOnly = true)
@@ -38,14 +55,25 @@ public class DisciplinaService {
     }
 
     @Transactional
-    public Disciplina editar(Long id, Disciplina disciplina) {
+    public Disciplina editar(Long id, DisciplinaDTO disciplinaDTO) {
         Disciplina existingDisciplina = buscarPorId(id);
-        existingDisciplina.setNome(disciplina.getNome());
-        existingDisciplina.setDescricao(disciplina.getDescricao());
-        existingDisciplina.setLogin(disciplina.getLogin());
-        existingDisciplina.setTurma(disciplina.getTurma());
+        existingDisciplina.setNome(disciplinaDTO.getNome());
+        existingDisciplina.setDescricao(disciplinaDTO.getDescricao());
+
+        if (disciplinaDTO.getLoginId() != null) {
+            Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+            existingDisciplina.setLogin(login);
+        }
+
+        if (disciplinaDTO.getTurmaId() != null) {
+            Turma turma = turmaRepository.findById(disciplinaDTO.getTurmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada"));
+            existingDisciplina.setTurma(turma);
+        }
+
         return disciplinaRepository.save(existingDisciplina);
     }
+
+
 
     @Transactional
     public void excluir(Long id) {
@@ -54,7 +82,7 @@ public class DisciplinaService {
                     String.format("Disciplina com id=%s não encontrada", id));
         }
         disciplinaRepository.deleteById(id);
-        logger.info("Disciplina com id={} excluída com sucesso", id);
+        DisciplinaService.logger.info("Disciplina com id={} excluída com sucesso", id);
     }
 
     @Transactional(readOnly = true)

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
+@Data
 @Table(name = "disciplina")
 
 public class Disciplina implements Serializable {
@@ -75,11 +77,11 @@ public class Disciplina implements Serializable {
     }
 
 
-    public Long getTurmaId() {
-        return turma != null ? turma.getId() : null;
+    public String getTurmaNome() {
+        return turma != null ? turma.getNome() : null;
     }
 
-    public Long getLoginId() {
-        return login != null ? login.getId() : null;
+    public String getLoginNome() {
+        return login != null ? login.getLogin() : null;
     }
 }

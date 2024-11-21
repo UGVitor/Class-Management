@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.web.controller;
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
 import com.kvy.demogerenciamentoaulas.service.DisciplinaService;
+import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,8 +35,8 @@ public class DisciplinaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Disciplina> createDisciplina(@RequestBody Disciplina disciplina) {
-        Disciplina savedDisciplina = disciplinaService.salvar(disciplina);
+    public ResponseEntity<Disciplina> createDisciplina(@RequestBody DisciplinaDTO disciplinaDTO) {
+        Disciplina savedDisciplina = disciplinaService.salvar(disciplinaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDisciplina);
     }
 
@@ -53,8 +54,8 @@ public class DisciplinaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Disciplina> updateDisciplina(@PathVariable Long id, @RequestBody Disciplina disciplina) {
-        Disciplina updatedDisciplina = disciplinaService.editar(id, disciplina);
+    public ResponseEntity<Disciplina> updateDisciplina(@PathVariable Long id, @RequestBody DisciplinaDTO disciplinaDTO) {
+        Disciplina updatedDisciplina = disciplinaService.editar(id, disciplinaDTO);
         return ResponseEntity.ok(updatedDisciplina);
     }
 
