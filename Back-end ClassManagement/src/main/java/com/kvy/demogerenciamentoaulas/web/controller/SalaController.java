@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class SalaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Sala> save(@RequestBody SalaDTO salaDTO) {
+    public ResponseEntity<Sala> save(@Valid @RequestBody SalaDTO salaDTO) {
         try {
             Sala savedSala = salaService.salvar(salaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedSala);
@@ -91,7 +92,7 @@ public class SalaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Sala> editarSala(@PathVariable Long id, @RequestBody SalaDTO salaDTO) {
+    public ResponseEntity<Sala> editarSala(@PathVariable Long id,@Valid @RequestBody SalaDTO salaDTO) {
         Sala salaAtualizada = salaService.editar(id, salaDTO);
         return ResponseEntity.ok(salaAtualizada);
     }

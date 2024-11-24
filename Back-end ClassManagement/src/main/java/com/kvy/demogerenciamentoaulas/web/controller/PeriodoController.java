@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class PeriodoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Periodo> createPeriodo(@RequestBody PeriodoDTO periodoDTO) {
+    public ResponseEntity<Periodo> createPeriodo(@Valid @RequestBody PeriodoDTO periodoDTO) {
         Periodo savedPeriodo = periodoService.salvar(periodoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPeriodo);
     }
@@ -55,7 +56,7 @@ public class PeriodoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Periodo> updatePeriodo(@PathVariable Long id, @RequestBody PeriodoDTO periodoDTO) {
+    public ResponseEntity<Periodo> updatePeriodo(@PathVariable Long id, @Valid @RequestBody PeriodoDTO periodoDTO) {
         Periodo updatedPeriodo = periodoService.editar(id, periodoDTO);
         return ResponseEntity.ok(updatedPeriodo);
     }

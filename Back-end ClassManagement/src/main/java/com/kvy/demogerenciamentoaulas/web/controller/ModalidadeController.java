@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class ModalidadeController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Modalidade> createModalidade(@RequestBody ModalidadeDTO modalidadeDTO) {
+    public ResponseEntity<Modalidade> createModalidade(@Valid @RequestBody ModalidadeDTO modalidadeDTO) {
 
         Modalidade savedModalidade = modalidadeService.salvar(modalidadeDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedModalidade);
@@ -52,7 +53,7 @@ public class ModalidadeController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Modalidade> updateModalidade(@PathVariable Long id, @RequestBody ModalidadeDTO modalidadeDTO) {
+    public ResponseEntity<Modalidade> updateModalidade(@PathVariable Long id, @Valid @RequestBody ModalidadeDTO modalidadeDTO) {
         Modalidade updatedModalidade = modalidadeService.editar(id, modalidadeDTO);
         return ResponseEntity.ok(updatedModalidade);
     }
