@@ -85,7 +85,7 @@ public class TipoSalaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<TipoSala> editarTipoSala(@PathVariable Long id, @RequestBody TipoSalaDTO tipoSalaDTO) {
+    public ResponseEntity<TipoSala> editarTipoSala(@PathVariable Long id,@Valid @RequestBody TipoSalaDTO tipoSalaDTO) {
         TipoSala tipoSalaAtualizado = tipoSalaService.editar(id, tipoSalaDTO);
         return ResponseEntity.ok(tipoSalaAtualizado);
     }

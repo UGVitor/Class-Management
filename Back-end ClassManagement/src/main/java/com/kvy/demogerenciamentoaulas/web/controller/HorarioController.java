@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,10 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<HorarioDTO> createHorario(@RequestBody HorarioDTO horarioDTO) {
+    public ResponseEntity<HorarioDTO> createHorario(@Valid @RequestBody HorarioDTO horarioDTO) {
+        if (!horarioDTO.isHorarioValido()) {
+            throw new IllegalArgumentException("O horário de início deve ser anterior ao horário de término");
+        }
         Horario horario = horarioService.convertToEntity(horarioDTO);
         Horario savedHorario = horarioService.salvar(horario);
         return ResponseEntity.status(HttpStatus.CREATED).body(horarioService.convertToDTO(savedHorario));
@@ -61,7 +65,10 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<HorarioDTO> updateHorario(@PathVariable Long id, @RequestBody HorarioDTO horarioDTO) {
+    public ResponseEntity<HorarioDTO> updateHorario(@PathVariable Long id,@Valid @RequestBody HorarioDTO horarioDTO) {
+        if (!horarioDTO.isHorarioValido()) {
+            throw new IllegalArgumentException("O horário de início deve ser anterior ao horário de término");
+        }
         Horario horario = horarioService.convertToEntity(horarioDTO);
         Horario updatedHorario = horarioService.editar(id, horario);
         return ResponseEntity.ok(horarioService.convertToDTO(updatedHorario));

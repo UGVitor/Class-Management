@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class AulaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Aula> createAula(@RequestBody AulaDTO aulaDTO) {
+    public ResponseEntity<Aula> createAula(@Valid @RequestBody AulaDTO aulaDTO) {
         try {
             Aula savedAula = aulaService.salvar(aulaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
@@ -83,7 +84,7 @@ public class AulaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Aula> editarAula(@PathVariable Long id, @RequestBody AulaDTO aulaDTO) {
+    public ResponseEntity<Aula> editarAula(@PathVariable Long id, @Valid @RequestBody AulaDTO aulaDTO) {
         try {
             Aula aulaAtualizada = aulaService.editar(id, aulaDTO);
             return ResponseEntity.ok(aulaAtualizada);

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public class TurmaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Turma> createTurma(@RequestBody TurmaDTO turmaDTO){
+    public ResponseEntity<Turma> createTurma(@Valid @RequestBody TurmaDTO turmaDTO){
         Turma savedTurma = turmaService.salvar(turmaDTO);
         System.out.println(turmaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTurma);
@@ -63,7 +64,7 @@ public class TurmaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Turma> updateTurma(@PathVariable Long id, @RequestBody TurmaDTO turmaDTO) {
+    public ResponseEntity<Turma> updateTurma(@PathVariable Long id,@Valid @RequestBody TurmaDTO turmaDTO) {
         try {
             Turma updatedTurma = turmaService.editar(id, turmaDTO);
             return ResponseEntity.ok(updatedTurma);

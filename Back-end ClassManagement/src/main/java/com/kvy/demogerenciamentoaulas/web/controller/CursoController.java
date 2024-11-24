@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +42,8 @@ public class CursoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Curso> createCurso(@RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity<Curso> createCurso(@Valid @RequestBody CursoDTO cursoDTO) {
         try {
-            // Logando o DTO recebido
             System.out.println("CursoDTO recebido: " + cursoDTO);
             Curso savedCurso = cursoService.salvar(cursoDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCurso);
@@ -90,7 +90,7 @@ public class CursoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> editarCurso(@PathVariable Long id, @RequestBody CursoDTO cursoDTO) {
+    public ResponseEntity<Curso> editarCurso(@PathVariable Long id, @Valid @RequestBody CursoDTO cursoDTO) {
         Curso cursoAtualizado = cursoService.editar(id, cursoDTO);
         return ResponseEntity.ok(cursoAtualizado);
     }

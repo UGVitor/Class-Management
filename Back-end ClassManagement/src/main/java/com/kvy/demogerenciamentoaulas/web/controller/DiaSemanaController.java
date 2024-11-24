@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class DiaSemanaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<DiaSemana> createDiaSemana(@RequestBody DiaSemanaDTO diaSemanaDTO) {
+    public ResponseEntity<DiaSemana> createDiaSemana(@Valid @RequestBody DiaSemanaDTO diaSemanaDTO) {
         try {
             DiaSemana savedDiaSemana = diaSemanaService.salvar(diaSemanaDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedDiaSemana);
@@ -86,7 +87,7 @@ public class DiaSemanaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<DiaSemana> editarDiaSemana(@PathVariable Long id, @RequestBody DiaSemanaDTO diaSemanaDTO) {
+    public ResponseEntity<DiaSemana> editarDiaSemana(@PathVariable Long id, @Valid @RequestBody DiaSemanaDTO diaSemanaDTO) {
         try {
             DiaSemana diaSemanaAtualizado = diaSemanaService.editar(id, diaSemanaDTO);
             return ResponseEntity.ok(diaSemanaAtualizado);

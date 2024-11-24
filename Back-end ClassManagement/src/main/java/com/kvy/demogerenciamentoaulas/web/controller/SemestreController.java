@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class SemestreController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Semestre> createSemestre(@RequestBody SemestreDTO semestreDTO) {
+    public ResponseEntity<Semestre> createSemestre(@Valid @RequestBody SemestreDTO semestreDTO) {
         Semestre savedSemestre = semestreService.salvar(semestreDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSemestre);
     }
@@ -55,7 +56,7 @@ public class SemestreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Semestre> updateSemestre(@PathVariable Long id, @RequestBody SemestreDTO semestreDTO) {
+    public ResponseEntity<Semestre> updateSemestre(@PathVariable Long id,@Valid @RequestBody SemestreDTO semestreDTO) {
         Semestre updatedSemestre = semestreService.editar(id, semestreDTO);
         return ResponseEntity.ok(updatedSemestre);
     }
