@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtrar Aulas por Dia da Semana</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .filter-header {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .filter-header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .filter-form {
+            margin: 20px 0;
+        }
+
+        .filter-group {
+            margin-bottom: 15px;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="filter-header">
+            <h1>Filtrar Aulas por Dia da Semana</h1>
+        </div>
+        <form @submit.prevent="applyFilter" class="filter-form">
+            <div class="row">
+                <div class="col-md-12 col-12 filter-group">
+                    <label for="diaSemana">Dia da Semana:</label>
+                    <select v-model="selectedDiaSemana" id="diaSemana" class="form-control" required>
+                        <option disabled value="">Selecione um Dia</option>
+                        <option v-for="dia in diasSemana" :key="dia.id" :value="dia.dia">
+                            {{ dia.dia }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-actions d-flex gap-2">
+                <button type="button" class="btn btn-success" @click="filtrarPorDia">Aplicar Filtro</button>
+                <button type="button" class="btn btn-danger" @click="resetFiltro">Limpar</button>
+            </div>
+        </form>
+    
+        <div v-if="aulasFiltradas.length > 0" class="table-responsive">
+            <h4 class="mt-4">Resultados:</h4>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Disciplina</th>
+                        <th>Dia da Semana</th>
+                        <th>Horário Início</th>
+                        <th>Horário Término</th>
+                        <th>Sala</th>
+                        <th>Número da Sala</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="aula in aulasFiltradas" :key="aula.id">
+                        <td>{{ aula.descricao }}</td>
+                        <td>{{ aula.disciplinaNome }}</td>
+                        <td>{{ aula.diaSemanaNome }}</td>
+                        <td>{{ aula.horarioInicio }}</td>
+                        <td>{{ aula.horarioTermino }}</td>
+                        <td>{{ aula.salaNome }}</td>
+                        <td>{{ aula.salaNumero }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p v-else class="text-center mt-4">Nenhuma aula encontrada para o dia selecionado.</p>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+        el: '#app',
+        data() {
+            return {
+                diasSemana: [], // Carregará os dias da API
+                selectedDiaSemana: '', // Dia da semana selecionado
+                aulasFiltradas: [], // Resultado do filtro
+            };
+        },
+        methods: {
+            // Método para carregar os dias da semana da API
+            fetchDiasSemana() {
+                fetch('http://localhost:8081/api/v1/diasSemana')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.diasSemana = data;
+                    })
+                    .catch(error => console.error('Erro ao carregar dias da semana:', error));
+            },
+            
+            // Método para filtrar as aulas por dia selecionado
+            async filtrarPorDia() {
+                if (!this.selectedDiaSemana) {
+                    alert('Por favor, selecione um dia da semana.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`http://localhost:8081/api/v1/aulas/por-dia?diaSemana=${this.selectedDiaSemana}`);
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar aulas filtradas');
+                    }
+
+                    const data = await response.json();
+                    this.aulasFiltradas = data; // Salva o resultado do filtro
+                } catch (error) {
+                    console.error('Erro ao buscar aulas:', error);
+                }
+            },
+
+            // Método para limpar os filtros
+            resetFiltro() {
+                this.selectedDiaSemana = ''; // Reseta o campo do select
+                this.aulasFiltradas = []; // Limpa os resultados filtrados
+            },
+        },
+        mounted() {
+            // Carregar os dias da semana ao montar o componente
+            this.fetchDiasSemana();
+        },
+    });
+
+
+    </script>
+
+</body>
+</html>

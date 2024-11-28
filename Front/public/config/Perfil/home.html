@@ -85,7 +85,7 @@
                     this.data = await this.fetchData(endpoints[entity]);
                 },
                 async deletePerfil(id) {
-                    if (confirm("Tem certeza que deseja deletar esta modalidade?")) {
+                    if (confirm("Tem certeza que deseja deletar este perfil?")) {
                         try {
                             const response = await fetch(`http://localhost:8081/api/v1/perfis/${id}`, {
                                 method: 'DELETE',
