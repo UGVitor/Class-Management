@@ -106,4 +106,11 @@ public class AulaController {
         List<AulaProjection> aulas = aulaService.buscarTodos();
         return ResponseEntity.ok(aulas);
     }
+
+    @GetMapping("/por-dia")
+    public ResponseEntity<List<AulaProjection>> buscarAulasPorDia(@RequestParam String diaSemana) {
+        List<AulaProjection> aulas = aulaService.buscarAulasPorDia(diaSemana);
+        return ResponseEntity.ok(aulas);
+    }
+
 }

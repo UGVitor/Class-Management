@@ -143,4 +143,9 @@ public class AulaService {
         return id != null ? diaSemanaRepository.findById(id)
                 .orElseThrow(() -> new DiaSemanaEntityNotFoundException("Dia da Semana não encontrado com ID: " + id)) : null;
     }
+    @Transactional(readOnly = true)
+    public List<AulaProjection> buscarAulasPorDia(String diaSemana) {
+        return aulaRepository.findByDiaSemanaDia(diaSemana);
+    }
+
 }
