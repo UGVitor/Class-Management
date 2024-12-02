@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termos e Privacidade</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background-color: #019c5c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      width: 100%;
+    }
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 1200px;
+      margin-top: 20px;
+    }
+    .sidebar {
+      flex: 1;
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+    .content {
+      flex: 3;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .tab {
+      display: inline-block;
+      margin-right: 15px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      background-color: #f4f4f4;
+    }
+    .tab.active {
+      background-color: #019c5c;
+      color: white;
+    }
+    .notice {
+      margin-top: 20px;
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-left: 4px solid #019c5c;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Termos de Serviço</h1>
+  </header>
+    </div>
+    <div class="container">
+        <div class="content">
+      <div>
+      </div>
+      <div id="terms" class="tab-content">
+        <h2>Termos de Uso</h2>
+        1. Aceitação dos Termos
+      </p>  
+        Ao acessar ou usar os serviços do sistema de gerenciamento de aulas ("Nós", "Nosso" ou "Nossos"), você concorda com estes Termos de Uso. Caso não concorde, não poderá utilizar nossos serviços.
+      </p>
+        2. Descrição do Serviço:
+      </p>  
+        2.1. Nossa plataforma acadêmica facilita o gerenciamento de horários de aulas, envio de notificações e comunicação entre alunos e professores.  
+      </p>
+        2.2. Para utilizar o serviço, é necessário criar uma conta, fornecendo informações como nome completo, CPF, e-mail e outros dados solicitados.  
+      </p>
+        2.3. Para garantir a segurança, utilizamos um código de confirmação enviado ao e-mail cadastrado.
+      </p>
+        3. Uso Responsável:
+      </p>
+        3.1. É proibido usar a plataforma para fins ilegais ou que comprometam a segurança e integridade dos dados dos usuários.
+      </p>  
+        3.2. Você é responsável por manter suas credenciais de acesso em sigilo e por todas as ações realizadas com sua conta.
+      </p>
+        4. Privacidade:
+      </p>  
+        4.1. O tratamento de seus dados pessoais está de acordo com nossa Política de Privacidade.
+      </p>
+        5. Alterações nos Termos de Uso
+      </p>  
+        5.1. Podemos atualizar estes Termos a qualquer momento, notificando os usuários por meio da plataforma.
+      </p>
+        6. Contato:
+      </p>  
+        6.1. Para suporte ou dúvidas, entre em contato pelo e-mail: suporte@sistemaaulas.com.</p>
+      <div class="notice">
+        <p>Ao utilizar esta plataforma, você confirma que leu e aceitou os <strong>Termos de Serviço</strong> e a <strong>Política de Privacidade</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showContent(tab) {
+      document.getElementById('terms').style.display = tab === 'terms' ? 'block' : 'none';
+      document.getElementById('privacy').style.display = tab === 'privacy' ? 'block' : 'none';
+      document.getElementById('termsTab').classList.toggle('active', tab === 'terms');
+      document.getElementById('privacyTab').classList.toggle('active', tab === 'privacy');
+    }
+  </script>
+</body>
+</html>

@@ -2,91 +2,187 @@
 <html lang="pt-BR">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="#">
-    <title>Inicio</title>
-    <link rel="icon" href="img/icon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <title>Sistema de Gerenciamento de Aulas</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style/index2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #019c5c;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 20px;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .filter-button, .logout-button {
+            background-color: white;
+            color: #019c5c;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid #019c5c;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .filter-button:hover, .logout-button:hover {
+            background-color: #019c5c;
+            color: white;
+        }
+
+        .filter-button {
+            position: absolute;
+            left: 10px;
+        }
+
+        .logout-button {
+            margin-left: auto;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(4, 140, 16, 0.3);
+            text-align: center;
+            padding: 35px;
+            transition: transform 0.2s;
+            text-decoration: none; 
+            color: #333;
+        }
+
+        .card:hover {
+            transform: scale(1.15);
+            color: #019c5c;
+        }
+
+        .card i {
+            font-size: 50px;
+            color: #019c5c;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #019c5c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <div id="app" class="container">
-        <div class="navbar-wrapper"> 
-            <div class="navbar1">
-                <div class="navbar2">
-                    <header>
-                        <div class="user-login">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <nav>
-                            <li>
-                                <a href="#" class="has-submenu" id="cadastro-link">Configurações</a>
-                                <ul class="submenu" id="cadastros-submenu">
-                                    <li><a href="config/filtro.html">Filtro</a></li>
-                                    <li><a href="config/Aula/home.html">Aula</a></li>
-                                    <li><a href="config/Curso/home.html">Curso</a></li>
-                                    <li><a href="config/DiasSemana/HomeDiasSemana.html">Dias da Semana</a></li>
-                                    <li><a href="config/Disciplina/home.html">Disciplina</a></li>
-                                    <li><a href="config/Horario/home.html">Horário</a></li>
-                                    <li><a href="config/Login/home.html">Login</a></li>
-                                    <li><a href="config/Modalidade/home.html">Modalidade</a></li>
-                                    <li><a href="config/Perfil/home.html">Perfil</a></li>
-                                    <li><a href="config/Periodo/home.html">Periodo</a></li>
-                                    <li><a href="config/Sala/HomeSala.html">Sala</a></li>
-                                    <li><a href="config/Semestre/Home.html">Semestre</a></li>
-                                    <li><a href="config/TipoSala/HomeTipoSala.html">Tipo de Sala</a></li>
-                                    <li><a href="config/Turno/Home.html">Turno</a></li>
-                                    <li><a href="config/Turma/Home.html">Turma</a></li>
-                                 
-                                    
-                                </ul>
-                            </li>
-                        </nav>
-                    </header>
-                </div>
-            </div>
-        </div>
+    <div class="navbar">
+        <a href="config/filtro.html" class="filter-button">
+            <i class="fas fa-filter"></i> Filtro
+        </a>
+        <h1 onclick="window.location.reload()">Sistema de Gerenciamento de Aulas</h1>
+        <a href="public/index.html" class="logout-button">
+            <i class="fas fa-sign-out-alt"></i> Sair
+        </a>
     </div>
-
-    <!-- Incluindo o flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script>
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    currentEntity: null,  
-                };
-            },
-            methods: {
-                toggleSubmenu(linkId, submenuId) {
-                    const submenu = document.getElementById(submenuId);
-                    const link = document.getElementById(linkId);
-
-                    if (submenu.style.display === "none" || submenu.style.display === "") {
-                        submenu.style.display = "flex";
-                        link.classList.add("active");
-                    } else {
-                        submenu.style.display = "none";
-                        link.classList.remove("active");
-                    }
-                }
-            },
-            mounted() {
-                flatpickr("#datepicker", {
-                    dateFormat: "d/m/Y",
-                    onChange: (selectedDates, dateStr) => {
-                        this.selectFilter('Data', dateStr);
-                    }
-                });
-
-                // Configurando menus
-                document.getElementById("cadastro-link").onclick = () => this.toggleSubmenu("cadastro-link", "cadastros-submenu");
-            }
-        });
-    </script>
+    <div class="dashboard">
+        <a href="config/Aula/home.html" class="card">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <p>Aula</p>
+        </a>
+        <a href="config/Curso/home.html" class="card">
+            <i class="fas fa-book"></i>
+            <p>Curso</p>
+        </a>
+        <a href="config/DiasSemana/HomeDiasSemana.html" class="card">
+            <i class="fas fa-calendar-alt"></i>
+            <p>Dias da Semana</p>
+        </a>
+        <a href="config/Disciplina/home.html" class="card">
+            <i class="fas fa-graduation-cap"></i>
+            <p>Disciplina</p>
+        </a>
+        <a href="config/Horario/home.html" class="card">
+            <i class="fas fa-clock"></i>
+            <p>Horário</p>
+        </a>
+        <a href="config/Login/home.html" class="card">
+            <i class="fas fa-user"></i>
+            <p>Login</p>
+        </a>
+        <a href="config/Modalidade/home.html" class="card">
+            <i class="fas fa-dumbbell"></i>
+            <p>Modalidade</p>
+        </a>
+        <a href="config/Perfil/home.html" class="card">
+            <i class="fas fa-id-badge"></i>
+            <p>Perfil</p>
+        </a>
+        <a href="config/Periodo/home.html" class="card">
+            <i class="fas fa-calendar"></i>
+            <p>Período</p>
+        </a>
+        <a href="config/Sala/HomeSala.html" class="card">
+            <i class="fas fa-building"></i>
+            <p>Sala</p>
+        </a>
+        <a href="config/Semestre/Home.html" class="card">
+            <i class="fas fa-calendar-check"></i>
+            <p>Semestre</p>
+        </a>
+        <a href="config/TipoSala/HomeTipoSala.html" class="card">
+            <i class="fas fa-door-open"></i>
+            <p>Tipo de Sala</p>
+        </a>
+        <a href="config/Turno/Home.html" class="card">
+            <i class="fas fa-sun"></i>
+            <p>Turno</p>
+        </a>
+        <a href="config/Turma/Home.html" class="card">
+            <i class="fas fa-users"></i>
+            <p>Turma</p>
+        </a>
+    </div>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>
