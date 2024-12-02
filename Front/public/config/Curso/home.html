@@ -102,20 +102,18 @@
         .container {
             display: flex;
         }
-
         .filters-display {
-            margin-top: 70px;
-            padding: 20px;
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
+        padding: 20px;
+        max-width: 800px; 
+        margin: 100px auto; 
+        text-align: center; 
+    }
 
-        .filters-display h3 {
-            margin-bottom: 15px;
-            font-family: 'Arial', sans-serif;
-            color: #019c5c;
-        }
+        .filters-display table {
+        margin: 0 auto; 
+        margin-top: 50px; 
+    }
+
 
         .filters-display table {
             width: 70%;
@@ -203,6 +201,83 @@
             font-size: 16px;
             color: white;
         }
+
+        .create-btn {
+            background-color: #FFC107;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #FFA000;
+        }
+        .create-btn i {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .filters-display {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        footer {
+            background-color: #019c5c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: relative; 
+            width: 100%;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 
 </head>
@@ -213,7 +288,6 @@
                 <h1><a href="../../index2.html">Curso</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="cadastroCurso.html">Criar</a></li>
                 </nav>
             </header>
         </div>
@@ -222,7 +296,6 @@
             <table v-if="currentEntity === 'cursos'">
                 <thead>
                     <tr>
-                       
                         <th>Curso</th>
                         <th>Modalidade</th>
                         <th></th>
@@ -240,6 +313,8 @@
                                 </button>
                                 <button @click="editCurso(curso.id)" class="edit-btn">
                                     <i class="fas fa-edit"></i>
+                                    <button @click="createCurso" class="create-btn">
+                                        <i class="fas fa-plus"></i>  
                                 </button>
                             </div>
                         </td>
@@ -300,6 +375,9 @@
                 },
                 editCurso(id) {
                     window.location.href = `alterarCurso.html?id=${id}`;
+                },
+                createCurso() {
+                window.location.href = "cadastroCurso.html";
                 }
             },
             mounted() {
@@ -307,5 +385,12 @@
             }
         });
     </script>
+  <footer>
+    &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+    <a href="config/Privacidade.html">Política de Privacidade</a> |
+    <a href="public/config/Termos.html">Termos de Uso</a> |
+    <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+</footer>
+
 </body>
 </html>

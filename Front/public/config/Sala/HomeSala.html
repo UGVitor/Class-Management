@@ -215,6 +215,47 @@
             font-size: 16px;
             color: white;
         }
+
+        .create-btn {
+            background-color: #FFC107;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #FFA000;
+        }
+
+        .create-btn i {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+        }
+
+        footer {
+            background-color: #019c5c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -225,7 +266,6 @@
                 <h1><a href="../../index2.html">Sala</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="CadastroSala.html">Criar</a></li>
                 </nav>
             </header>
         </div>
@@ -254,6 +294,9 @@
                                 </button>
                                 <button @click="editSala(sala.id)" class="altera-btn">
                                     <i class="fas fa-edit"></i>
+                                </button>   
+                                <button @click="createSala" class="create-btn">
+                                    <i class="fas fa-plus"></i> 
                                 </button>
                             </div>
                         </td>
@@ -270,10 +313,11 @@
             el: '#app',
             data() {
                 return {
-                    data: [], // Dados das salas
-                    currentEntity: 'salas', // Entidade ativa
+                    data: [], 
+                    currentEntity: 'salas', 
                 };
-            },
+                },
+
             methods: {
                 async fetchData(endpoint) {
                     try {
@@ -309,7 +353,10 @@
                 },
                 editSala(id) {
                     window.location.href = `AlterarSala.html?id=${id}`;
-                }
+                },
+                createSala() {
+                    window.location.href = "CadastroSala.html";
+                },
             },
             mounted() {
                 this.showAll('salas');
@@ -317,6 +364,15 @@
         });
 
     </script>
+    
+ <footer>
+    &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+    <a href="config/Privacidade.html">Política de Privacidade</a> |
+    <a href="config/Termos.html">Termos de Uso</a> |
+    <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+</footer>
+
+
 </body>
 
 </html>

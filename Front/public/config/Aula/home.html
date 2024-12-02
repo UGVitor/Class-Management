@@ -10,7 +10,85 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../style/telasHomes.css">
 </head>
+<style>
+            
 
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+        }
+
+        .filters-display {
+            padding: 200px;
+            max-width: 8000px; 
+            margin: 0 auto; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+
+        th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .create-btn {
+            background-color: #FFC107;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .create-btn:hover {
+            background-color: #FFA000;
+        }
+        .create-btn i {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+
+        }
+
+        footer {
+            background-color: #019c5c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: relative; 
+            width: 100%;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+</style>
+</head>
 <body>
     <div id="app" class="container">
         <div class="navbar">
@@ -18,7 +96,6 @@
                 <h1><a href="../../index2.html">Aula</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="CadastroAula.html">Criar</a></li>
                 </nav>
             </header>
         </div>
@@ -53,6 +130,8 @@
                                 </button>
                                 <button @click="editAula(aula.id)" class="altera-btn">
                                     <i class="fas fa-edit"></i>
+                                <button @click="createAula" class="create-btn">
+                                    <i class="fas fa-plus"></i>  
                                 </button>
                             </div>
                         </td>
@@ -68,37 +147,37 @@
             el: '#app',
             data() {
                 return {
-                    data: [],  // Os dados da aula que virão da API
-                    currentEntity: 'aula',  // Define que a entidade inicial será 'aula'
+                    data: [],  
+                    currentEntity: 'aula', 
                 };
             },
             methods: {
-                // Método genérico para buscar dados de qualquer endpoint
+                
                 async fetchData(endpoint) {
                     try {
                         const response = await fetch(endpoint);
                         if (!response.ok) {
                             throw new Error('Erro na resposta da API');
                         }
-                        return await response.json();  // Retorna os dados no formato JSON
+                        return await response.json();  
                     } catch (error) {
                         console.error('Erro ao buscar dados:', error);
-                        return [];  // Retorna um array vazio em caso de erro
+                        return [];  
                     }
                 },
 
-                // Método para carregar todos os dados de uma entidade específica
+            
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        aula: 'http://localhost:8081/api/v1/aulas', // URL para buscar as aulas
+                        aula: 'http://localhost:8081/api/v1/aulas', 
                     };
 
-                    // Carrega os dados da entidade no data
+                    
                     this.data = await this.fetchData(endpoints[entity]);
                 },
 
-                // Método para deletar uma aula
+                
                 async deleteAula(id) {
                     if (confirm('Tem certeza que deseja deletar esta aula?')) {
                         try {
@@ -117,17 +196,27 @@
                     }
                 },
 
-                // Método para editar uma aula
+                
                 editAula(id) {
                     window.location.href = `AlterarAula.html?id=${id}`;  // Redireciona para a página de edição
+                },
+                createAula() {
+                window.location.href = "cadastroAula.html";
                 }
             },
             mounted() {
-                // Carrega os dados de 'aula' ao inicializar
+                
                 this.showAll('aula');
             }
         });
     </script>
+
+<footer>
+    &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+    <a href="config/Privacidade.html">Política de Privacidade</a> |
+    <a href="public/config/Termos.html">Termos de Uso</a> |
+    <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+</footer>
 </body>
 
 </html>
