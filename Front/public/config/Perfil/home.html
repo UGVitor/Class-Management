@@ -9,50 +9,123 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../style/telasHomes.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
+        .container {
+            flex: 1;
+        }
+
+        .filters-display {
+            padding: 200px;
+            max-width: 8000px; 
+            margin: 0 auto; 
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+
+            .create-btn {
+            background-color: #FFC107;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .create-btn:hover {
+            background-color: #FFA000;
+        }
+
+        .create-btn i {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+
+        }
+        footer {
+            background-color: #019c5c;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: relative; 
+            width: 100%;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
 <body>
     <div id="app" class="container">
-
         <div class="navbar">
             <header>
                 <h1><a href="../../index2.html">Perfil</a></h1>
                 <nav>
                     <li><a href="../../index2.html">Home Principal</a></li>
-                    <li><a href="cadastroPerfil.html">Criar</a></li>
+                
                 </nav>
             </header>
         </div>
- 
 
         <div class="filters-display">
-            <table v-if="currentEntity === 'perfis'">
-                <thead>
-                    <tr>
-                        <th colspan="3">Perfil</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="perfil in data" :key="perfil.id">
-                        <td>{{ perfil.nome }}</td>
-                        <td></td>
-                        <td>
-                            <div class="button-group">
-                                <button @click="deletePerfil(perfil.id)" class="delete-btn">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                                <button @click="editPerfil(perfil.id)" class="altera-btn">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <template v-if="currentEntity === 'perfis'">
+                <table v-if="data.length > 0">
+                    <thead>
+                        <tr>
+                            <th colspan="3">Perfil</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="perfil in data" :key="perfil.id">
+                            <td>{{ perfil.nome }}</td>
+                            <td></td>
+                            <td>
+                                <div class="button-group">
+                                    <button @click="deletePerfil(perfil.id)" class="delete-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <button @click="editPerfil(perfil.id)" class="altera-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>   
+                                    <button @click="createPerfil" class="create-btn">
+                                        <i class="fas fa-plus"></i> 
+
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p v-else class="no-data">Nenhum perfil encontrado.</p>
+            </template>
         </div>
     </div>
 
- 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
@@ -60,7 +133,7 @@
             el: '#app',
             data() {
                 return {
-                    data: [],
+                    data: [], 
                     currentEntity: 'perfis',
                 };
             },
@@ -92,23 +165,33 @@
                             });
                             if (response.ok) {
                                 alert("Perfil deletado com sucesso!");
-                                this.data = this.data.filter(modalidade => modalidade.id !== id); 
+                                this.data = this.data.filter(perfil => perfil.id !== id);
                             } else {
-                                alert("Erro ao deletar a modalidade.");
+                                alert("Erro ao deletar o perfil.");
                             }
                         } catch (error) {
-                            console.error('Erro ao deletar a perfil:', error);
+                            console.error('Erro ao deletar o perfil:', error);
                         }
                     }
                 },
                 editPerfil(id) {
-                    window.location.href = `alterarPerfil.html?id=${id}`;
-                }
+                    window.location.href = "alterarPerfil.html?id=${id}";
+                },
+             createPerfil() {
+                    window.location.href = "CadastroPerfil.html";
+                },
             },
-            mounted(){
+            mounted() {
                 this.showAll('perfis');
             }
         });
     </script>
+
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>
