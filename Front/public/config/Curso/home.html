@@ -313,12 +313,17 @@
                                 </button>
                                 <button @click="editCurso(curso.id)" class="edit-btn">
                                     <i class="fas fa-edit"></i>
-                                    <button @click="createCurso" class="create-btn">
-                                        <i class="fas fa-plus"></i>  
+                                 
                                 </button>
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="8" style="text-align: right;">
+                            <button @click="createCurso" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button>
+                        </td>
                 </tbody>
             </table>
         </div>

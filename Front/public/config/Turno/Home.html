@@ -206,12 +206,12 @@
         }
 
         .altera-btn {
-            background-color: #019c5c;
+            background-color: #2980B9;
             color: white;
         }
 
         .altera-btn:hover {
-            background-color: #019c5c;
+            background-color: #2980B9;
         }
 
         .create-btn {
@@ -284,12 +284,15 @@
                                 <button @click="editTurno(turnos.id)" class="altera-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button @click="createTurno" class="create-btn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                            
                             </div>
                         </td>
                     </tr>
+                    <td colspan="8" style="text-align: right;">
+                        <button @click="createTurno" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button>
+                    </td>
                 </tbody>
             </table>
         </div>

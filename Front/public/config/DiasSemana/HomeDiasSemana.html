@@ -310,12 +310,16 @@
                                 </button>
                                 <button @click="editDia(dia.id)" class="edit-btn">
                                     <i class="fas fa-edit"></i>
-                                    <button @click="createDiasSemana" class="create-btn">
-                                        <i class="fas fa-plus"></i>  
-                                </button>
+
+                                    </button>
                             </div>
                         </td>
                     </tr>
+                    <td colspan="8" style="text-align: right;">
+                        <button @click="createDiasSemana" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button>
+                    </td>
                 </tbody>
             </table>
         </div>

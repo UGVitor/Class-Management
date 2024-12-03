@@ -111,14 +111,16 @@
                                     </button>
                                     <button @click="editPerfil(perfil.id)" class="altera-btn">
                                         <i class="fas fa-edit"></i>
-                                    </button>   
-                                    <button @click="createPerfil" class="create-btn">
-                                        <i class="fas fa-plus"></i> 
-
+                                
                                     </button>
                                 </div>
                             </td>
                         </tr>
+                        <td colspan="8" style="text-align: right;">
+                            <button @click="createPerfil" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button>
+                        </td>
                     </tbody>
                 </table>
                 <p v-else class="no-data">Nenhum perfil encontrado.</p>
