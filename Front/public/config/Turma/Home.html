@@ -248,12 +248,15 @@
                                 <button @click="editTurma(turma.id)" class="edit-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button @click="createTurma" class="create-btn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                               
                             </div>
                         </td>
                     </tr>
+                    <td colspan="8" style="text-align: right;">
+                        <button @click="createTurma" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button>
+                    </td>
                 </tbody>
             </table>
         </div>

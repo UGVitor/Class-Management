@@ -201,12 +201,12 @@
         }
 
         .altera-btn {
-            background-color: #019c5c;
+            background-color: #2980B9;
             color: white;
         }
 
         .altera-btn:hover {
-            background-color: #019c5c;
+            background-color: #2980B9;
         }
 
         .delete-btn i,
@@ -295,12 +295,15 @@
                                 <button @click="editSala(sala.id)" class="altera-btn">
                                     <i class="fas fa-edit"></i>
                                 </button>   
-                                <button @click="createSala" class="create-btn">
-                                    <i class="fas fa-plus"></i> 
-                                </button>
+                                
                             </div>
                         </td>
                     </tr>
+                    <td colspan="8" style="text-align: right;">
+                        <button @click="createSala" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button>
+                    </td>
                 </tbody>
             </table>
 
