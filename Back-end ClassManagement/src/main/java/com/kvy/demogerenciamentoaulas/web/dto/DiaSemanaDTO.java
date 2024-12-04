@@ -15,6 +15,7 @@ public class DiaSemanaDTO {
     private Long id;
 
     @NotBlank(message = "O dia é obrigatório")
-    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "O nome não pode conter caracteres especiais ou números")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s-]+$", message = "O nome não pode conter caracteres especiais, exceto hífens, ou números")
     private String dia;
+
 }
