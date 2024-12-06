@@ -276,7 +276,6 @@
             <table v-if="currentEntity === 'salas'">
                 <thead>
                     <tr>
-                        <th>Nome da Sala</th>
                         <th>Número</th>
                         <th>Capacidade</th>
                         <th>Tipo de Sala</th>
@@ -285,7 +284,6 @@
                 </thead>
                 <tbody>
                     <tr v-for="sala in data" :key="sala.id">
-                        <td>{{ sala.sala }}</td>
                         <td>{{ sala.numero }}</td>
                         <td>{{ sala.capacidade }}</td>
                         <td>{{ sala.tipoSalaNome }}</td>
