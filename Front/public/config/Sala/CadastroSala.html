@@ -102,10 +102,6 @@
         <form @submit.prevent="createSala">
             <h2>Criar Sala</h2>
             <div class="form-group">
-                <label for="sala">Nome da Sala:</label>
-                <input type="text" id="sala" v-model="sala.sala" required />
-            </div>
-            <div class="form-group">
                 <label for="numero">Número da Sala:</label>
                 <input type="number" id="numero" v-model="sala.numero" required min="1" />
             </div>

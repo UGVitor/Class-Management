@@ -97,6 +97,42 @@
         footer a:hover {
             text-decoration: underline;
         }
+        .filter-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px; /* Espaçamento entre o ícone e o texto */
+        background-color: #019c5c; /* Cor padrão do botão */
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 25px;
+        font-size: 12px; /* Tamanho menor para o texto */
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .filter-button i {
+        font-size: 20px; /* Ícone maior */
+    }
+
+    .filter-button:hover {
+        background-color: #efece9; /* Cor laranja ao passar o mouse */
+        color: #ffffff;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .filter-button span {
+        font-size: 10px; /* Redução do tamanho do texto */
+    }
 
 </style>
 </head>
@@ -110,7 +146,11 @@
                         <a href="../../index2.html">
                             <i class="fas fa-home"></i>
                         </a>
-                    </li>                    
+                        
+                    </li>  
+                    <a href="../filtro.html" class="filter-button">
+                        <i class="fas fa-filter"></i> Filtro
+                    </a>                  
                 </nav>
             </header>
         </div>
@@ -118,6 +158,7 @@
         <div class="filters-display">
             <table v-if="currentEntity === 'aula'">
                 <thead>
+                    
                     <tr>
                         <th>Descrição</th>
                         <th>Disciplina</th>
