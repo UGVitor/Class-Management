@@ -25,7 +25,7 @@ public class DiaSemanaService {
         }
 
         DiaSemana diaSemana = new DiaSemana();
-        diaSemana.setDia(diaSemanaDTO.getDia());
+        diaSemana.setDia(TratamentoDeString.capitalizeWords(diaSemanaDTO.getDia()));
         return diaSemanaRepository.save(diaSemana);
     }
 
@@ -44,7 +44,7 @@ public class DiaSemanaService {
             throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
         }
 
-        existingDiaSemana.setDia(diaSemanaDTO.getDia());
+        existingDiaSemana.setDia(TratamentoDeString.capitalizeWords(diaSemanaDTO.getDia()));
         return diaSemanaRepository.save(existingDiaSemana);
     }
 

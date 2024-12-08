@@ -30,6 +30,7 @@ public class PerfilService {
 
     @Transactional
     public Perfil salvar(Perfil perfil) {
+        perfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
         return perfilRepository.save(perfil);
     }
 
@@ -43,7 +44,7 @@ public class PerfilService {
     public Perfil editar(Long id, Perfil perfil) {
         Perfil existingPerfil = buscarPorId(id);
 
-        existingPerfil.setNome(perfil.getNome());
+        existingPerfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
         return perfilRepository.save(existingPerfil);
     }
 

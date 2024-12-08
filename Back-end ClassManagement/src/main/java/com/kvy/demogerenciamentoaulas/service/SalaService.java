@@ -1,7 +1,5 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-
-import com.kvy.demogerenciamentoaulas.entity.Modalidade;
 import com.kvy.demogerenciamentoaulas.entity.Sala;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.SalaEntityNotFoundException;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,9 +25,8 @@ public class SalaService {
     @Transactional
     public Sala salvar(SalaDTO salaDTO) {
         Sala sala = new Sala();
-        sala.setSala(salaDTO.getSala());
-        sala.setNumero(salaDTO.getNumero()); // Setar novo atributo
-        sala.setCapacidade(salaDTO.getCapacidade()); // Setar novo atributo
+        sala.setNumero(salaDTO.getNumero());
+        sala.setCapacidade(salaDTO.getCapacidade());
 
         if (salaDTO.getTipoSala() != null) {
             TipoSala tiposala = tipoSalaRepository.findById(salaDTO.getTipoSala())
@@ -52,9 +48,8 @@ public class SalaService {
     @Transactional
     public Sala editar(Long id, SalaDTO salaDTO) {
         Sala existingSala = buscarPorId(id);
-        existingSala.setSala(salaDTO.getSala());
-        existingSala.setNumero(salaDTO.getNumero()); // Atualizar novo atributo
-        existingSala.setCapacidade(salaDTO.getCapacidade()); // Atualizar novo atributo
+        existingSala.setNumero(salaDTO.getNumero());
+        existingSala.setCapacidade(salaDTO.getCapacidade());
 
         if (salaDTO.getTipoSala() != null) {
             TipoSala tipoSala = tipoSalaRepository.findById(salaDTO.getTipoSala())

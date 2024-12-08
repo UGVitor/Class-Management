@@ -22,7 +22,7 @@ public class TurnoService {
             throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio.");
         }
         Turno turno = new Turno();
-        turno.setTurno(turnoDTO.getTurno());
+        turno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
         return turnoRepository.save(turno);
     }
 
@@ -40,7 +40,7 @@ public class TurnoService {
         if (turnoDTO.getTurno() == null || turnoDTO.getTurno().isBlank()) {
             throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio");
         }
-        existingTurno.setTurno(turnoDTO.getTurno());
+        existingTurno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
         return turnoRepository.save(existingTurno);
     }
 

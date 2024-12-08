@@ -31,7 +31,7 @@ public class TurmaService {
     @Transactional
     public Turma salvar(TurmaDTO turmaDTO) {
         Turma turma = new Turma();
-        turma.setNome(turmaDTO.getNome());
+        turma.setNome(TratamentoDeString.capitalizeWords(turmaDTO.getNome()));
 
         if (turmaDTO.getPeriodo() != null) {
             Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
@@ -80,10 +80,9 @@ public class TurmaService {
 
     @Transactional
     public Turma editar(Long id, TurmaDTO turmaDTO) {
-        Turma existingTurma = turmaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Aula não encontrada com o ID: " + id));
+        Turma existingTurma = buscarPorId(id);
 
-        existingTurma.setNome(turmaDTO.getNome());
+        existingTurma.setNome(TratamentoDeString.capitalizeWords(turmaDTO.getNome()));
 
         if (turmaDTO.getPeriodo() != null) {
             Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())

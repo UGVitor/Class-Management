@@ -2,14 +2,12 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -22,9 +20,6 @@ public class Aula implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
-    @Column(name = "descricao", nullable = false, length = 200)
-    private String descricao;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_disciplina")
@@ -46,6 +41,11 @@ public class Aula implements Serializable {
     @JsonBackReference("diaSemana-aula")
     private DiaSemana diaSemana;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_Turma", nullable = false)
+    @JsonBackReference("Turma-aula")
+    private Turma turma;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,20 +66,20 @@ public class Aula implements Serializable {
                 '}';
     }
 
-    public String getSalaNome() {
-        return sala != null ? sala.getSala() : null;
-    }
     public int getSalaNumero() { return sala != null ? sala.getNumero() : null; }
-    public String getDisciplina() {
-        return disciplina != null ? disciplina.getNome() : null;
-    }
     public LocalTime getHorarioInicio() {return horario != null ? horario.getHoraInicio() : null;}
     public LocalTime getHorarioTermino() {return horario != null ? horario.getHoraTermino() : null;}
     public String getDiaSemanaNome() {return diaSemana != null ? diaSemana.getDia() : null;}
+
+    public String getTipoSalaNome(){return sala != null ? sala.getTipoSala().getTipoSala() : null;}
+
+
     public String getDisciplinaNome() {
         return disciplina != null ? disciplina.getNome() : null;
     }
-
+    public String getTurmaNome() {
+        return turma != null ? turma.getNome() : null;
+    }
     public Long getDisciplinaId() {
         return disciplina != null ? disciplina.getId() : null;
     }

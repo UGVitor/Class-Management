@@ -27,7 +27,7 @@ public class CursoService {
     @Transactional
     public Curso salvar(CursoDTO cursoDTO) {
         Curso curso = new Curso();
-        curso.setCurso(cursoDTO.getCurso());
+        curso.setCurso(TratamentoDeString.capitalizeWords(cursoDTO.getCurso()));
 
         if (cursoDTO.getModalidade() != null) {
             Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())

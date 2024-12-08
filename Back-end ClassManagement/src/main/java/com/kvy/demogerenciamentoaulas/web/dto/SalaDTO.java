@@ -15,10 +15,6 @@ public class SalaDTO {
 
     private Long id;
 
-    @NotBlank(message = "O campo sala é obrigatório")
-    @Pattern(regexp = "^[a-zA-ZÀ-ÿ0-9\\s]+$", message = "O campo sala só pode conter letras, números e espaços")
-    private String sala;
-
     @Setter
     @Getter
     @NotNull(message = "O campo tipoSala é obrigatório")
