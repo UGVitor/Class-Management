@@ -100,7 +100,7 @@
                 <select v-model="aula.salaId" required>
                     <option disabled value="">Selecione uma Sala</option>
                     <option v-for="sala in salas" :key="sala.id" :value="sala.id">
-                        {{ sala.sala }} {{sala.numero}}
+                        {{ sala.tipoSalaNome }} {{sala.numero}}
                     </option>
                 </select>
             </div>
