@@ -26,7 +26,7 @@ public class Modalidade implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nome", nullable = false)
+    @Column(name = "nome", nullable = false, unique = true)
     private String nome;
 
     @OneToMany(mappedBy = "modalidade", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

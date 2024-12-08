@@ -18,7 +18,7 @@ public class Semestre implements Serializable {
         @Column(name = "id")
         private Long id;
 
-        @Column(name = "semestre", nullable = false)
+        @Column(name = "semestre", nullable = false, unique = true)
         private String semestre;
 
         @OneToMany(mappedBy = "semestre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

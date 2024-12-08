@@ -26,7 +26,7 @@ public class Turno implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "turno", nullable = false)
+    @Column(name = "turno", nullable = false, unique = true)
     private String turno;
 
     @OneToMany(mappedBy = "turno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
