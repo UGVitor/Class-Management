@@ -23,10 +23,10 @@ public class Horario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "hora_inicio", nullable = false)
+    @Column(name = "hora_inicio", nullable = false, unique = true)
     private LocalTime horaInicio;
 
-    @Column(name = "hora_termino", nullable = false)
+    @Column(name = "hora_termino", nullable = false, unique = true)
     private LocalTime horaTermino;
 
     @OneToMany(mappedBy = "horario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -23,10 +23,10 @@ public class Sala implements Serializable {
     private String sala;
 
     @Column(name = "numero", nullable = false)
-    private int numero; // Novo atributo
+    private int numero;
 
     @Column(name = "capacidade", nullable = false)
-    private int capacidade; // Novo atributo
+    private int capacidade;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tiposala", nullable = false)

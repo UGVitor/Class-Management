@@ -31,7 +31,7 @@ public class Disciplina implements Serializable {
     private Long id;
 
     @NotBlank(message = "O nome da disciplina é obrigatório.")
-    @Column(name = "nome", nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 100, unique = true)
     private String nome;
 
     @NotBlank(message = "A descrição da disciplina é obrigatória.")

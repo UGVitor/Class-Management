@@ -21,7 +21,7 @@ public class DiaSemana implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "dia", nullable = false)
+    @Column(name = "dia", nullable = false, unique = true)
     private String dia;
 
     @OneToMany(mappedBy = "diaSemana", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

@@ -22,6 +22,7 @@ public class Aula implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "descricao", nullable = false, length = 200)
     private String descricao;
 
