@@ -103,11 +103,11 @@
             <h2>Criar Sala</h2>
             <div class="form-group">
                 <label for="numero">Número da Sala:</label>
-                <input type="number" id="numero" v-model="sala.numero" required min="1" />
+                <input type="number" id="numero" v-model="sala.numero" maxlength="10"required min="1" />
             </div>
             <div class="form-group">
                 <label for="capacidade">Capacidade da Sala:</label>
-                <input type="number" id="capacidade" v-model="sala.capacidade" required min="1" />
+                <input type="number" id="capacidade" v-model="sala.capacidade" maxlength="10" required min="1" />
             </div>
             <div class="form-group">
                 <label for="tipoSala">Tipo de Sala:</label>
