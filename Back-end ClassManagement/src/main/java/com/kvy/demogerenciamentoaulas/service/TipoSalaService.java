@@ -1,10 +1,7 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
-import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.repository.Projection.CursoProjection;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TipoSalaDTO;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +23,7 @@ public class TipoSalaService {
         }
 
         TipoSala tipoSala = new TipoSala();
-        tipoSala.setTipoSala(tipoSalaDTO.getTipoSala());
+        tipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
 
         TipoSala savedTipoSala = tipoSalaRepository.save(tipoSala);
         return toDTO(savedTipoSala);
@@ -41,7 +38,7 @@ public class TipoSalaService {
     @Transactional
     public TipoSala editar(Long id, TipoSalaDTO tipoSalaDTO) {
         TipoSala existingTipoSala = buscarPorId(id);
-        existingTipoSala.setTipoSala(tipoSalaDTO.getTipoSala());
+        existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
 
         return tipoSalaRepository.save(existingTipoSala);
     }

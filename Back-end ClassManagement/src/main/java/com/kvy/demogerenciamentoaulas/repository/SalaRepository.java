@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface SalaRepository extends JpaRepository<Sala, Long> {
 
-    @Query("select s.id as id, s.sala as sala, s.numero as numero, s.capacidade as capacidade, t.tipoSala as tipoSalaNome " +
+    @Query("select s.id as id, s.numero as numero, s.capacidade as capacidade, t.tipoSala as tipoSalaNome " +
             "FROM Sala s JOIN s.tipoSala t")
     List<SalaProjection> findAllSalas();
 

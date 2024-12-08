@@ -30,21 +30,16 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
-    Disciplina disciplina = new Disciplina();
-    disciplina.setNome(disciplinaDTO.getNome());
-    disciplina.setDescricao(disciplinaDTO.getDescricao());
+        Disciplina disciplina = new Disciplina();
+        disciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
-    if (disciplinaDTO.getLoginId() != null) {
-        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
-        disciplina.setLogin(login);
-    }
-
-        if (disciplinaDTO.getTurmaId() != null) {
-            Turma turma = turmaRepository.findById(disciplinaDTO.getTurmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada"));
-            disciplina.setTurma(turma);
+        if (disciplinaDTO.getLoginId() != null) {
+            Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+            disciplina.setLogin(login);
         }
 
-    return disciplinaRepository.save(disciplina);
+
+        return disciplinaRepository.save(disciplina);
     }
 
     @Transactional(readOnly = true)
@@ -57,18 +52,13 @@ public class DisciplinaService {
     @Transactional
     public Disciplina editar(Long id, DisciplinaDTO disciplinaDTO) {
         Disciplina existingDisciplina = buscarPorId(id);
-        existingDisciplina.setNome(disciplinaDTO.getNome());
-        existingDisciplina.setDescricao(disciplinaDTO.getDescricao());
+        existingDisciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
         if (disciplinaDTO.getLoginId() != null) {
             Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
             existingDisciplina.setLogin(login);
         }
 
-        if (disciplinaDTO.getTurmaId() != null) {
-            Turma turma = turmaRepository.findById(disciplinaDTO.getTurmaId()).orElseThrow(() -> new IllegalArgumentException("Turma não encontrada"));
-            existingDisciplina.setTurma(turma);
-        }
 
         return disciplinaRepository.save(existingDisciplina);
     }

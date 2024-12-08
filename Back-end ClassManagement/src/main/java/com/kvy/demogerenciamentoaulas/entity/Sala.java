@@ -19,9 +19,6 @@ public class Sala implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "sala", nullable = false, length = 50)
-    private String sala;
-
     @Column(name = "numero", nullable = false)
     private int numero;
 
@@ -50,7 +47,6 @@ public class Sala implements Serializable {
     public String toString() {
         return "Sala{" +
                 "id=" + id +
-                ", sala='" + sala + '\'' +
                 ", numero=" + numero +
                 ", capacidade=" + capacidade +
                 '}';

@@ -24,7 +24,7 @@ public class PeriodoService {
             throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
         }
         Periodo periodo = new Periodo();
-        periodo.setNome(periodoDTO.getNome());
+        periodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
 
         return periodoRepository.save(periodo);
     }
@@ -44,7 +44,7 @@ public class PeriodoService {
             throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
         }
 
-        existingPeriodo.setNome(periodoDTO.getNome());
+        existingPeriodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
         return periodoRepository.save(existingPeriodo);
     }
 

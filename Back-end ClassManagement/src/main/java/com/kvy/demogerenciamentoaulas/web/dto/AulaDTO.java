@@ -16,10 +16,6 @@ public class AulaDTO {
 
     private Long id;
 
-    @NotBlank(message = "Descrição não pode ser em branco.")
-    @Size(max = 255, message = "Descrição não pode ter mais que 255 caracteres.")
-    private String descricao;
-
     @NotNull(message = "ID da disciplina não pode ser nulo.")
     private Long disciplinaId;
 
@@ -31,4 +27,7 @@ public class AulaDTO {
 
     @NotNull(message = "ID do dia da semana não pode ser nulo.")
     private Long diaSemanaId;
+
+    @NotNull(message = "ID do dia da semana não pode ser nulo.")
+    private Long turmaId;
 }

@@ -16,7 +16,6 @@ import java.util.Optional;
 public class SemestreService {
     private final SemestreRepository semestreRepository;
 
-
     @Transactional
     public Semestre salvar(SemestreDTO semestreDTO) {
         if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().isBlank()) {
@@ -24,7 +23,7 @@ public class SemestreService {
         }
 
         Semestre semestre = new Semestre();
-        semestre.setSemestre(semestreDTO.getSemestre());
+        semestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
         return semestreRepository.save(semestre);
     }
 
@@ -42,7 +41,7 @@ public class SemestreService {
             throw new IllegalArgumentException("O nome do Semestre não pode ser nulo ou vazio");
         }
 
-        existingSemestre.setSemestre(semestreDTO.getSemestre());
+        existingSemestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
         return semestreRepository.save(existingSemestre);
     }
     @Transactional

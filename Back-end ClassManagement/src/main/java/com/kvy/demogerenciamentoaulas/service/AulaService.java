@@ -1,17 +1,9 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Aula;
-import com.kvy.demogerenciamentoaulas.entity.Disciplina;
-import com.kvy.demogerenciamentoaulas.entity.Horario;
-import com.kvy.demogerenciamentoaulas.entity.Sala;
-import com.kvy.demogerenciamentoaulas.entity.DiaSemana;
+import com.kvy.demogerenciamentoaulas.entity.*;
 import com.kvy.demogerenciamentoaulas.exception.*;
-import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
-import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
-import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
+import com.kvy.demogerenciamentoaulas.repository.*;
 import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
-import com.kvy.demogerenciamentoaulas.repository.SalaRepository;
-import com.kvy.demogerenciamentoaulas.repository.DiaSemanaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,12 +22,11 @@ public class AulaService {
     private final HorarioRepository horarioRepository;
     private final SalaRepository salaRepository;
     private final DiaSemanaRepository diaSemanaRepository;
+    private final TurmaRepository turmaRepository;
 
     @Transactional
     public Aula salvar(AulaDTO aulaDTO) {
         Aula aula = new Aula();
-        aula.setDescricao(aulaDTO.getDescricao());
-
         // Resolvendo os IDs para entidades
         if (aulaDTO.getDisciplinaId() != null) {
             Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
@@ -53,6 +44,12 @@ public class AulaService {
             Sala sala = salaRepository.findById(aulaDTO.getSalaId())
                     .orElseThrow(() -> new IllegalArgumentException("Sala não encontrada com o ID: " + aulaDTO.getSalaId()));
             aula.setSala(sala);
+        }
+
+        if (aulaDTO.getTurmaId() != null) {
+            Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
+                    .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada com o ID: " + aulaDTO.getTurmaId()));
+            aula.setTurma(turma);
         }
 
         if (aulaDTO.getDiaSemanaId() != null) {
@@ -76,8 +73,6 @@ public class AulaService {
         Aula aulaExistente = aulaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Aula não encontrada com o ID: " + id));
 
-        aulaExistente.setDescricao(aulaDTO.getDescricao());
-
         // Atualizando os relacionamentos
         if (aulaDTO.getDisciplinaId() != null) {
             Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
@@ -95,6 +90,12 @@ public class AulaService {
             Sala sala = salaRepository.findById(aulaDTO.getSalaId())
                     .orElseThrow(() -> new IllegalArgumentException("Sala não encontrada com o ID: " + aulaDTO.getSalaId()));
             aulaExistente.setSala(sala);
+        }
+
+        if (aulaDTO.getTurmaId() != null) {
+            Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
+                    .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada com o ID: " + aulaDTO.getTurmaId()));
+            aulaExistente.setTurma(turma);
         }
 
         if (aulaDTO.getDiaSemanaId() != null) {
@@ -143,6 +144,7 @@ public class AulaService {
         return id != null ? diaSemanaRepository.findById(id)
                 .orElseThrow(() -> new DiaSemanaEntityNotFoundException("Dia da Semana não encontrado com ID: " + id)) : null;
     }
+
     @Transactional(readOnly = true)
     public List<AulaProjection> buscarAulasPorDia(String diaSemana) {
         return aulaRepository.findByDiaSemanaDia(diaSemana);

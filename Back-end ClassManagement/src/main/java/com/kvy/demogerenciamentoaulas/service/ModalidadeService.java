@@ -24,7 +24,7 @@ public class ModalidadeService {
             throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
         }
         Modalidade modalidade = new Modalidade();
-        modalidade.setNome(modalidadeDTO.getNome());
+        modalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
         return modalidadeRepository.save(modalidade);
     }
 
@@ -37,12 +37,12 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade editar(Long id, ModalidadeDTO modalidadeDTO) {
-        Modalidade existingModalidade = modalidadeRepository.findById(id).orElseThrow(() -> new ModalidadeEntityNotFoundException(String.format("Modalidade id=%s não encontrado", id)));
+        Modalidade existingModalidade = buscarPorId(id);
 
         if (modalidadeDTO.getNome() == null || modalidadeDTO.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
         }
-        existingModalidade.setNome(modalidadeDTO.getNome());
+        existingModalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
         return modalidadeRepository.save(existingModalidade);
 
     }

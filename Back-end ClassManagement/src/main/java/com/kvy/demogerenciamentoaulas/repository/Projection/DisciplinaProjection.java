@@ -4,8 +4,6 @@ public interface DisciplinaProjection {
 
     Long getId();
     String getNome();
-    String getDescricao();
     String getLoginNome();
-    String getTurmaNome();
     }
 

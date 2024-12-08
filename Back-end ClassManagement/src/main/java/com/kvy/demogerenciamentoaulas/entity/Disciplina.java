@@ -34,21 +34,11 @@ public class Disciplina implements Serializable {
     @Column(name = "nome", nullable = false, length = 100, unique = true)
     private String nome;
 
-    @NotBlank(message = "A descrição da disciplina é obrigatória.")
-    @Column(name = "descricao", nullable = false)
-    private String descricao;
-
     @NotNull(message = "O login é obrigatório.")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_login", nullable = false)
     @JsonBackReference("login-disciplina")
     private Login login;
-
-    @NotNull(message = "A turma é obrigatória.")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_Turma", nullable = false)
-    @JsonBackReference("Turma-disciplina")
-    private Turma turma;
 
     @OneToMany(mappedBy = "disciplina", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference("disciplina-aula")
@@ -71,15 +61,11 @@ public class Disciplina implements Serializable {
     public String toString() {
         return "Disciplina{" +
                 "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", descricao='" + descricao + '\'' +
+                ", nome='" + nome + '\''  +
                 '}';
     }
 
 
-    public String getTurmaNome() {
-        return turma != null ? turma.getNome() : null;
-    }
 
     public String getLoginNome() {
         return login != null ? login.getLogin() : null;
