@@ -12,7 +12,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('img/background.png') no-repeat center center fixed; /* Mantém a imagem de fundo fixa */
+            background: url('img/background.png') no-repeat center center fixed; 
             background-size: cover;
             display: flex;
             justify-content: center;
@@ -46,35 +46,35 @@
             color: transparent;
             font-weight: 600;
             text-align: center;
-            margin-bottom: 1.5rem; /* Adiciona espaçamento abaixo do título */
+            margin-bottom: 1.5rem; 
         }
 
         .login-container2 .input-group {
             position: relative;
-            margin-bottom: 1.5rem; /* Aumenta o espaçamento entre os campos */
+            margin-bottom: 1.5rem; 
         }
 
         .login-container2 input[type="text"],
         .login-container2 input[type="password"] {
             width: 100%;
-            padding: 0.75rem 2.5rem; /* Adiciona espaço para o ícone */
+            padding: 0.75rem 2.5rem; 
             margin-bottom: 0.0rem;
             border: 1px solid #d1d9e6;
             border-radius: 4px;
             background-color: #f7fafc;
-            transition: border-color 0.3s; /* Adiciona transição ao foco */
+            transition: border-color 0.3s; 
         }
 
         .login-container2 input[type="text"]:focus,
         .login-container2 input[type="password"]:focus {
-            border-color: #37baad; /* Muda a cor da borda no foco */
-            outline: none; /* Remove o contorno padrão do navegador */
+            border-color: #37baad;
+            outline: none; 
         }
 
         .login-container2 button {
             width: 80%;
             padding: 0.8rem 1.6rem;
-            margin: 0.5rem auto; /* Centraliza o botão */
+            margin: 0.5rem auto; 
             display: block;
             font-weight: 600;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -84,7 +84,7 @@
             border: none; 
             font-size: 1rem;
             cursor: pointer;
-            border-radius: 5px; /* Adiciona bordas arredondadas ao botão */
+            border-radius: 5px;
         }
 
         .login-container2 button:hover {
@@ -95,14 +95,14 @@
 
         .login-container2 select {
             width: 100%;
-            padding: 0.75rem 2.5rem; /* Adiciona espaço para o ícone */
+            padding: 0.75rem 2.5rem; 
             margin-bottom: 0.0rem;
             border: 1px solid #d1d9e6;
             border-radius: 4px;
             background-color: #f7fafc;
-            appearance: none; /* Remove o estilo padrão do select */
-            -webkit-appearance: none; /* Remove o estilo padrão no Safari */
-            transition: border-color 0.3s; /* Transição suave no foco */
+            appearance: none; 
+            -webkit-appearance: none; 
+            transition: border-color 0.3s; 
             background-image: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/caret-down.svg');
             background-repeat: no-repeat;
             background-position: right 1rem center;
@@ -110,14 +110,14 @@
         }
 
         .login-container2 select:focus {
-            border-color: #37baad; /* Muda a cor da borda no foco */
-            outline: none; /* Remove o contorno padrão do navegador */
+            border-color: #37baad; 
+            outline: none; 
         }
 
         .login-container2 .input-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #555; /* Cor do texto da label */
+            color: #555;
             font-weight: 600;
             font-size: 0.9rem;
         }
@@ -126,7 +126,7 @@
             color: red;
             margin-top: 10px;
             display: none;
-            text-align: center; /* Centraliza a mensagem de erro */
+            text-align: center; 
         }
 
         .input-group {
@@ -138,8 +138,8 @@
             left: 15px;
             top: 45%;
             transform: translateY(-50%);
-            color: #d1d9e6; /* Cor do ícone */
-            pointer-events: none; /* Cor do ícone */
+            color: #d1d9e6; 
+            pointer-events: none; 
         }
 
         .input-group .iconss {
@@ -147,14 +147,14 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: #d1d9e6; /* Cor do ícone */
-            pointer-events: none; /* Ícone não interfere no clique */
-            transition: transform 0.3s ease; /* Suaviza a rotação */
+            color: #d1d9e6; 
+            pointer-events: none; 
+            transition: transform 0.3s ease; 
         }
 
         .input-group select:focus + .iconss {
-            transform: translateY(-50%) rotate(90deg); /* Rotação de 90 graus */
-            color: #37baad; /* Opcional: muda a cor do ícone */
+            transform: translateY(-50%) rotate(90deg); 
+            color: #37baad; 
         }
 
        
@@ -256,7 +256,7 @@
                 perfis: []
             },
             created() {
-                this.fetchPerfis(); // Carrega os perfis ao iniciar o componente
+                this.fetchPerfis(); 
             },
             methods: {
                 fetchPerfis() {
