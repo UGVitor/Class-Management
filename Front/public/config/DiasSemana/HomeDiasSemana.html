@@ -89,6 +89,15 @@
             color: #019c5c;
             border-radius: 7px;
         }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+          }
+
+        th {
+        background-color: #f4f4f4;
+        text-align: left;
+         }
     
         .flatpickr-input {
             background-color: #fff;
@@ -305,8 +314,8 @@
             <table v-if="currentEntity === 'diasSemana'">
                 <thead>
                         <tr>
-                            <th colspan="2" class="header-actions">
-                                Dia da Semana
+                            <th> Dia da Semana </th>
+                               <th>
                                 <button @click="createDiasSemana" class="create-btn">
                                     <i class="fas fa-plus"></i> Criar
                                 </button>

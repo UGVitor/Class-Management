@@ -63,6 +63,15 @@
             padding: 0px 10px;
             line-height: 40px
         }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+
+        th {
+        background-color: #f4f4f4;
+        text-align: left;
+            }
 
         nav li {
             display: flex;
@@ -279,7 +288,9 @@
                         <th>Número</th>
                         <th>Capacidade</th>
                         <th>Tipo de Sala</th>
-                        <th>Ações</th>
+                        <th><button @click="createSala" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -299,11 +310,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createSala" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
 

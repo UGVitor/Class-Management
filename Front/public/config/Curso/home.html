@@ -135,13 +135,13 @@
 
         .filters-display table th {
             background-color: #019c5c;
-            color: #FFFFFF;
+            color: #ffffff;
             font-weight: bold;
             text-align: center;
         }
 
         .filters-display table tr:nth-child(even) {
-            background-color: #ECF0F1;
+            background-color: #ffffff;
         }
 
         .filters-display table tr:last-child td {
@@ -204,7 +204,7 @@
 
         .create-btn {
             background-color: #FFC107;
-            color: white;
+            color: rgb(255, 255, 255);
             padding: 8px 15px;
             border: none;
             border-radius: 5px;
@@ -218,7 +218,7 @@
         .create-btn i {
             margin: 0;
             font-size: 16px;
-            color: white;
+            color: rgb(255, 255, 255);
         }
 
         body {
@@ -300,7 +300,10 @@
                     <tr>
                         <th>Curso</th>
                         <th>Modalidade</th>
-                        <th></th>
+                        <th><button @click="createCurso" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -321,11 +324,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="8" style="text-align: right;">
-                            <button @click="createCurso" class="create-btn">
-                                <i class="fas fa-plus"></i> Criar
-                            </button>
-                        </td>
                 </tbody>
             </table>
         </div>

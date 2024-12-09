@@ -30,9 +30,15 @@
             margin-top: 10px;
         }
 
-        th {
-            background-color: #f4f4f4;
-            text-align: left;
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+            }
+
+         th {
+        background-color: #f4f4f4;
+        text-align: left;
+
         }
 
         .no-data {
@@ -97,16 +103,18 @@
 
         <div class="filters-display">
             <template v-if="currentEntity === 'periodos'">
-                <table v-if="data.length > 0">
+                <table>
                     <thead>
                         <tr>
-                            <th colspan="3">Período</th>
+                            <th>Período</th>
+                            <th><button @click="createPeriodo" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="periodo in data" :key="periodo.id">
                             <td>{{ periodo.nome }}</td>
-                            <td></td>
                             <td>
                                 <div class="button-group">
                                     <button @click="deletePeriodo(periodo.id)" class="delete-btn">
@@ -118,14 +126,8 @@
                                 </div>
                             </td>
                         </tr>
-                        <td colspan="8" style="text-align: right;">
-                            <button @click="createPeriodo" class="create-btn">
-                                <i class="fas fa-plus"></i> Criar
-                            </button>
-                        </td>
                     </tbody>
                 </table>
-                <p v-else class="no-data">Nenhum período encontrado.</p>
             </template>
         </div>
     </div>

@@ -61,6 +61,15 @@
             padding: 0px 10px;
             line-height: 40px;
         }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+         }
+
+         th {
+        background-color: #f4f4f4;
+        text-align: left;
+        }
 
         nav li {
             display: flex;
@@ -326,7 +335,9 @@
                         <th>Descrição</th>
                         <th>Login</th>
                         <th>Turma</th>
-                        <th></th>
+                        <th><button @click="createDisciplina" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -346,11 +357,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createDisciplina" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>
