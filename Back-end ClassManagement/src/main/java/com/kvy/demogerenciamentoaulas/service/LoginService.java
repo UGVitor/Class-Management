@@ -59,7 +59,7 @@ public class LoginService {
 
     @Transactional
     public Login salvar(Login login) {
-        login.setLogin(TratamentoDeString.capitalizeWords(login.getLogin()));
+        login.setLogin(login.getLogin());
         return loginRepository.save(login);
     }
 
@@ -86,7 +86,7 @@ public class LoginService {
     @Transactional
     public Login editar(Long id, Login login) {
         Login existingUser = buscarPorId(id);
-        existingUser.setLogin(TratamentoDeString.capitalizeWords(login.getLogin()));
+        existingUser.setLogin(login.getLogin());
         existingUser.setPerfil(login.getPerfil());
         return loginRepository.save(existingUser);
     }

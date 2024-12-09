@@ -19,10 +19,10 @@ public class Sala implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "numero", nullable = false)
+    @Column(name = "numero", nullable = false, length = 2)
     private int numero;
 
-    @Column(name = "capacidade", nullable = false)
+    @Column(name = "capacidade", nullable = false, length = 3)
     private int capacidade;
 
     @ManyToOne(fetch = FetchType.EAGER)

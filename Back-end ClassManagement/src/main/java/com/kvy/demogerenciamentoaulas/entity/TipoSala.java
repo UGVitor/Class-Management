@@ -20,7 +20,7 @@ public class TipoSala {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tipoSala", nullable = false, length = 50, unique = true)
+    @Column(name = "tipoSala", nullable = false, length = 40, unique = true)
     private String tipoSala;
 
     @OneToMany(mappedBy = "tipoSala", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
