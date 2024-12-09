@@ -19,7 +19,7 @@ public class Periodo implements Serializable {
         @Column(name = "id")
         private Long id;
 
-        @Column(name = "nome", nullable = false, unique = true)
+        @Column(name = "nome", nullable = false, unique = true, length = 40)
         private String nome;
 
         @OneToMany(mappedBy = "periodo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

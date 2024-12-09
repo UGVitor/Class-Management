@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Perfil</title>
     <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="../../img/icon.png">
 </head>
 <body>
@@ -12,7 +13,11 @@
       <header>
           <h1><a href="#">Perfil</a></h1>
           <nav>
-              <li><a href="home.html">Home</a></li>
+                <li>
+                    <a href="home.html">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
           </nav>
       </header>
     </div>
@@ -21,7 +26,7 @@
           <h2>Criar Perfil</h2>
           <div class="form-group">
             <label for="nome">Nome do Perfil:</label>
-            <input type="text" v-model="perfis.nome" required />
+            <input type="text" v-model="perfis.nome" maxlength="50" required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Perfil</button>
@@ -75,5 +80,11 @@
             }
         });
     </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>

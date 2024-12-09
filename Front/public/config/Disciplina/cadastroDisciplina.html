@@ -1,120 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Disciplina</title>
-    <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        li {
-            list-style: none;
-        }
-
-        body {
-            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-        }
-
-        .navbar {
-            background-color: #019c5c;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            height: 60px;
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px;
-            height: 60px;
-        }
-
-        header h1 a {
-            color: #fff;
-            font-size: 35px;
-        }
-
-        nav {
-            display: flex;
-            gap: 30px;
-            font-size: 19px;
-        }
-
-        li a {
-            color: #fff;
-            padding: 10px;
-            transition: ease .3s;
-            cursor: pointer;
-        }
-
-        nav li a:hover {
-            background-color: #ffffffa8;
-            color: #000;
-            border-radius: 7px;
-        }
-
-        nav button {
-            color: #DDF5F7;
-            padding: 5px 10px;
-            background-color: #019c5c;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            transition: ease .3s;
-        }
-
-        nav button:hover {
-            background-color: #C0D9E5;
-            color: #019c5c;
-            border-radius: 7px;
-        }
-
-        h2 {
-            color: #000;
-        }
-
-        .form-group label {
-            color: #333;
-        }
-
-        .form-group input,
-        .form-group select {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .form-group button {
-            color: #fff;
-            background-color: #019c5c;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .form-group button:hover {
-            background-color: #017a4a;
-        }
-    </style>
+    <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
@@ -122,7 +14,9 @@
         <header>
             <h1><a href="#">Disciplina</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li><a href="home.html">
+                    <i class="fas fa-home"></i>
+                </a></li>
             </nav>
         </header>
     </div>
@@ -131,24 +25,13 @@
             <h2>Criar Disciplina</h2>
             <div class="form-group">
                 <label for="nome">Nome:</label>
-                <input type="text" v-model="disciplina.nome" maxlength="40"required />
-            </div>
-            <div class="form-group">
-                <label for="descricao">Descrição:</label>
-                <input type="text" v-model="disciplina.descricao" required />
+                <input type="text" v-model="disciplina.nome" maxlength="100"required />
             </div>
             <div class="form-group">
                 <label for="login">Login:</label>
                 <select v-model="disciplina.loginId" required>
                     <option disabled value="">Selecione um login</option>
                     <option v-for="login in logins" :key="login.id" :value="login.id">{{ login.login }}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="turma">Turma:</label>
-                <select v-model="disciplina.turmaId" required>
-                    <option disabled value="">Selecione uma turma</option>
-                    <option v-for="turma in turmas" :key="turma.id" :value="turma.id">{{ turma.nome }}</option>
                 </select>
             </div>
             <div class="form-group">
@@ -163,12 +46,10 @@
             data: {
                 disciplina: {
                     nome: '',
-                    descricao: '',
-                    loginId: '',
-                    turmaId: ''
+                    loginId: ''
+
                 },
-                logins: [],
-                turmas: []
+                logins: []
             },
             methods: {
                 fetchLogins() {
@@ -181,21 +62,7 @@
                             console.error('Erro ao carregar logins:', error);
                         });
                 },
-                fetchTurmas() {
-                    fetch('http://localhost:8081/api/v1/turmas')
-                        .then(response => response.json())
-                        .then(data => {
-                            this.turmas = data;
-                        
-                        })
-                        .catch(error => {
-                            console.error('Erro ao carregar turmas:', error);
-                        });
-                },
-
                 createDisciplina() {
-                    
-
                     fetch('http://localhost:8081/api/v1/disciplinas', {
                         method: 'POST',
                         headers: {
@@ -213,9 +80,8 @@
                             alert('Disciplina criada com sucesso!');
                             this.disciplina = {
                                 nome: '',
-                                descricao: '',
                                 login: '',
-                                turma: '',
+                                
                             };
                         })
                         .catch(error => {
@@ -226,10 +92,15 @@
             },
             mounted() {
                 this.fetchLogins();
-                this.fetchTurmas();
             }
         });
     </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 
 </html>

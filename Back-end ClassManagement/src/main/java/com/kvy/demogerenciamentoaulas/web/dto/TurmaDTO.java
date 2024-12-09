@@ -1,9 +1,6 @@
 package com.kvy.demogerenciamentoaulas.web.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +16,7 @@ public class TurmaDTO {
 
     @NotBlank(message = "O campo nome é obrigatório")
     @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "O campo nome só pode conter letras e espaços")
+    @Size(max = 20)
     private String nome;
 
     @NotNull(message = "O campo periodo é obrigatório")

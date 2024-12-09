@@ -144,3 +144,26 @@ h2 {
         padding: 8px 16px;
     }
 }
+
+footer {
+    background-color: #019c5c;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    position: fixed; /* Torna o rodapé fixo */
+    bottom: 0;       /* Posiciona no final da janela */
+    left: 0;         /* Alinha à esquerda */
+    width: 100%;     /* Ocupa toda a largura */
+    z-index: 1000;   /* Garante que fique acima de outros elementos */
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

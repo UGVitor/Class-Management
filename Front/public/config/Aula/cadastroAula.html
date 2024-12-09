@@ -6,75 +6,24 @@
     <title>Cadastro Aula</title>
     <link rel="icon" href="../../img/icon.png">
     <link rel="stylesheet" href="../../style/telasCadastro.css">
-    <style>
-        /* Estilo reaproveitado do cadastro de curso */
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-        a {
-            text-decoration: none;
-        }
-        li {
-            list-style: none;
-        }
-        body {
-            background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-        }
-        .navbar {
-            background-color: #019c5c;
-            position: fixed;
-            width: 100%;
-            z-index: 100;
-            height: 60px;
-        }
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 50px 0 50px;
-            height: 60px;
-        }
-        header h1 a {
-            color: #fff;
-            font-size: 35px;
-        }
-        nav {
-            display: flex;
-            gap: 30px;
-            font-size: 19px;
-        }
-        li a {
-            color: #fff;
-            padding: 10px;
-            transition: ease .3s;
-            cursor: pointer;
-        }
-        nav li a:hover {
-            background-color: #ffffffa8;
-            color: #000;
-            border-radius: 7px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="navbar">
         <header>
             <h1><a href="#">Aula</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li>
+                    <a href="home.html">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
             </nav>
         </header>
     </div>
     <div id="app">
         <form @submit.prevent="createAula">
             <h2>Cadastrar Aula</h2>
-            <div class="form-group">
-                <label for="descricao">Descrição:</label>
-                <input type="text" v-model="aula.descricao" required />
-            </div>
             <div class="form-group">
                 <label for="disciplina">Disciplina:</label>
                 <select v-model="aula.disciplinaId" required>
@@ -83,6 +32,25 @@
                         {{ disciplina.nome }}
                     </option>
                 </select>
+                <div class="form-group">
+                    <label for="diaSemana">Dia da Semana:</label>
+                    <select v-model="aula.diaSemanaId" required>
+                        <option disabled value="">Selecione um Dia</option>
+                        <option v-for="dia in diasSemana" :key="dia.id" :value="dia.id">
+                            {{ dia.dia }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="turma">Turma:</label>
+                    <select v-model="aula.turmaId" required>
+                        <option disabled value="">Selecione um Dia</option>
+                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">
+                            {{ turma.nome }}
+                        </option>
+                    </select>
+                </div>
+    
             </div>
             <div class="form-group">
                 <label for="horario">Horário :</label>
@@ -105,15 +73,6 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="diaSemana">Dia da Semana:</label>
-                <select v-model="aula.diaSemanaId" required>
-                    <option disabled value="">Selecione um Dia</option>
-                    <option v-for="dia in diasSemana" :key="dia.id" :value="dia.id">
-                        {{ dia.dia }}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
                 <button type="submit">Cadastrar Aula</button>
             </div>
         </form>
@@ -129,18 +88,21 @@
                     disciplinaId: '',
                     horarioId: '',
                     salaId: '',
-                    diaSemanaId: ''
+                    diaSemanaId: '',
+                    turmaId: ''
                 },
                 disciplinas: [],
                 horarios: [],
                 salas: [],
-                diasSemana: []
+                diasSemana: [],
+                turmas: []
             },
             created() {
                 this.fetchDisciplinas();
                 this.fetchHorarios();
                 this.fetchSalas();
                 this.fetchDiasSemana();
+                this.fetchTurmas();
             },
             methods: {
                 fetchDisciplinas() {
@@ -167,6 +129,12 @@
                         .then(data => this.diasSemana = data)
                         .catch(error => console.error('Erro ao carregar dias da semana:', error));
                 },
+                fetchTurmas() {
+                    fetch('http://localhost:8081/api/v1/turmas') // Ajuste conforme sua API
+                        .then(response => response.json())
+                        .then(data => this.turmas = data)
+                        .catch(error => console.error('Erro ao carregar as Turmas:', error));
+                },
                 createAula() {
                     fetch('http://localhost:8081/api/v1/aulas', {
                         method: 'POST',
@@ -188,7 +156,8 @@
                             disciplinaId: '',
                             horarioId: '',
                             salaId: '',
-                            diaSemanaId: ''
+                            diaSemanaId: '',
+                            turmaId: ''
                         };
                         window.location.href = 'home.html';
                     })
@@ -200,5 +169,11 @@
             }
         });
     </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>

@@ -6,99 +6,18 @@
     <title>Cadastro Turma</title>
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
-    <style>
-      *{
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-          scroll-behavior: smooth;
-      }
-      a{
-          text-decoration: none;
-      }
-      li{
-          list-style: none;
-      }
-
-
-      body {
-        background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-      }
-          
-      .navbar {
-          background-color: #019c5c; 
-          position: fixed;
-          width: 100%;
-          z-index: 100;
-          height: 60px; /* Ajuste se necessário */
-      }
-
-      header{
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 50px 0 50px;
-          height: 60px;
-      }
-      header h1 a{
-          color: #fff;
-          font-size: 35px;
-      }
-      nav{
-          display: flex;
-          gap: 30px;
-          color: #000000;
-          font-size: 19px;
-      }
-      li a{
-          color: #fff;
-          padding: 10px;
-          transition: ease .3s;
-          cursor: pointer;
-      }
-      nav li a:hover{
-          background-color: #ffffffa8;
-          color: #000;
-          border-radius: 7px;
-      }
-      nav button {
-          color: #DDF5F7;
-          padding: 5px 10px;
-          transition: ease .3s;
-          cursor: pointer;
-          position: relative;
-          background-color: #019c5c; 
-          border: 0px;
-          font-size: 16px;
-      }
-      nav button:hover{
-          background-color: #C0D9E5;
-          color: #3B577D;
-          border-radius: 7px;
-      }
-      h2 {
-          color: #000000;
-      }
-          .form-group label {
-          color: #333; 
-      }
-
-         .form-group input {
-          color: #333; /
-      }
-
-        .form-group button {
-         color: #fff; 
-         background-color: #019c5c; 
-        }
-  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="navbar">
         <header>
             <h1><a href="#">Turma</a></h1>
             <nav>
-                <li><a href="home.html">Home</a></li>
+                <li>
+                    <a href="Home.html">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
             </nav>
         </header>
     </div>
@@ -245,5 +164,11 @@
             }
         });
     </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>

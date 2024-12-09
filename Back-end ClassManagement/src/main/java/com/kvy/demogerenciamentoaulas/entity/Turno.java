@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,7 @@ public class Turno implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "turno", nullable = false, unique = true)
+    @Column(name = "turno", nullable = false, unique = true, length = 20)
     private String turno;
 
     @OneToMany(mappedBy = "turno", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
