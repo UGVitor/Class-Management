@@ -114,7 +114,9 @@
                     <tr>
                         <th>Hora Início</th>
                         <th>Hora Término</th>
-                        <th></th>
+                        <th><button @click="createHorario" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,11 +134,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createHorario" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>

@@ -56,6 +56,15 @@
             color: #000000;
             font-size: 19px;
         }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+         th {
+        background-color: #f4f4f4;
+        text-align: left;
+    }
 
         li a {
             color: #fff;
@@ -271,13 +280,15 @@
             <table v-if="currentEntity === 'turno'">
                 <thead>
                     <tr>
-                        <th colspan="3">Turno</th>
+                        <th>Turno </th>
+                        <th><button @click="createTurno" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="turnos in data" :key="turnos.id">
                         <td>{{ turnos.turno }}</td>
-                        <td></td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteTurno(turnos.id)" class="delete-btn">
@@ -290,11 +301,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createTurno" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>

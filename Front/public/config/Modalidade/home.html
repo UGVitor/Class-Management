@@ -37,9 +37,15 @@
         }
 
 
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        }
+
         th {
-            background-color: #f4f4f4;
-            text-align: left;
+        background-color: #f4f4f4;
+        text-align: left;
+     
         }
 
         .no-data {
@@ -109,13 +115,15 @@
             <table v-if="currentEntity === 'modalidades'">
                 <thead>
                     <tr>
-                        <th colspan="3">Modalidade</th>
-                    </tr>
+                        <th>Modalidade</th>
+                    <th><button @click="createModalidade" class="create-btn">
+                        <i class="fas fa-plus"></i> Criar
+                    </button></th>
+                </tr>
                 </thead>
                 <tbody>
                     <tr v-for="modalidade in data" :key="modalidade.id">
                         <td>{{ modalidade.nome }}</td>
-                        <td></td>
                         <td>
                             <div class="button-group">
                                 <button @click="deleteModalidade(modalidade.id)" class="delete-btn">
@@ -128,11 +136,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createModalidade" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>

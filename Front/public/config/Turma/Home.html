@@ -48,6 +48,15 @@
             color: #fff;
             font-size: 35px;
         }
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+         th {
+        background-color: #f4f4f4;
+        text-align: left;
+    }
 
         nav {
             display: flex;
@@ -232,7 +241,9 @@
                         <th>Turno</th>
                         <th>Curso</th>
                         <th>Semestre</th>
-                        <th></th>
+                        <th><button @click="createTurma" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -242,8 +253,7 @@
                         <td>{{ turma.turnoNome }}</td>
                         <td>{{ turma.cursoNome }}</td>
                         <td>{{ turma.semestreNome }}</td>
-                        <td>
-                            <div class="button-group">
+                        <td><div class="button-group">
                                 <button @click="deleteTurma(turma.id)" class="delete-btn">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
@@ -253,11 +263,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createTurma" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>

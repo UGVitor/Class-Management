@@ -35,10 +35,16 @@
         }
 
 
+        th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+         }
+
         th {
-            background-color: #f4f4f4;
-            text-align: left;
-        }
+        background-color: #f4f4f4;
+        text-align: left;
+         }
+        
 
         .no-data {
             text-align: center;
@@ -109,7 +115,9 @@
                     <tr>
                         <th>Login</th>
                         <th>Perfil</th>
-                        <th></th>
+                        <th><button @click="createLogin" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -131,11 +139,6 @@
                             </div>
                         </td>
                     </tr>
-                    <td colspan="8" style="text-align: right;">
-                        <button @click="createLogin" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button>
-                    </td>
                 </tbody>
             </table>
         </div>
