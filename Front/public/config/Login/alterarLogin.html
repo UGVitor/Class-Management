@@ -29,9 +29,9 @@
                 <input type="text" id="login" v-model="logins.login" maxlength="100" required />
             </div>
             <div class="form-group">
-                <label for="perfil">Tipo de Sala:</label>
+                <label for="perfil">Perfil:</label>
                 <select v-model="logins.perfil" required>
-                    <option disabled value="">Selecione um Tipo de Sala</option>
+                    <option disabled value="">Selecione um perfil</option>
                     <option v-for="perfil in perfis" :key="perfil.id" :value="perfil.id">{{ perfil.nome }}</option>
                 </select>
             </div>
