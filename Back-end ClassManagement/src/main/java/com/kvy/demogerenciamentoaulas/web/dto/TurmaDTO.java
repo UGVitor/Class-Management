@@ -15,7 +15,7 @@ public class TurmaDTO {
     private Long id;
 
     @NotBlank(message = "O campo nome é obrigatório")
-    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s]+$", message = "O campo nome só pode conter letras e espaços")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ0-9\\s-]+$", message = "O campo nome só pode conter letras, números, espaços e traços")
     @Size(max = 20)
     private String nome;
 

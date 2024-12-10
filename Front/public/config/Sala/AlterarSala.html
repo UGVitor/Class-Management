@@ -49,18 +49,18 @@
             el: '#app',
             data: {
                 sala: {
-                    id: '', 
+                    id: '',
                     sala: '',
                     numero: '',
                     capacidade: '',
-                    tipoSala: '', 
+                    tipoSala: '',
                 },
                 tiposSalas: []
             },
             created() {
                 this.fetchTiposSalas();
                 const params = new URLSearchParams(window.location.search);
-                this.sala.id = params.get('id'); 
+                this.sala.id = params.get('id');
             },
             methods: {
                 fetchTiposSalas() {
@@ -87,7 +87,7 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Sala alterada com sucesso!');
-                            window.location.href = 'home.html'; 
+                            window.location.href = 'home.html';
                         } else {
                             throw new Error('Erro ao alterar a sala');
                         }
