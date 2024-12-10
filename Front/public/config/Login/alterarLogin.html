@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Login</title>
     <link rel="icon" href="../../img/icon.png">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../../style/telasAlterar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -26,8 +25,15 @@
         <form @submit.prevent="updateLogin">
             <h2>Alterar Login</h2>
             <div class="form-group">
-                <label for="login">Login:</label>
-                <input type="text" id="login" v-model="login" maxlength="100" required />
+                <label for="logins.login">Login:</label>
+                <input type="text" id="login" v-model="logins.login" maxlength="100" required />
+            </div>
+            <div class="form-group">
+                <label for="perfil">Tipo de Sala:</label>
+                <select v-model="logins.perfil" required>
+                    <option disabled value="">Selecione um Tipo de Sala</option>
+                    <option v-for="perfil in perfis" :key="perfil.id" :value="perfil.id">{{ perfil.nome }}</option>
+                </select>
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Login</button>
@@ -38,42 +44,60 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
-            el: '#app',
-            data: {
-                login: ''
+        el: '#app',
+        data: {
+            logins: {
+                id: '',
+                login: '',
+                perfil: '' 
             },
-            created() {
-                const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); 
-            },
-            methods: {
-                updateLogin() {
-                    const { login } = this;
-
-                    const queryString = `login=${encodeURIComponent(login)}`;
-
-                    fetch(`http://localhost:8081/api/v1/logins/${this.id}?${queryString}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Login alterado com sucesso!');
-                            this.login = '';
-                            window.location.href = 'home.html';
-                        } else {
-                            throw new Error('Erro ao alterar o login');
-                        }
+            perfis: []
+        },
+        created() {
+            this.fetchPerfis();
+            const params = new URLSearchParams(window.location.search);
+            this.logins.id = params.get('id'); 
+            console.log("ID recuperado:", this.login.id); // Debug
+        },
+        methods: {
+            fetchPerfis() {
+                fetch('http://localhost:8081/api/v1/perfis')
+                    .then(response => response.json())
+                    .then(data => {
+                        this.perfis = data;
                     })
                     .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao alterar o login, tente novamente.');
+                        console.error('Erro ao carregar os perfis:', error);
                     });
-                }
+            },
+            updateLogin() {
+                const { id, login, perfil } = this.logins;
+                const loginData = { login, perfil };
+                console.log(id);
+
+                fetch(`http://localhost:8081/api/v1/logins/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Login alterado com sucesso!');
+                        window.location.href = 'home.html';
+                    } else {
+                        throw new Error('Erro ao alterar o login');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao alterar o login, tente novamente.');
+                });
             }
-        });
+        }
+    });
+
     </script>
     <footer>
         &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |

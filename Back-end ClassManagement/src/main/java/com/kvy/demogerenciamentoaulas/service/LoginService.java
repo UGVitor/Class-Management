@@ -84,10 +84,13 @@ public class LoginService {
     }
 
     @Transactional
-    public Login editar(Long id, Login login) {
+    public Login editar(Long id, LoginDTO login) {
         Login existingUser = buscarPorId(id);
         existingUser.setLogin(login.getLogin());
-        existingUser.setPerfil(login.getPerfil());
+
+        Perfil perfil = perfilRepository.findById(login.getPerfil())
+                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + login.getPerfil()));
+        existingUser.setPerfil(perfil);
         return loginRepository.save(existingUser);
     }
 

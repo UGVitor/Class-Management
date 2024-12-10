@@ -6,95 +6,17 @@
     <title>Cadastro Sala</title>
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="icon" href="../../img/icon.png">
-    <style>
-      * {
-          padding: 0;
-          margin: 0;
-          box-sizing: border-box;
-          scroll-behavior: smooth;
-      }
-      a {
-          text-decoration: none;
-      }
-      li {
-          list-style: none;
-      }
-      body {
-        background: linear-gradient(135deg, #d7f6d8, #DDF5F7);
-      }
-      .navbar {
-          background-color: #019c5c;
-          position: fixed;
-          width: 100%;
-          z-index: 100;
-          height: 60px; 
-      }
-      header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 50px;
-          height: 60px;
-      }
-      header h1 a {
-          color: #fff;
-          font-size: 35px;
-      }
-      nav {
-          display: flex;
-          gap: 30px;
-          color: #000000;
-          font-size: 19px;
-      }
-      li a {
-          color: #fff;
-          padding: 10px;
-          transition: ease .3s;
-          cursor: pointer;
-      }
-      nav li a:hover {
-          background-color: #ffffffa8;
-          color: #000;
-          border-radius: 7px;
-      }
-      nav button {
-          color: #DDF5F7;
-          padding: 5px 10px;
-          transition: ease .3s;
-          cursor: pointer;
-          position: relative;
-          background-color: #019c5c;
-          border: 0px;
-          font-size: 16px;
-      }
-      nav button:hover {
-          background-color: #ffffff;
-          color: #019c5c;
-          border-radius: 7px;
-      }
-      h2 {
-          color: #000000;
-      }
-          .form-group label {
-          color: #333; 
-      }
-
-         .form-group input {
-          color: #333; /
-      }
-
-        .form-group button {
-         color: #fff; 
-         background-color: #019c5c; 
-        }
-  </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
 </head>
 <body>
     <div class="navbar">
         <header>
             <h1><a href="#">Sala</a></h1>
             <nav>
-                <li><a href="HomeSala.html">Home</a></li>
+                <li><a href="home.html">
+                    <i class="fas fa-home"></i>
+                </a></li>
             </nav>
         </header>
     </div>
@@ -183,7 +105,7 @@
                 .then(() => {
                     alert('Sala criada com sucesso!');
                     this.resetForm();
-                    window.location.href = 'HomeSala.html';
+                    window.location.href = 'home.html';
                 })
                 .catch(error => {
                     console.error('Erro ao criar a sala:', error);
