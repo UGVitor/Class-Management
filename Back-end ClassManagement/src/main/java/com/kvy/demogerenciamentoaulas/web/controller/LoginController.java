@@ -68,8 +68,7 @@ public class LoginController {
             })
     @PutMapping("/{id}")
     public ResponseEntity<LoginDTO> updateLogin(@PathVariable Long id, @RequestBody LoginDTO loginDTO) {
-        Login login = loginService.convertToEntity(loginDTO);
-        Login updatedLogin = loginService.editar(id, login);
+        Login updatedLogin = loginService.editar(id, loginDTO);
         return ResponseEntity.ok(loginService.convertToDTO(updatedLogin));
     }
 
@@ -100,6 +99,7 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
+
     @Operation(summary = "Listar todos os logins", description = "Recurso para listar todos os logins cadastrados.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Logins listados com sucesso.",
@@ -110,6 +110,7 @@ public class LoginController {
         List<LoginProjection> logins = loginService.buscarTodos();
         return ResponseEntity.ok(logins);
     }
+
 
 
     @Operation(summary = "Autenticar login", description = "Valida o login e senha do usuário.",

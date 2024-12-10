@@ -79,7 +79,7 @@ h2 {
     font-weight: bold;
     text-align: left;
 }
-input[type="text"], input[type="email"], input[type="password"], input[type="time"] {
+input[type="text"], input[type="email"], input[type="password"], input[type="time"], input[type="number"] {
     width: 100%;
     padding: 8px;
     margin: 4px 0 10px 0;
