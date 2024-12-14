@@ -8,10 +8,8 @@ import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -26,37 +24,39 @@ public class AulaService {
 
     @Transactional
     public Aula salvar(AulaDTO aulaDTO) {
+        Optional<Aula> aulaExistente = aulaRepository.findByUniqueAttributes(
+                aulaDTO.getDisciplinaId(),
+                aulaDTO.getHorarioId(),
+                aulaDTO.getSalaId(),
+                aulaDTO.getTurmaId(),
+                aulaDTO.getDiaSemanaId()
+        );
+
+        if (aulaExistente.isPresent()) {
+            throw new IllegalArgumentException("Já existe uma aula com os mesmos parâmetros.");
+        }
+
         Aula aula = new Aula();
-        // Resolvendo os IDs para entidades
-        if (aulaDTO.getDisciplinaId() != null) {
-            Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Disciplina não encontrada com o ID: " + aulaDTO.getDisciplinaId()));
-            aula.setDisciplina(disciplina);
-        }
 
-        if (aulaDTO.getHorarioId() != null) {
-            Horario horario = horarioRepository.findById(aulaDTO.getHorarioId())
-                    .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado com o ID: " + aulaDTO.getHorarioId()));
-            aula.setHorario(horario);
-        }
+        Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
+                .orElseThrow(() -> new IllegalArgumentException("Disciplina não encontrada com o ID: " + aulaDTO.getDisciplinaId()));
+        aula.setDisciplina(disciplina);
 
-        if (aulaDTO.getSalaId() != null) {
-            Sala sala = salaRepository.findById(aulaDTO.getSalaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Sala não encontrada com o ID: " + aulaDTO.getSalaId()));
-            aula.setSala(sala);
-        }
+        Horario horario = horarioRepository.findById(aulaDTO.getHorarioId())
+                .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado com o ID: " + aulaDTO.getHorarioId()));
+        aula.setHorario(horario);
 
-        if (aulaDTO.getTurmaId() != null) {
-            Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada com o ID: " + aulaDTO.getTurmaId()));
-            aula.setTurma(turma);
-        }
+        Sala sala = salaRepository.findById(aulaDTO.getSalaId())
+                .orElseThrow(() -> new IllegalArgumentException("Sala não encontrada com o ID: " + aulaDTO.getSalaId()));
+        aula.setSala(sala);
 
-        if (aulaDTO.getDiaSemanaId() != null) {
-            DiaSemana diaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
-                    .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaSemanaId()));
-            aula.setDiaSemana(diaSemana);
-        }
+        Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
+                .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada com o ID: " + aulaDTO.getTurmaId()));
+        aula.setTurma(turma);
+
+        DiaSemana diaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
+                .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaSemanaId()));
+        aula.setDiaSemana(diaSemana);
 
         return aulaRepository.save(aula);
     }

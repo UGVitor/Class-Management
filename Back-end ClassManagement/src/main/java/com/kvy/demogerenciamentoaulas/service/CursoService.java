@@ -29,13 +29,11 @@ public class CursoService {
         Curso curso = new Curso();
         curso.setCurso(TratamentoDeString.capitalizeWords(cursoDTO.getCurso()));
 
-        if (cursoDTO.getModalidade() != null) {
-            Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())
+
+        Modalidade modalidade = modalidadeRepository.findById(cursoDTO.getModalidade())
                     .orElseThrow(() -> new IllegalArgumentException("Modalidade não encontrada"));
-            curso.setModalidade(modalidade);
-        } else {
-            throw new IllegalArgumentException("O ID da modalidade não pode ser nulo");
-        }
+        curso.setModalidade(modalidade);
+
 
         return cursoRepository.save(curso);
     }

@@ -30,31 +30,40 @@ public class TurmaService {
 
     @Transactional
     public Turma salvar(TurmaDTO turmaDTO) {
+        String nomeFormatado = TratamentoDeString.convertToUpperCase(turmaDTO.getNome());
+
+        // Verifica se já existe uma turma com os mesmos atributos
+        Optional<Turma> turmaExistente = turmaRepository.findByUniqueAttributes(
+                nomeFormatado,
+                turmaDTO.getPeriodo(),
+                turmaDTO.getTurno(),
+                turmaDTO.getSemestre(),
+                turmaDTO.getCurso()
+        );
+
+        if (turmaExistente.isPresent()) {
+            throw new RuntimeException("Já existe uma turma com os mesmos atributos.");
+        }
+
         Turma turma = new Turma();
-        turma.setNome(TratamentoDeString.capitalizeWords(turmaDTO.getNome()));
+        turma.setNome(nomeFormatado);
 
-        if (turmaDTO.getPeriodo() != null) {
-            Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
-                    .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turmaDTO.getPeriodo()));
-            turma.setPeriodo(periodo);
-        }
+        Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
+                .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turmaDTO.getPeriodo()));
+        turma.setPeriodo(periodo);
 
-        if (turmaDTO.getTurno() != null) {
-            Turno turno = turnoRepository.findById(turmaDTO.getTurno())
-                    .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turmaDTO.getTurno()));
-            turma.setTurno(turno);
-        }
-        if (turmaDTO.getSemestre() != null) {
-            Semestre semestre = semestreRepository.findById(turmaDTO.getSemestre())
-                    .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turmaDTO.getSemestre()));
-            turma.setSemestre(semestre);
-        }
+        Turno turno = turnoRepository.findById(turmaDTO.getTurno())
+                .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turmaDTO.getTurno()));
+        turma.setTurno(turno);
 
-        if (turmaDTO.getCurso() != null) {
-            Curso curso = cursoRepository.findById(turmaDTO.getCurso())
-                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + turmaDTO.getCurso()));
-            turma.setCurso(curso);
-        }
+        Semestre semestre = semestreRepository.findById(turmaDTO.getSemestre())
+                .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turmaDTO.getSemestre()));
+        turma.setSemestre(semestre);
+
+        Curso curso = cursoRepository.findById(turmaDTO.getCurso())
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + turmaDTO.getCurso()));
+        turma.setCurso(curso);
+
         return turmaRepository.save(turma);
     }
 

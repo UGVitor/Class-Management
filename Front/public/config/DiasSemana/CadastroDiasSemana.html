@@ -24,8 +24,8 @@
         <form @submit.prevent="createDiaSemana">
             <h2>Criar Dia da Semana</h2>
             <div class="form-group">
-                <label for="dia">Nome do Dia:</label>
-                <input type="text" v-model="diasSemana.dia" maxlength="20" required />
+                <label for="dia">Nome do Dia:<span class="asterisco">*</span></label>
+                <input type="text" v-model="diasSemana.dia" maxlength="20" required placeholder="Ex: Segunda-Feira"/>
             </div>
             <div class="form-group">
                 <button type="submit">Criar Dia da Semana</button>
