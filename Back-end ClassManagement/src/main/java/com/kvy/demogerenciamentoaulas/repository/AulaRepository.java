@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AulaRepository extends JpaRepository<Aula, Long> {
@@ -41,4 +42,14 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
             "JOIN a.diaSemana ds " +
             "WHERE ds.dia = :diaSemanaDia")
     List<AulaProjection> findByDiaSemanaDia(@Param("diaSemanaDia") String diaSemanaDia);
+
+
+    @Query("SELECT a FROM Aula a WHERE a.disciplina.id = :disciplinaId AND a.horario.id = :horarioId AND a.sala.id = :salaId AND a.turma.id = :turmaId AND a.diaSemana.id = :diaSemanaId")
+    Optional<Aula> findByUniqueAttributes(
+            @Param("disciplinaId") Long disciplinaId,
+            @Param("horarioId") Long horarioId,
+            @Param("salaId") Long salaId,
+            @Param("turmaId") Long turmaId,
+            @Param("diaSemanaId") Long diaSemanaId
+    );
 }

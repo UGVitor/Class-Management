@@ -25,11 +25,11 @@
         <form @submit.prevent="createTurma">
             <h2>Criar Turma</h2>
             <div class="form-group">
-                <label for="nome">Turma:</label>
-                <input type="text" v-model="turma.nome" maxlength="20"required />
+                <label for="nome">Turma:<span class="asterisco">*</span></label>
+                <input type="text" v-model="turma.nome" maxlength="20"required placeholder="Ex: ADS5-M"/>
             </div>
             <div class="form-group">
-                <label for="periodo">Periodo:</label>
+                <label for="periodo">Periodo:<span class="asterisco">*</span></label>
                 <select v-model="turma.periodo" required>
                     <option disabled value="">Selecione um Periodo</option>
                     <option v-for="periodo in periodos" :key="periodo.id" :value="periodo.id">{{ periodo.nome }}</option>
@@ -37,21 +37,21 @@
             </div>
             
             <div class="form-group">
-                <label for="nome">Turno:</label>
+                <label for="nome">Turno:<span class="asterisco">*</span></label>
                 <select v-model="turma.turno" required>
                     <option disabled value="">Selecione um Turno</option>
                     <option v-for="turno in turnos" :key="turno.id" :value="turno.id">{{ turno.turno }}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="curso">Curso:</label>
+                <label for="curso">Curso:<span class="asterisco">*</span></label>
                 <select v-model="turma.curso" required>
                     <option disabled value="">Selecione um Curso</option>
                     <option v-for="curso in cursos" :key="curso.id" :value="curso.id">{{ curso.curso }}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="nome">Semestre:</label>
+                <label for="nome">Semestre:<span class="asterisco">*</span></label>
                 <select v-model="turma.semestre" required>
                     <option disabled value="">Selecione um Semestre</option>
                     <option v-for="semestre in semestres" :key="semestre.id" :value="semestre.id">{{ semestre.semestre }}</option>

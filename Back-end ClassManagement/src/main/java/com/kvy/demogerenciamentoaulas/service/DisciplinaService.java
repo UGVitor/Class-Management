@@ -2,13 +2,10 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
-import com.kvy.demogerenciamentoaulas.entity.Turma;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.exception.DisciplinaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
-import com.kvy.demogerenciamentoaulas.repository.TurmaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -26,18 +23,14 @@ public class DisciplinaService {
 
     private final DisciplinaRepository disciplinaRepository;
     private final LoginRepository loginRepository;
-    private final TurmaRepository turmaRepository;
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
         Disciplina disciplina = new Disciplina();
         disciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
-        if (disciplinaDTO.getLoginId() != null) {
-            Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
-            disciplina.setLogin(login);
-        }
-
+        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+        disciplina.setLogin(login);
 
         return disciplinaRepository.save(disciplina);
     }

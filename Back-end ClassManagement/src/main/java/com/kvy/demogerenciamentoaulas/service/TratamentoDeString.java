@@ -26,4 +26,14 @@ public class TratamentoDeString {
         return capitalized.toString().trim();
     }
 
+    public static String convertToUpperCase(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+
+        // Transforma toda a string em maiúsculas
+        return str.toUpperCase();
+    }
+
+
 }
