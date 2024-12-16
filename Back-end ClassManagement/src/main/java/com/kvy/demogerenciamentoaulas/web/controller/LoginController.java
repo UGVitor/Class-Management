@@ -111,6 +111,20 @@ public class LoginController {
         return ResponseEntity.ok(logins);
     }
 
+    @Operation(summary = "Listar logins com perfil Professor",
+            description = "Recurso para listar todos os logins com o perfil 'Professor'.",
+            responses = {
+                    @ApiResponse(responseCode = "200",
+                            description = "Logins com perfil Professor listados com sucesso.",
+                            content = @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = LoginProjection.class)))
+            })
+    @GetMapping("/professores")
+    public ResponseEntity<List<LoginProjection>> getLoginsPorPerfilProfessor() {
+        List<LoginProjection> logins = loginService.buscarLoginsPorPerfilProfessor();
+        return ResponseEntity.ok(logins);
+    }
+
 
 
     @Operation(summary = "Autenticar login", description = "Valida o login e senha do usuário.",

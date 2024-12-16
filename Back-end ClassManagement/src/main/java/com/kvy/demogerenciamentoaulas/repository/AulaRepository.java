@@ -12,14 +12,17 @@ import java.util.Optional;
 
 @Repository
 public interface AulaRepository extends JpaRepository<Aula, Long> {
+
     @Query("SELECT a.id AS id, " +
             "d.id AS disciplinaId, d.nome AS disciplinaNome, " +
+            "l.id AS loginId, l.login AS loginNome, " +
             "s.id AS salaId, ts.tipoSala AS tipoSalaNome, s.numero AS salaNumero, " +
             "h.id AS horarioId, h.horaInicio AS horarioInicio, h.horaTermino AS horarioTermino, " +
             "ds.id AS diasDaSemanaId, ds.dia AS diaSemanaNome, " +
             "t.id AS turmaId, t.nome AS turmaNome " +
             "FROM Aula a " +
             "JOIN a.disciplina d " +
+            "JOIN d.login l " +
             "JOIN a.sala s " +
             "JOIN s.tipoSala ts " +
             "JOIN a.horario h " +
@@ -29,12 +32,14 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
 
     @Query("SELECT a.id AS id, " +
             "d.id AS disciplinaId, d.nome AS disciplinaNome, " +
+            "l.id AS loginId, l.login AS loginNome, " +
             "s.id AS salaId, ts.tipoSala AS tipoSalaNome, s.numero AS salaNumero, " +
             "h.id AS horarioId, h.horaInicio AS horarioInicio, h.horaTermino AS horarioTermino, " +
             "ds.id AS diasDaSemanaId, ds.dia AS diaSemanaNome, " +
             "t.id AS turmaId, t.nome AS turmaNome " +
             "FROM Aula a " +
             "JOIN a.disciplina d " +
+            "JOIN d.login l " +
             "JOIN a.sala s " +
             "JOIN s.tipoSala ts " +
             "JOIN a.horario h " +

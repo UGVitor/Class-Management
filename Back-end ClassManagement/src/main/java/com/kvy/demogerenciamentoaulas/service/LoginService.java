@@ -110,6 +110,11 @@ public class LoginService {
         return loginRepository.findAllLoginsWithPerfilNome();
     }
 
+    @Transactional(readOnly = true)
+    public List<LoginProjection> buscarLoginsPorPerfilProfessor() {
+        return loginRepository.findAllLoginsByPerfilProfessor();
+    }
+
 
     public boolean validateLogin(String login, String password) {
         Login user = loginRepository.findByLogin(login);
