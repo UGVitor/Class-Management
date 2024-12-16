@@ -38,6 +38,7 @@
                             <th><button><a href="../filtro.html" class="filter-button">
                             <i class="fas fa-filter"></i> Filtro </a> </button> </th>
                             <th>Disciplina</th>
+                            <th>Professor(a)</th>
                             <th>Dias da Semana</th>
                             <th>Turma</th>
                             <th>Horário Inicio</th>
@@ -56,12 +57,13 @@
                         <tr v-for="aula in data" :key="aula.id">
                             <td>{{ aula.filtro }}</td>
                             <td>{{ aula.disciplinaNome }}</td>
+                            <td>{{ aula.loginNome }}</td>
                             <td>{{ aula.diaSemanaNome }}</td>
                             <td>{{ aula.turmaNome }}</td>
                             <td>{{ aula.horarioInicio }}</td>
                             <td>{{ aula.horarioTermino }}</td>
                             <td>{{ aula.tipoSalaNome }}</td>
-                            <td>{{aula.salaNumero}}</td>
+                            <td>{{ aula.salaNumero }}</td>
                             <td>
                                 <div class="button-group">
                                     <button @click="deleteAula(aula.id)" class="delete-btn">
