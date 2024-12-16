@@ -16,6 +16,5 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
             "l.login AS loginNome " +
             "FROM Disciplina d " +
             "JOIN d.login l " )
-
     List<DisciplinaProjection> findAllDisciplinaWithLoginAndTurma();
 }

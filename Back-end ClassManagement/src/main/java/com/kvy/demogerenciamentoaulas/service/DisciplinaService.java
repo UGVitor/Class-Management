@@ -26,12 +26,20 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
+        Login login = loginRepository.findById(disciplinaDTO.getLoginId())
+                .orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+
+        // Verifica se o perfil do login é do tipo "Professor"
+        if (!"Professor".equalsIgnoreCase(login.getPerfil().getNome())) {
+            throw new IllegalArgumentException("A disciplina só pode ser criada por um login com perfil de 'Professor'");
+        }
+
+        // Cria e preenche a entidade Disciplina
         Disciplina disciplina = new Disciplina();
         disciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
-
-        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
         disciplina.setLogin(login);
 
+        // Salva e retorna a disciplina
         return disciplinaRepository.save(disciplina);
     }
 
@@ -47,10 +55,12 @@ public class DisciplinaService {
         Disciplina existingDisciplina = buscarPorId(id);
         existingDisciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
-        if (disciplinaDTO.getLoginId() != null) {
-            Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
-            existingDisciplina.setLogin(login);
+        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+        if (!"Professor".equalsIgnoreCase(login.getPerfil().getNome())) {
+            throw new IllegalArgumentException("A disciplina só pode ser associada a um login com perfil de 'Professor'");
         }
+
+        existingDisciplina.setLogin(login);
 
 
         return disciplinaRepository.save(existingDisciplina);

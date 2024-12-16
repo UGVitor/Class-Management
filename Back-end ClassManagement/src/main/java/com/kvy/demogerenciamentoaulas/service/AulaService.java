@@ -73,36 +73,34 @@ public class AulaService {
         Aula aulaExistente = aulaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Aula não encontrada com o ID: " + id));
 
-        // Atualizando os relacionamentos
-        if (aulaDTO.getDisciplinaId() != null) {
-            Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
+        Disciplina disciplina = disciplinaRepository.findById(aulaDTO.getDisciplinaId())
                     .orElseThrow(() -> new IllegalArgumentException("Disciplina não encontrada com o ID: " + aulaDTO.getDisciplinaId()));
-            aulaExistente.setDisciplina(disciplina);
-        }
+        aulaExistente.setDisciplina(disciplina);
 
-        if (aulaDTO.getHorarioId() != null) {
-            Horario horario = horarioRepository.findById(aulaDTO.getHorarioId())
+
+
+        Horario horario = horarioRepository.findById(aulaDTO.getHorarioId())
                     .orElseThrow(() -> new IllegalArgumentException("Horário não encontrado com o ID: " + aulaDTO.getHorarioId()));
-            aulaExistente.setHorario(horario);
-        }
+        aulaExistente.setHorario(horario);
 
-        if (aulaDTO.getSalaId() != null) {
-            Sala sala = salaRepository.findById(aulaDTO.getSalaId())
+
+
+        Sala sala = salaRepository.findById(aulaDTO.getSalaId())
                     .orElseThrow(() -> new IllegalArgumentException("Sala não encontrada com o ID: " + aulaDTO.getSalaId()));
-            aulaExistente.setSala(sala);
-        }
+        aulaExistente.setSala(sala);
 
-        if (aulaDTO.getTurmaId() != null) {
-            Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
+
+
+        Turma turma = turmaRepository.findById(aulaDTO.getTurmaId())
                     .orElseThrow(() -> new IllegalArgumentException("Turma não encontrada com o ID: " + aulaDTO.getTurmaId()));
-            aulaExistente.setTurma(turma);
-        }
+        aulaExistente.setTurma(turma);
 
-        if (aulaDTO.getDiaSemanaId() != null) {
-            DiaSemana diaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
+
+
+        DiaSemana diaSemana = diaSemanaRepository.findById(aulaDTO.getDiaSemanaId())
                     .orElseThrow(() -> new IllegalArgumentException("Dia da semana não encontrado com o ID: " + aulaDTO.getDiaSemanaId()));
-            aulaExistente.setDiaSemana(diaSemana);
-        }
+        aulaExistente.setDiaSemana(diaSemana);
+
 
         return aulaRepository.save(aulaExistente);
     }

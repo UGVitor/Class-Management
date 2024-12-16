@@ -15,6 +15,11 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
             "FROM Login l JOIN l.perfil p")
     List<LoginProjection> findAllLoginsWithPerfilNome();
 
+    @Query("SELECT l.id AS id, l.login AS login, p.nome AS perfilNome " +
+            "FROM Login l JOIN l.perfil p " +
+            "WHERE p.nome = 'Professor'")
+    List<LoginProjection> findAllLoginsByPerfilProfessor();
+
     @Query("SELECT l FROM Login l WHERE l.login = :login")
     Login findByLogin(@Param("login") String login);
 }

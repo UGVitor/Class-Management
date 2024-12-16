@@ -5,6 +5,7 @@ import java.time.LocalTime;
 public interface AulaProjection {
     Long getId();
     String getDisciplinaNome();
+    String getLoginNome();
     String getTipoSalaNome();
     int getSalaNumero();
     LocalTime getHorarioInicio();
