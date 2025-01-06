@@ -2,11 +2,7 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -14,10 +10,11 @@ import java.util.Objects;
 import java.util.Set;
 
 
-@Getter
+
 @Data
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "Turno")
 public class Turno implements Serializable {
