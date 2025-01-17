@@ -61,24 +61,31 @@
         },
         methods: {
             fetchPerfis() {
-                fetch('http://localhost:8081/api/v1/perfis')
-                    .then(response => response.json())
-                    .then(data => {
-                        this.perfis = data;
-                    })
-                    .catch(error => {
-                        console.error('Erro ao carregar os perfis:', error);
-                    });
+                const token = localStorage.getItem('authToken'); // Obtém o token
+                fetch('http://localhost:8081/api/v1/perfis', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    this.perfis = data;
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os perfis:', error);
+                });
             },
             updateLogin() {
                 const { id, login, perfil } = this.logins;
                 const loginData = { login, perfil };
-                console.log(id);
+                const token = localStorage.getItem('authToken'); // Obtém o token
 
                 fetch(`http://localhost:8081/api/v1/logins/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(loginData),
                 })

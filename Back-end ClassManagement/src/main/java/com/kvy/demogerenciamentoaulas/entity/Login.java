@@ -24,7 +24,7 @@ public class Login implements Serializable {
     @Column(name = "password", nullable = false, length = 6)
     private String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "perfil_id", nullable = false)
     @JsonBackReference("perfil-login")
     private Perfil perfil;

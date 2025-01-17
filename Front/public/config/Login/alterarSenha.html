@@ -64,30 +64,33 @@
                         return;
                     }
 
+                    const token = localStorage.getItem('authToken'); // Obtém o token
+
                     const queryString = `senhaAtual=${encodeURIComponent(senhaAtual)}&novaSenha=${encodeURIComponent(novaSenha)}&confirmaSenha=${encodeURIComponent(confirmaSenha)}`;
                     
                     fetch(`http://localhost:8081/api/v1/logins/${this.id}/senha?${queryString}`, {
                         method: 'PUT',
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                            'Content-Type': 'application/json'
                         }
                     })
                     .then(response => {
                         if (response.ok) {
-                            alert('Login alterado com sucesso!');
+                            alert('Senha alterada com sucesso!');
                             this.senhaAtual = '';
                             this.novaSenha = '';
                             this.confirmaSenha = ''; 
                             window.location.href = 'home.html';
                         } else {
                             return response.json().then(data => {
-                                throw new Error(data.message || 'Erro ao alterar o login');
+                                throw new Error(data.message || 'Erro ao alterar a senha');
                             });
                         }
                     })
                     .catch(error => {
                         console.error('Erro:', error);
-                        alert(`Erro ao alterar o login: ${error.message}`);
+                        alert(`Erro ao alterar a senha: ${error.message}`);
                     });
                 }
             }

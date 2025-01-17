@@ -1,7 +1,6 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
-import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.service.ModalidadeService;
 import com.kvy.demogerenciamentoaulas.web.dto.ModalidadeDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
@@ -16,15 +15,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @Tag(name = "Modalidades", description = "Contém todas as operações relativas aos recursos de CRUD de modalidade.")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/modalidades")
-//@CrossOrigin(origins = "*")
-
 public class ModalidadeController {
 
     private final ModalidadeService modalidadeService;
