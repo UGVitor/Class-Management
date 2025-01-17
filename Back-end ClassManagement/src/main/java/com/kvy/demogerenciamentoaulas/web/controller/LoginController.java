@@ -99,7 +99,6 @@ public class LoginController {
         return ResponseEntity.noContent().build();
     }
 
-
     @Operation(summary = "Listar todos os logins", description = "Recurso para listar todos os logins cadastrados.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Logins listados com sucesso.",
@@ -125,8 +124,6 @@ public class LoginController {
         return ResponseEntity.ok(logins);
     }
 
-
-
     @Operation(summary = "Autenticar login", description = "Valida o login e senha do usuário.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Login bem-sucedido."),
@@ -135,7 +132,7 @@ public class LoginController {
             })
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(@RequestBody LoginAuthenticateDTO loginAuthenticateDTO) {
-        boolean isAuthenticated = loginService.validateLogin(loginAuthenticateDTO.getLogin(), loginAuthenticateDTO.getSenha());
+        boolean isAuthenticated = loginService.validateLogin(loginAuthenticateDTO.getLogin(), loginAuthenticateDTO.getPassword());
 
         if (isAuthenticated) {
             return ResponseEntity.ok("Login aprovado");

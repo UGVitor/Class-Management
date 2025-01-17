@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
@@ -20,6 +21,7 @@ public interface LoginRepository extends JpaRepository<Login, Long> {
             "WHERE p.nome = 'Professor'")
     List<LoginProjection> findAllLoginsByPerfilProfessor();
 
-    @Query("SELECT l FROM Login l WHERE l.login = :login")
-    Login findByLogin(@Param("login") String login);
+    Optional<Login> findByLogin(String login);
+
+
 }
