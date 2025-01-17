@@ -15,6 +15,7 @@ import java.util.Optional;
 @Service
 public class AulaService {
 
+
     private final AulaRepository aulaRepository;
     private final DisciplinaRepository disciplinaRepository;
     private final HorarioRepository horarioRepository;
