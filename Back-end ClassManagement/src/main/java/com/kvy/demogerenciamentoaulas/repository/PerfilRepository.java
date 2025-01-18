@@ -8,4 +8,6 @@ import java.util.Optional;
 @Repository
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
     Optional<Perfil> findByNome(String nome);
+
+    boolean existsByNome(String nome);
 }
