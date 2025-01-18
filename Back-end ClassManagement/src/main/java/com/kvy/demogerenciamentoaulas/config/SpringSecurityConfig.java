@@ -25,7 +25,7 @@ public class SpringSecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
-                //.httpBasic(basic -> basic.disable())
+                .httpBasic(basic -> basic.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"api/v1/logins").permitAll()
                         .requestMatchers(HttpMethod.GET,"api/v1/perfis").permitAll()
