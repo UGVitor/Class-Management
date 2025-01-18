@@ -21,7 +21,7 @@ public class Login implements Serializable {
     @Column(name = "login", nullable = false, unique = true, length = 100)
     private String login;
 
-    @Column(name = "password", nullable = false, length = 6)
+    @Column(name = "password", nullable = false, length = 200)
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)

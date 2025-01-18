@@ -4,6 +4,7 @@ import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.PerfilEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.PerfilDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +63,21 @@ public class PerfilService {
     @Transactional(readOnly = true)
     public List<Perfil> buscarTodos() {
         return perfilRepository.findAll();
+    }
+
+
+    @PostConstruct
+    @Transactional
+    public void adicionarPerfisPadrao() {
+        adicionarPerfilSeNaoExistir("Professor");
+        adicionarPerfilSeNaoExistir("Admin");
+    }
+
+    private void adicionarPerfilSeNaoExistir(String nomePerfil) {
+        if (!perfilRepository.existsByNome(nomePerfil)) {
+            Perfil perfil = new Perfil();
+            perfil.setNome(nomePerfil);
+            salvar(perfil);
+        }
     }
 }
