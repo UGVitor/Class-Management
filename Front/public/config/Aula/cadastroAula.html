@@ -106,39 +106,72 @@
             },
             methods: {
                 fetchDisciplinas() {
-                    fetch('http://localhost:8081/api/v1/disciplinas') // Ajuste conforme sua API
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/disciplinas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
                         .then(response => response.json())
                         .then(data => this.disciplinas = data)
                         .catch(error => console.error('Erro ao carregar disciplinas:', error));
                 },
                 fetchHorarios() {
-                    fetch('http://localhost:8081/api/v1/horarios') // Ajuste conforme sua API
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/horarios', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
                         .then(response => response.json())
                         .then(data => this.horarios = data)
                         .catch(error => console.error('Erro ao carregar horários:', error));
                 },
                 fetchSalas() {
-                    fetch('http://localhost:8081/api/v1/salas') // Ajuste conforme sua API
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/salas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
                         .then(response => response.json())
                         .then(data => this.salas = data)
                         .catch(error => console.error('Erro ao carregar salas:', error));
                 },
                 fetchDiasSemana() {
-                    fetch('http://localhost:8081/api/v1/diasSemana') // Ajuste conforme sua API
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/diasSemana', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
                         .then(response => response.json())
                         .then(data => this.diasSemana = data)
                         .catch(error => console.error('Erro ao carregar dias da semana:', error));
                 },
                 fetchTurmas() {
-                    fetch('http://localhost:8081/api/v1/turmas') // Ajuste conforme sua API
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/turmas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
                         .then(response => response.json())
                         .then(data => this.turmas = data)
                         .catch(error => console.error('Erro ao carregar as Turmas:', error));
                 },
                 createAula() {
+                    
+                    const token = localStorage.getItem('authToken');
                     fetch('http://localhost:8081/api/v1/aulas', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${token}`, 
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(this.aula)

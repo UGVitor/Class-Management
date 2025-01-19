@@ -61,7 +61,13 @@
             },
             methods: {
                 fetchLogins() {
-                    fetch('http://localhost:8081/api/v1/logins')
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/logins', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  
+                        'Content-Type': 'application/json'
+                    }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             this.logins = data;
@@ -69,7 +75,13 @@
                         .catch(err => alert('Erro ao carregar logins: ' + err.message));
                 },
                 fetchDisciplina() {
-                    fetch(`http://localhost:8081/api/v1/disciplinas/${this.id}`)
+                    const token = localStorage.getItem('authToken');
+                    fetch(`http://localhost:8081/api/v1/disciplinas/${this.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  
+                        'Content-Type': 'application/json'
+                    }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             this.disciplina = data;
@@ -78,10 +90,12 @@
                 },
                 updateDisciplina() {
                     const url = `http://localhost:8081/api/v1/disciplinas/${this.id}`;
-
+                    const token = localStorage.getItem('authToken');
+                    
                     fetch(url, {
                         method: 'PUT',
                         headers: {
+                            'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(this.disciplina),

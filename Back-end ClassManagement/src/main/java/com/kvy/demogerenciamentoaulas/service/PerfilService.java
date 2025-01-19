@@ -65,9 +65,6 @@ public class PerfilService {
         return perfilRepository.findAll();
     }
 
-<<<<<<< HEAD
-=======
-
     @PostConstruct
     @Transactional
     public void adicionarPerfisPadrao() {
@@ -82,5 +79,5 @@ public class PerfilService {
             salvar(perfil);
         }
     }
->>>>>>> 6e87bf9130b1a250c56f4746833d3d03555a5244
+
 }

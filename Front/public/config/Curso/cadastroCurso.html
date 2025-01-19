@@ -55,7 +55,13 @@
             },
             methods: {
                 fetchModalidades() {
-                    fetch('http://localhost:8081/api/v1/modalidades') // Endpoint para pegar modalidades
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/modalidades', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                            'Content-Type': 'application/json'
+                        }
+                    }) // Endpoint para pegar modalidades
                         .then(response => response.json())
                         .then(data => {
                             this.modalidades = data; // Armazena as modalidades no estado
@@ -69,9 +75,11 @@
                         curso: this.curso.curso,
                         modalidade: this.curso.modalidade
                     };
+                    const token = localStorage.getItem('authToken');
                     fetch('http://localhost:8081/api/v1/curso', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(cursoData)
