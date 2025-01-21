@@ -78,7 +78,13 @@
             methods: {
                 async fetchData(endpoint) {
                     try {
-                        const response = await fetch(endpoint);
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(endpoint, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
                         if (!response.ok) throw new Error('Erro ao buscar dados');
                         return await response.json();
                     } catch (error) {
@@ -96,7 +102,13 @@
                 async deleteSala(id) {
                     if (confirm("Tem certeza que deseja excluir esta sala?")) {
                         try {
-                            const response = await fetch(`http://localhost:8081/api/v1/salas/${id}`, { method: 'DELETE' });
+                            const response = await fetch(`http://localhost:8081/api/v1/salas/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
                             if (response.ok) {
                                 alert("Sala excluída com sucesso!");
                                 this.data = this.data.filter(sala => sala.id !== id);

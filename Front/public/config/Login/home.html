@@ -75,7 +75,6 @@
                 async fetchData(endpoint) {
                     try {
                         const token = localStorage.getItem('authToken');
-                        console.log(token)
                         const response = await fetch(endpoint, {
                             headers: {
                                 'Authorization': `Bearer ${token}`,

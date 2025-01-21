@@ -93,9 +93,8 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Horario.class)))
             })
     @GetMapping
-    public ResponseEntity<List<HorarioDTO>> getHorarioAll() {
+    public ResponseEntity<List<Horario>> getHorarioAll() {
         List<Horario> horarios = horarioService.buscarTodos();
-        List<HorarioDTO> horarioDTOs = horarios.stream().map(horarioService::convertToDTO).toList();
-        return ResponseEntity.ok(horarioDTOs);
+        return ResponseEntity.ok(horarios);
     }
 }
