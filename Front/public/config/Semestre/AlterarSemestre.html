@@ -43,17 +43,18 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id'); 
             },
             methods: {
                 updateSemestre() {
                     const semestreData = { semestre: this.semestre };
 
-                    // Faz a requisição para atualizar o Semestre usando o ID da URL
+                    const token = localStorage.getItem('authToken'); 
                     fetch(`http://localhost:8081/api/v1/semestres/${this.id}`, {
                         method: 'PUT',
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(semestreData),
                     })

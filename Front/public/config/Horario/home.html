@@ -73,13 +73,33 @@
             };
         },
         methods: {
+            formatTime(timeArray) {
+                if (Array.isArray(timeArray) && timeArray.length === 2) {
+                    const [hours, minutes] = timeArray;
+                    const formattedHours = hours.toString().padStart(2, '0');
+                    const formattedMinutes = minutes.toString().padStart(2, '0');
+                    return `${formattedHours}:${formattedMinutes}`;
+                }
+                return '00:00'; // Retorno padrão para valores inesperados
+            },
             async fetchData(endpoint) {
                 try {
-                    const response = await fetch(endpoint);
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(endpoint, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    return await response.json();
+                    const data = await response.json();
+                    return data.map(horario => ({
+                        ...horario,
+                        horaInicio: this.formatTime(horario.horaInicio),
+                        horaTermino: this.formatTime(horario.horaTermino)
+                    }));
                 } catch (error) {
                     console.error('Erro ao buscar dados:', error);
                     return [];
@@ -88,15 +108,20 @@
             async showAll(entity) {
                 this.currentEntity = entity;
                 const endpoints = {
-                    horarios: 'http://localhost:8081/api/v1/horarios' // Atualizado para horários
+                    horarios: 'http://localhost:8081/api/v1/horarios'
                 };
-                this.data = await this.fetchData(endpoints[entity]);
+                this.data = await this.fetchData(endpoints[entity]); // Corrigido: atribui os dados corretamente
             },
-            async deleteHorario(id) { // Alterado de deletePerfil para deleteHorario
+            async deleteHorario(id) { 
                 if (confirm("Tem certeza que deseja deletar este horário?")) {
                     try {
+                        const token = localStorage.getItem('authToken');
                         const response = await fetch(`http://localhost:8081/api/v1/horarios/${id}`, {
                             method: 'DELETE',
+                            headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                            }
                         });
                         if (response.ok) {
                             alert("Horário deletado com sucesso!");

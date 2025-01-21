@@ -64,7 +64,13 @@
             },
             methods: {
                 fetchTiposSalas() {
-                    fetch('http://localhost:8081/api/v1/tiposalas')
+                    const token = localStorage.getItem('authToken'); 
+                    fetch('http://localhost:8081/api/v1/tiposalas', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,  
+                                'Content-Type': 'application/json'
+                            }
+                        })
                         .then(response => response.json())
                         .then(data => {
                             this.tiposSalas = data;
@@ -77,9 +83,11 @@
                     const { id, sala, numero, capacidade, tipoSala } = this.sala;
                     const salaData = { sala, numero, capacidade, tipoSala };
 
+                    const token = localStorage.getItem('authToken'); 
                     fetch(`http://localhost:8081/api/v1/salas/${id}`, {
                         method: 'PUT',
                         headers: {
+                            'Authorization': `Bearer ${token}`,  
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(salaData),

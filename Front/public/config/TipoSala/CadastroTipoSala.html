@@ -50,9 +50,11 @@
                     tipoSala: this.tiposalas.tipoSala 
                 };
 
+                const token = localStorage.getItem('authToken');
                 fetch('http://localhost:8081/api/v1/tiposalas', {
                     method: 'POST',
                     headers: {
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(Data)

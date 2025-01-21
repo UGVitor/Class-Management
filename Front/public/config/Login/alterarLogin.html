@@ -57,14 +57,13 @@
             this.fetchPerfis();
             const params = new URLSearchParams(window.location.search);
             this.logins.id = params.get('id'); 
-            console.log("ID recuperado:", this.login.id); // Debug
         },
         methods: {
             fetchPerfis() {
-                const token = localStorage.getItem('authToken'); // Obtém o token
+                const token = localStorage.getItem('authToken'); 
                 fetch('http://localhost:8081/api/v1/perfis', {
                     headers: {
-                        'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                        'Authorization': `Bearer ${token}`,  
                         'Content-Type': 'application/json'
                     }
                 })
@@ -79,12 +78,12 @@
             updateLogin() {
                 const { id, login, perfil } = this.logins;
                 const loginData = { login, perfil };
-                const token = localStorage.getItem('authToken'); // Obtém o token
 
+                const token = localStorage.getItem('authToken'); 
                 fetch(`http://localhost:8081/api/v1/logins/${id}`, {
                     method: 'PUT',
                     headers: {
-                        'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                        'Authorization': `Bearer ${token}`,  
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(loginData),
