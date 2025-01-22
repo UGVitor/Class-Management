@@ -68,62 +68,95 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    data: [],
-                    currentEntity: 'turma',
-                };
-            },
-            methods: {
-                async fetchData(endpoint) {
-                    try {
-                        const response = await fetch(endpoint);
-                        if (!response.ok) {
-                            throw new Error('Erro ao buscar os dados.');
-                        }
-                        return await response.json();
-                    } catch (error) {
-                        console.error('Erro ao buscar dados:', error);
-                        return [];
+   new Vue({
+    el: '#app',
+    data() {
+        return {      
+            data: [],
+            currentEntity: 'turma',
+        };
+    },
+    methods: {
+        // Corrigido fechamento da função fetchData
+        async fetchData(endpoint) {
+            try {
+                const token = localStorage.getItem('authToken');
+               
+                const response = await fetch(endpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
-                },
-                async showAll(entity) {
-                    this.currentEntity = entity;
-                    const endpoints = {
-                        turma: 'http://localhost:8081/api/v1/turmas',
-                    };
-                    this.data = await this.fetchData(endpoints[entity]);
-                },
-                async deleteTurma(id) {
-                    if (confirm("Tem certeza que deseja deletar esta turma?")) {
-                        try {
-                            const response = await fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
-                                method: 'DELETE',
-                            });
-                            if (response.ok) {
-                                alert("Turma deletada com sucesso!");
-                                this.data = this.data.filter((turma) => turma.id !== id);
-                            } else {
-                                alert("Erro ao deletar a turma.");
-                            }
-                        } catch (error) {
-                            console.error('Erro ao deletar turma:', error);
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao buscar dados: ${errorMessage}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                return [];
+            }
+        },
+
+        // Corrigido método para usar dados de turma corretamente
+        async showAll(entity) {
+            this.currentEntity = entity;
+            const endpoints = {
+                turma: 'http://localhost:8081/api/v1/turmas'
+            };
+
+            if (endpoints[entity]) {
+                this.data = await this.fetchData(endpoints[entity]);
+            } else {
+                console.error("Entidade desconhecida:", entity);
+            }
+        },
+
+        // Corrigido método de delete para trabalhar com turma
+        async deleteTurma(id) {
+            if (confirm("Tem certeza que deseja deletar esta turma?")) {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
                         }
+                    });
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`Erro ao deletar a Turma: ${errorMessage}`);
                     }
-                },
-                editTurma(id) {
-                    window.location.href = `AlterarTurma.html?id=${id}`;
-                },
-                createTurma() {
-                    window.location.href = "CadastroTurma.html";
-                },
-            },
-            mounted() {
-                this.showAll('turma');
-            },
-        });
+
+                    alert("Turma deletada com sucesso!");
+                    this.data = this.data.filter(turma => turma.id !== id);
+                } catch (error) {
+                    console.error('Erro ao deletar:', error);
+                    alert("Erro ao deletar a Turma.");
+                }
+            }
+        },
+
+        // Métodos de edição e criação de turma
+        editTurma(id) {
+            window.location.href = `alterarTurma.html?id=${id}`;
+        },
+
+        createTurma() {
+            window.location.href = "cadastroTurma.html";
+        }
+    },
+    mounted() {
+        this.showAll('turma'); // Usando o endpoint de turma
+    }
+});
+
+
+
     </script>
 
     <footer>

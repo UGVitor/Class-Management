@@ -35,32 +35,47 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         new Vue({
-            el: '#app',
-            data: {
-                diasSemana: {
-                    dia: '' 
+        el: '#app',
+        data: {
+        diasSemana: {
+            dia: '' 
+        }
+    },
+    methods: {
+        async createDiaSemana() {
+            try {
+                const data = { dia: this.diasSemana.dia }; 
+                const token = localStorage.getItem('authToken');
+
+                const response = await fetch('http://localhost:8081/api/v1/diasSemana', {
+                    method: 'POST',
+                    headers: {  
+                        'Authorization': `Bearer ${token}`,  
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao criar o Dia da Semana: ${errorMessage}`);
                 }
-            },
-            methods: {
-                createDiaSemana() {
-                    const data = { dia: this.diasSemana.dia }; 
-                    fetch('http://localhost:8081/api/v1/diasSemana', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data),
-                    })
-                    .then(response => response.json())
-                    .then(() => {
-                        alert('Dia da Semana criado com sucesso!');
-                        window.location.href = 'home.html';
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar o Dia da Semana, tente novamente.');
-                    });
-                }
+
+                await response.json();
+                alert('Dia da Semana criado com sucesso!');
+
+                this.diasSemana.dia = ''; // Resetando o campo de entrada
+                
+                window.location.href = 'home.html';
+
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao criar o Dia da Semana, tente novamente.');
             }
-        });
+        }
+    }
+});
+
     </script>
     <footer>
         &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
