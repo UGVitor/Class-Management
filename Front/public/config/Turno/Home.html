@@ -59,62 +59,86 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    data: [],
-                    currentEntity: 'turno',
-                };
-            },
-            methods: {
-                async fetchData(endpoint) {
-                    try {
-                        const response = await fetch(endpoint);
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return await response.json();
-                    } catch (error) {
-                        console.error('Erro ao buscar dados:', error);
-                        return [];
+     new Vue({
+    el: '#app',
+    data() {
+        return {
+            data: [],
+            currentEntity: 'turno',
+        };
+    },
+    
+    methods: {
+        async fetchDiaSemana(endpoint) { // Método correto
+            try {
+                const token = localStorage.getItem('authToken');
+                
+                const response = await fetch(endpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
-                },
-                async showAll(entity) {
-                    this.currentEntity = entity;
-                    const endpoints = {
-                        turno: 'http://localhost:8081/api/v1/turnos'
-                    };
-                    this.data = await this.fetchData(endpoints[entity]);
-                },
-                async deleteTurno(id) {
-                    if (confirm("Tem certeza que deseja deletar este turno?")) {
-                        try {
-                            const response = await fetch(`http://localhost:8081/api/v1/turnos/${id}`, {
-                                method: 'DELETE',
-                            });
-                            if (response.ok) {
-                                alert("Turno deletado com sucesso!");
-                                this.data = this.data.filter(turno => turno.id !== id);
-                            } else {
-                                alert("Erro ao deletar o turno.");
-                            }
-                        } catch (error) {
-                            console.error('Erro ao deletar o turno:', error);
-                        }
-                    }
-                },
-                editTurno(id) {
-                    window.location.href = `AlterarTurno.html?id=${id}`;
-                },
-                createTurno() {
-                    window.location.href = "CadastroTurno.html";
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error('Network response was not ok');
                 }
-            },
-            mounted() {
-                this.showAll('turno');
+
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                return [];
             }
-        });
+        },
+        async showAll(entity) {
+            this.currentEntity = entity;
+            const endpoints = {
+                turno: 'http://localhost:8081/api/v1/turnos',
+            };
+            if (endpoints[entity]) {
+                this.data = await this.fetchDiaSemana(endpoints[entity]); // 🔥 Chamando o método correto
+            } else {
+                console.error("Entidade desconhecida:", entity);
+            }
+        },
+        async deleteTurno(id) {
+            if (confirm("Tem certeza que deseja deletar este turno?")) {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`http://localhost:8081/api/v1/turnos/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`Erro ao deletar o Dia da Semana: ${errorMessage}`);
+                    }
+
+                    alert("Dia da Semana deletado com sucesso!");
+                    this.data = this.data.filter(dia => dia.id !== id);
+                } catch (error) {
+                    console.error('Erro ao deletar:', error);
+                    alert("Erro ao deletar o Dia da Semana.");
+                }
+            }
+        },
+        editTurno(id) {
+            window.location.href = `AlterarTurno.html?id=${id}`;
+        },
+        createTurno() {
+            window.location.href = "CadastroTurno.html";
+        }
+    },
+    mounted() {
+        this.showAll('turno');
+    },
+});
+
     </script>
 
     <footer>

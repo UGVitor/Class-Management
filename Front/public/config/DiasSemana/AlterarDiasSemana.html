@@ -34,56 +34,67 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                diaSemana: '',
-                id: null
-            },
-            created() {
-                const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id');
-                this.fetchDiaSemana();
-            },
-            methods: {
-                async fetchDiaSemana() {
-                    try {
-                        const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`);
-                        if (response.ok) {
-                            const data = await response.json();
-                            this.diaSemana = data.dia; 
-                        } else {
-                            alert('Erro ao carregar o Dia da Semana.');
-                        }
-                    } catch (error) {
-                        console.error('Erro:', error);
+     new Vue({
+    el: '#app',
+    data: {
+        diaSemana: '',
+        id: null
+    },
+    created() {
+        const params = new URLSearchParams(window.location.search);
+        this.id = params.get('id');
+        this.fetchDiaSemana();
+    },
+    methods: {
+        async fetchDiaSemana() {
+            try {
+                const token = localStorage.getItem('authToken');
+                const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
-                },
-                async updateDiaSemana() {
-                    const diaSemanaData = { dia: this.diaSemana };
+                });
 
-                    try {
-                        const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(diaSemanaData),
-                        });
-
-                        if (response.ok) {
-                            alert('Dia da Semana alterado com sucesso!');
-                            window.location.href = 'HomeDiasSemana.html';
-                        } else {
-                            throw new Error('Erro ao alterar o Dia da Semana.');
-                        }
-                    } catch (error) {
-                        console.error('Erro:', error);
-                        alert('Erro ao alterar o Dia da Semana, tente novamente.');
-                    }
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar o dia da semana');
                 }
+
+                const data = await response.json();
+                this.diaSemana = data.dia; // Ajuste conforme retorno da API
+            } catch (error) {
+                console.error('Erro ao carregar os dados:', error);
             }
-        });
+        },
+        async updateDiaSemana() {
+            try {
+                const diaSemanaData = { dia: this.diaSemana };
+                const token = localStorage.getItem('authToken');
+
+                const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${this.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(diaSemanaData),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao alterar o dia da semana');
+                }
+
+                alert('Dia da semana alterado com sucesso!');
+                window.location.href = 'home.html';
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao alterar o dia da semana, tente novamente.');
+            }
+        }
+    }
+});
+
+
     </script>
     <footer>
         &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
