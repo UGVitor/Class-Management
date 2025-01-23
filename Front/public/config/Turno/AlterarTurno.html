@@ -44,28 +44,29 @@
             created() {
                 const params = new URLSearchParams(window.location.search);
                 this.id = params.get('id'); 
+                this.fetchTurno();
             },
             methods: {
                 async fetchTurno() {
-            try {
-                const token = localStorage.getItem('authToken');
-                const response = await fetch(`http://localhost:8081/api/v1/turnos/${this.id}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(`http://localhost:8081/api/v1/turnos/${this.id}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
                     }
                 });
 
-                if (!response.ok) {
-                    throw new Error('Erro ao carregar o turno');
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar o turno');
                 }
 
-                const data = await response.json();
-                this.turno = turno.nome; // Ajuste conforme retorno da API
-            } catch (error) {
-                console.error('Erro ao carregar os dados:', error);
-            }
-        },
+                    const data = await response.json();
+                    this.turno = data.turno; // Ajuste conforme retorno da API
+                    } catch (error) {
+                        console.error('Erro ao carregar os dados:', error);
+                }
+             },
                 updateTurno() {
                     const turnoData = { turno: this.turno };
                     const token = localStorage.getItem('authToken'); // Obtém o token

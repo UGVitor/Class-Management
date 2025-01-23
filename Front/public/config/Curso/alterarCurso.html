@@ -55,8 +55,30 @@
                 this.fetchModalidades();
                 const params = new URLSearchParams(window.location.search);
                 this.curso.id = params.get('id'); 
+                this.fetchCurso();
             },
             methods: {
+
+                async fetchCurso() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(`http://localhost:8081/api/v1/curso/${this.curso.id}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar o curso');
+                        }
+
+                        const data = await response.json();
+                        this.curso.curso = data.curso; // Ajuste conforme retorno da API
+                    } catch (error) {
+                        console.error('Erro ao carregar os dados:', error);
+                    }
+        },
                 fetchModalidades() {
                     const token = localStorage.getItem('authToken');
                     fetch('http://localhost:8081/api/v1/modalidades', {

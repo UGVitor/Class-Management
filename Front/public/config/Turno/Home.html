@@ -69,7 +69,7 @@
     },
     
     methods: {
-        async fetchDiaSemana(endpoint) { // Método correto
+        async fetchTurno(endpoint) { // Método correto
             try {
                 const token = localStorage.getItem('authToken');
                 
@@ -97,7 +97,7 @@
                 turno: 'http://localhost:8081/api/v1/turnos',
             };
             if (endpoints[entity]) {
-                this.data = await this.fetchDiaSemana(endpoints[entity]); // 🔥 Chamando o método correto
+                this.data = await this.fetchTurno(endpoints[entity]); // 🔥 Chamando o método correto
             } else {
                 console.error("Entidade desconhecida:", entity);
             }
@@ -116,14 +116,14 @@
 
                     if (!response.ok) {
                         const errorMessage = await response.text();
-                        throw new Error(`Erro ao deletar o Dia da Semana: ${errorMessage}`);
+                        throw new Error(`Erro ao deletar o Turno: ${errorMessage}`);
                     }
 
-                    alert("Dia da Semana deletado com sucesso!");
+                    alert("Turno deletado com sucesso!");
                     this.data = this.data.filter(dia => dia.id !== id);
                 } catch (error) {
                     console.error('Erro ao deletar:', error);
-                    alert("Erro ao deletar o Dia da Semana.");
+                    alert("Erro ao deletar o turno.");
                 }
             }
         },

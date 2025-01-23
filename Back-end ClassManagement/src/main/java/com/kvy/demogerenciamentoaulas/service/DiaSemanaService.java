@@ -2,9 +2,11 @@ package com.kvy.demogerenciamentoaulas.service;
 
 
 import com.kvy.demogerenciamentoaulas.entity.DiaSemana;
+import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.exception.DiaSemanaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.DiaSemanaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.DiaSemanaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +64,27 @@ public class DiaSemanaService {
     @Transactional(readOnly = true)
     public List<DiaSemana> buscarTodos() {
         return diaSemanaRepository.findAll();
+    }
+
+
+    @PostConstruct
+    @Transactional
+    public void adicionarDiaSemanaPadrao() {
+        adicionarDiaSemanaSeNaoExistir("Segunda-Feira");
+        adicionarDiaSemanaSeNaoExistir("Terça-Feira");
+        adicionarDiaSemanaSeNaoExistir("Quarta-Feira");
+        adicionarDiaSemanaSeNaoExistir("Quinta-Feira");
+        adicionarDiaSemanaSeNaoExistir("Sexta-Feira");
+        adicionarDiaSemanaSeNaoExistir("Sábado");
+        adicionarDiaSemanaSeNaoExistir("Domingo");
+
+    }
+
+    private void adicionarDiaSemanaSeNaoExistir(String dia) {
+        if (!diaSemanaRepository.existsByDia(dia)) {
+            DiaSemana diaSemana = new DiaSemana();
+            diaSemana.setDia(dia);
+            diaSemanaRepository.save(diaSemana);
+        }
     }
 }
