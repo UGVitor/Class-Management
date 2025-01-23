@@ -1,9 +1,11 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TipoSalaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,5 +63,20 @@ public class TipoSalaService {
 
     private TipoSalaDTO toDTO(TipoSala tipoSala) {
         return new TipoSalaDTO(tipoSala.getId(), tipoSala.getTipoSala());
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarSemestrePadrao() {
+        adicionarTipoSalaSeNaoExistir("Laboratório");
+        adicionarTipoSalaSeNaoExistir("Sala de Aula");
+    }
+
+    private void adicionarTipoSalaSeNaoExistir(String nomeTipoSala) {
+        if (!tipoSalaRepository.existsByTipoSala(nomeTipoSala)) {
+            TipoSala tipoSala = new TipoSala();
+            tipoSala.setTipoSala(nomeTipoSala);
+            tipoSalaRepository.save(tipoSala);
+        }
     }
 }

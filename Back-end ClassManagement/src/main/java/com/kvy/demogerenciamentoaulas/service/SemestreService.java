@@ -1,9 +1,11 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
+import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.exception.SemestreEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.SemestreRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +59,20 @@ public class SemestreService {
     @Transactional(readOnly = true)
     public List<Semestre> buscarTodos() {
         return semestreRepository.findAll();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarSemestrePadrao() {
+        adicionarSemestreSeNaoExistir("Primeiro");
+        adicionarSemestreSeNaoExistir("Segundo");
+    }
+
+    private void adicionarSemestreSeNaoExistir(String nomeSemestre) {
+        if (!semestreRepository.existsBySemestre(nomeSemestre)) {
+            Semestre semestre = new Semestre();
+            semestre.setSemestre(nomeSemestre);
+            semestreRepository.save(semestre);
+        }
     }
 }
