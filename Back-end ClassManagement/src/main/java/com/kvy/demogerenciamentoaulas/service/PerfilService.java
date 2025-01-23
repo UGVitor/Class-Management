@@ -76,7 +76,7 @@ public class PerfilService {
         if (!perfilRepository.existsByNome(nomePerfil)) {
             Perfil perfil = new Perfil();
             perfil.setNome(nomePerfil);
-            salvar(perfil);
+            perfilRepository.save(perfil);
         }
     }
 

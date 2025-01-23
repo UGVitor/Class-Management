@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SemestreRepository extends JpaRepository<Semestre, Long> {
 
+    boolean existsBySemestre(String nomeSemestre);
 }
