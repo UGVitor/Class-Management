@@ -31,4 +31,23 @@ public class TurnoDTOFixture {
                 .turno("Integral")
                 .build();
     }
+    public static TurnoDTO fixtureTurnoDTONullName() {
+        return TurnoDTO.builder()
+                .id(5L)
+                .turno(null)
+                .build();
+    }
+    public static TurnoDTO fixtureTurnoDTOEmptyName() {
+        return TurnoDTO.builder()
+                .id(6L)
+                .turno("")
+                .build();
+    }
+    public static TurnoDTO fixtureTurnoDTOIdInvalido() {
+        return TurnoDTO.builder()
+                .id(null)
+                .turno("")
+                .build();
+    }
+
 }
