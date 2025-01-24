@@ -26,7 +26,7 @@
           <h2>Criar Perfil</h2>
           <div class="form-group">
             <label for="nome">Nome do Perfil:<span class="asterisco">*</span></label>
-            <input type="text" v-model="perfis.nome" maxlength="50" required />
+            <input type="text" v-model="perfil.nome" maxlength="50" required placeholder="Ex: Administrador" />
           </div>
           <div class="form-group">
             <button type="submit">Criar Perfil</button>
@@ -39,45 +39,52 @@
         new Vue({
             el: '#app',
             data: {
-                perfis: {
-                    nome: ''                   
-                }
+                perfil: {
+                    nome: '',
+                },
             },
             methods: {
-                createPerfil() {
-                    const perfilData = {
-                        nome: this.perfis.nome,
-                    };
+                async createPerfil() {
+                    if (!this.perfil.nome) {
+                        alert('Por favor, insira um nome para o perfil.');
+                        return;
+                    }
 
-                    fetch('http://localhost:8081/api/v1/perfis', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(perfilData)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
+                    try {
+                        const perfilData = {
+                            nome: this.perfil.nome,
+                        };
+
+                        const token = localStorage.getItem('authToken');
+
+                        const response = await fetch('http://localhost:8081/api/v1/perfis', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(perfilData),
+                        });
+
+                        if (!response.ok) {
+                            const errorMessage = await response.text();
+                            throw new Error(`Erro ao criar o perfil: ${errorMessage}`);
                         }
-                        throw new Error('Erro ao criar o perfil');
-                    })
-                    .then(data => {
+
                         alert('Perfil criado com sucesso!');
                         this.resetForm();
-                        window.location.href = 'home.html';
-                    })
-                    .catch(error => {
+                        window.location.href = 'home.html';  // Redirecionando após sucesso
+                    } catch (error) {
                         console.error('Erro:', error);
-                        alert('Erro ao criar o perfil, tente novamente.');
-                    });
+                        alert(`Erro ao criar o perfil, tente novamente. Detalhes: ${error.message}`);
+                    }
                 },
                 resetForm() {
-                    this.perfis = {
+                    this.perfil = {
                         nome: '',
                     };
-                }
-            }
+                },
+            },
         });
     </script>
     <footer>

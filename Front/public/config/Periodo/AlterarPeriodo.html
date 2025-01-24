@@ -26,7 +26,7 @@
             <h2>Alterar Periodo</h2>
             <div class="form-group">
                 <label for="periodo">Periodo:</label>
-                <input type="text" id="periodo" v-model="nome" maxlength="40"required />
+                <input type="text" id="periodo" v-model="nome" maxlength="40" required />
             </div>
             <div class="form-group">
                 <button type="submit">Alterar Periodo</button>
@@ -39,37 +39,59 @@
         new Vue({
             el: '#app',
             data: {
-                nome: '' 
+                nome: '',
+                id: null
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
+                this.id = params.get('id');
+                this.fetchPeriodo();
             },
             methods: {
-                updatePeriodo() {
-                    const periodoData = { nome: this.nome };
+                async fetchPeriodo() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(`http://localhost:8081/api/v1/periodos/${this.id}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
 
-                    // Faz a requisição para atualizar a modalidade usando o ID da URL
-                    fetch(`http://localhost:8081/api/v1/periodos/${this.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(periodoData),
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            alert('Periodo alterado com sucesso!');
-                            this.nome = ''; 
-                            window.location.href = 'home.html';
-                        } else {
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar o periodo');
+                        }
+
+                        const data = await response.json();
+                        this.nome = data.nome; // Ajuste conforme o retorno da API
+                    } catch (error) {
+                        console.error('Erro ao carregar os dados:', error);
+                    }
+                },
+                async updatePeriodo() {
+                    try {
+                        const periodoData = { nome: this.nome };
+                        const token = localStorage.getItem('authToken');
+
+                        const response = await fetch(`http://localhost:8081/api/v1/periodos/${this.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(periodoData),
+                        });
+
+                        if (!response.ok) {
                             throw new Error('Erro ao alterar o periodo');
                         }
-                    })
-                    .catch(error => {
+
+                        alert('Periodo alterado com sucesso!');
+                        window.location.href = 'home.html';
+                    } catch (error) {
                         console.error('Erro:', error);
                         alert('Erro ao alterar o periodo, tente novamente.');
-                    });
+                    }
                 }
             }
         });

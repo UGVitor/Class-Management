@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../style/telasHomes.css">
-    
 </head>
 <body>
     <div id="app" class="container">
@@ -27,32 +26,33 @@
         </div>
 
         <div class="filters-display">
-                <table v-if="currentEntity === 'perfis'">
-                    <thead>
-                        <tr>
-                            <th>Perfil</th>
+            <table v-if="currentEntity === 'perfis'">
+                <thead>
+                    <tr>
+                        <th>Perfil</th>
                         <th>
                             <button @click="createPerfil" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar </button>
+                                <i class="fas fa-plus"></i> Criar
+                            </button>
                         </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="perfil in data" :key="perfil.id">
-                            <td>{{ perfil.nome }}</td>
-                            <td>
-                                <div class="button-group">
-                                    <button @click="deletePerfil(perfil.id)" class="delete-btn">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                    <button @click="editPerfil(perfil.id)" class="altera-btn">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="perfil in data" :key="perfil.id">
+                        <td>{{ perfil.nome }}</td>
+                        <td>
+                            <div class="button-group">
+                                <button @click="deletePerfil(perfil.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editPerfil(perfil.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -63,17 +63,26 @@
             el: '#app',
             data() {
                 return {
-                    data: [], 
+                    data: [],
                     currentEntity: 'perfis',
                 };
             },
             methods: {
                 async fetchData(endpoint) {
                     try {
-                        const response = await fetch(endpoint);
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(endpoint, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
                         if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                            const errorMessage = await response.text();
+                            throw new Error(`Erro ao buscar dados: ${errorMessage}`);
                         }
+
                         return await response.json();
                     } catch (error) {
                         console.error('Erro ao buscar dados:', error);
@@ -83,37 +92,50 @@
                 async showAll(entity) {
                     this.currentEntity = entity;
                     const endpoints = {
-                        perfis: 'http://localhost:8081/api/v1/perfis'
+                        perfis: 'http://localhost:8081/api/v1/perfis',
                     };
-                    this.data = await this.fetchData(endpoints[entity]);
+
+                    if (endpoints[entity]) {
+                        this.data = await this.fetchData(endpoints[entity]);
+                    } else {
+                        console.error("Entidade desconhecida:", entity);
+                    }
                 },
                 async deletePerfil(id) {
                     if (confirm("Tem certeza que deseja deletar este perfil?")) {
                         try {
+                            const token = localStorage.getItem('authToken');
                             const response = await fetch(`http://localhost:8081/api/v1/perfis/${id}`, {
                                 method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
                             });
-                            if (response.ok) {
-                                alert("Perfil deletado com sucesso!");
-                                this.data = this.data.filter(perfil => perfil.id !== id);
-                            } else {
-                                alert("Erro ao deletar o perfil.");
+
+                            if (!response.ok) {
+                                const errorMessage = await response.text();
+                                throw new Error(`Erro ao deletar o Perfil: ${errorMessage}`);
                             }
+
+                            alert("Perfil deletado com sucesso!");
+                            this.data = this.data.filter(perfil => perfil.id !== id);
                         } catch (error) {
-                            console.error('Erro ao deletar o perfil:', error);
+                            console.error('Erro ao deletar o Perfil:', error);
+                            alert("Erro ao deletar o Perfil.");
                         }
                     }
                 },
                 editPerfil(id) {
-                    window.location.href = "alterarPerfil.html?id=${id}";
+                    window.location.href = `alterarPerfil.html?id=${id}`;
                 },
-             createPerfil() {
+                createPerfil() {
                     window.location.href = "CadastroPerfil.html";
                 },
             },
             mounted() {
                 this.showAll('perfis');
-            }
+            },
         });
     </script>
 
