@@ -1,6 +1,5 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
@@ -40,8 +39,11 @@ public class TipoSalaService {
     @Transactional
     public TipoSala editar(Long id, TipoSalaDTO tipoSalaDTO) {
         TipoSala existingTipoSala = buscarPorId(id);
-        existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
 
+        if (tipoSalaDTO.getTipoSala() == null || tipoSalaDTO.getTipoSala().isBlank()) {
+            throw new IllegalArgumentException("O nome do Tipo de Sala não pode ser nulo ou vazio");
+        }
+        existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
         return tipoSalaRepository.save(existingTipoSala);
     }
 
@@ -67,7 +69,7 @@ public class TipoSalaService {
 
     @PostConstruct
     @Transactional
-    public void adicionarSemestrePadrao() {
+    public void adicionarTipoSalaPadrao() {
         adicionarTipoSalaSeNaoExistir("Laboratório");
         adicionarTipoSalaSeNaoExistir("Sala de Aula");
     }

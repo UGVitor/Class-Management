@@ -34,7 +34,7 @@ class TurnoServiceTest {
         private TurnoService turnoService;
 
     @Test
-    void deveSalvarTurnoValido() {
+    void deveSalvarUmTurnoValido() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTO1();
         Turno turnoEsperado = TurnoAdapter.toEntity(turnoDTO);
 
