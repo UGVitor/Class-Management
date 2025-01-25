@@ -187,6 +187,7 @@
                 <thead>
                     <tr>
                         <th>Disciplina</th>
+                        <th>Professor</th>
                         <th>Dia da Semana</th>
                         <th>Turma</th>
                         <th>Horário Início</th>
@@ -198,6 +199,7 @@
                 <tbody>
                     <tr v-for="aula in aulasFiltradas" :key="aula.id">
                         <td>{{ aula.disciplinaNome }}</td>
+                        <td>{{ aula.professor }}</td>
                         <td>{{ aula.diaSemanaNome }}</td>
                         <td>{{ aula.turmaNome }}</td>
                         <td>{{ aula.horarioInicio }}</td>

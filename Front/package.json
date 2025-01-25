@@ -9,6 +9,7 @@
   "dependencies": {
     "@vue/compiler-sfc": "^3.5.12",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
     "lines-and-columns": "^2.0.4",
     "vue": "^3.5.12",
     "vue-loader": "^17.4.2",

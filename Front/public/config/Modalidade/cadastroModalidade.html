@@ -26,8 +26,8 @@
         <form @submit.prevent="createModalidade">
           <h2>Criar Modalidade</h2>
           <div class="form-group">
-            <label for="nome">Nome do Modalidade:<span class="asterisco">*</span></label>
-            <input type="text" v-model="modalidades.nome" maxlength="30"required placeholder="Ex: Superior"/>
+            <label for="nome">Nome da Modalidade:<span class="asterisco">*</span></label>
+            <input type="text" v-model="modalidade.nome" maxlength="30"required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Modalidade</button>
