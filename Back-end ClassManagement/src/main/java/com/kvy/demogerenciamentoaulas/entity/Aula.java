@@ -2,20 +2,22 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.Objects;
 
-@Getter @Setter @NoArgsConstructor
+@Builder
 @Entity
 @Data
+@AllArgsConstructor
 @Table(name = "aula")
 public class Aula implements Serializable {
+
+    public Aula() {}
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

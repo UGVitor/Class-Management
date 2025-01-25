@@ -50,9 +50,11 @@
                         semestre: this.semestres.semestre,
                     };
 
+                    const token = localStorage.getItem('authToken');
                     fetch('http://localhost:8081/api/v1/semestres', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(semestreData)

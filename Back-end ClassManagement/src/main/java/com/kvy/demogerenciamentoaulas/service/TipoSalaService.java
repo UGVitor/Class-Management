@@ -4,6 +4,7 @@ import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TipoSalaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +39,11 @@ public class TipoSalaService {
     @Transactional
     public TipoSala editar(Long id, TipoSalaDTO tipoSalaDTO) {
         TipoSala existingTipoSala = buscarPorId(id);
-        existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
 
+        if (tipoSalaDTO.getTipoSala() == null || tipoSalaDTO.getTipoSala().isBlank()) {
+            throw new IllegalArgumentException("O nome do Tipo de Sala não pode ser nulo ou vazio");
+        }
+        existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
         return tipoSalaRepository.save(existingTipoSala);
     }
 
@@ -61,5 +65,20 @@ public class TipoSalaService {
 
     private TipoSalaDTO toDTO(TipoSala tipoSala) {
         return new TipoSalaDTO(tipoSala.getId(), tipoSala.getTipoSala());
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarTipoSalaPadrao() {
+        adicionarTipoSalaSeNaoExistir("Laboratório");
+        adicionarTipoSalaSeNaoExistir("Sala de Aula");
+    }
+
+    private void adicionarTipoSalaSeNaoExistir(String nomeTipoSala) {
+        if (!tipoSalaRepository.existsByTipoSala(nomeTipoSala)) {
+            TipoSala tipoSala = new TipoSala();
+            tipoSala.setTipoSala(nomeTipoSala);
+            tipoSalaRepository.save(tipoSala);
+        }
     }
 }

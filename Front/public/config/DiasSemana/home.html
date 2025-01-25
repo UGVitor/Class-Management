@@ -55,54 +55,87 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            data() {
-                return {
-                    data: [],
-                    currentEntity: 'diasSemana',
-                };
-            },
-            methods: {
-                async fetchData(endpoint) {
-                    try {
-                        const response = await fetch(endpoint);
-                        return await response.json();
-                    } catch (error) {
-                        console.error(error);
-                        return [];
+     new Vue({
+        el: '#app',
+        data() {
+        return {
+            data: [],
+            currentEntity: 'diasSemana',
+        };
+    },
+    methods: {
+        async fetchData(endpoint) {
+            try {
+                const token = localStorage.getItem('authToken');
+                
+
+                const response = await fetch(endpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
-                },
-                async showAll() {
-                    this.data = await this.fetchData('http://localhost:8081/api/v1/diasSemana');
-                },
-                async deleteDia(id) {
-                    if (confirm("Tem certeza que deseja deletar este dia da semana?")) {
-                        try {
-                            const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${id}`, { method: 'DELETE' });
-                            if (response.ok) {
-                                alert("Dia da Semana deletado com sucesso!");
-                                this.data = this.data.filter(dia => dia.id !== id);
-                            } else {
-                                alert("Erro ao deletar o Dia da Semana.");
-                            }
-                        } catch (error) {
-                            console.error(error);
-                        }
-                    }
-                },
-                editDia(id) {
-                    window.location.href = `AlterarDiasSemana.html?id=${id}`;
-                },
-                createDiasSemana() {
-                window.location.href = "cadastroDiasSemana.html";
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao buscar dados: ${errorMessage}`);
                 }
 
-            },
-            mounted() {
-                this.showAll();
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                return [];
             }
-        });
+        },
+        async showAll(entity) {
+            this.currentEntity = entity;
+            const endpoints = {
+                diasSemana: 'http://localhost:8081/api/v1/diasSemana'
+            };
+
+            if (endpoints[entity]) {
+                this.data = await this.fetchData(endpoints[entity]);
+            } else {
+                console.error("Entidade desconhecida:", entity);
+            }
+        },
+        async deleteDia(id) {
+            if (confirm("Tem certeza que deseja deletar este dia da semana?")) {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`http://localhost:8081/api/v1/diasSemana/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`Erro ao deletar o Dia da Semana: ${errorMessage}`);
+                    }
+
+                    alert("Dia da Semana deletado com sucesso!");
+                    this.data = this.data.filter(dia => dia.id !== id);
+                } catch (error) {
+                    console.error('Erro ao deletar:', error);
+                    alert("Erro ao deletar o Dia da Semana.");
+                }
+            }
+        },
+        editDia(id) {
+            window.location.href = `AlterarDiasSemana.html?id=${id}`;
+        },
+        createDiasSemana() {
+            window.location.href = "cadastroDiasSemana.html";
+        }
+    },
+    mounted() {
+        this.showAll('diasSemana'); // Passando a entidade corretamente
+    }
+});
+
     </script>
   <footer>
     &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |

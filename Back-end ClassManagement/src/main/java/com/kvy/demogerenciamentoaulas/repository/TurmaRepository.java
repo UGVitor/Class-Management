@@ -15,7 +15,7 @@ public interface TurmaRepository extends JpaRepository<Turma, Long> {
             "p.nome AS periodoNome, " +
             "tu.turno AS turnoNome, " +
             "c.Curso AS cursoNome, " +
-            "s.semestre AS semestreNome " +
+            "s. AS semestreNome " +
             "FROM Turma t " +
             "JOIN t.periodo p " +
             "JOIN t.turno tu " +

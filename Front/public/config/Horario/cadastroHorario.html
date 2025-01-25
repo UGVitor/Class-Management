@@ -55,9 +55,11 @@
                         horaTermino: this.horarios.horaTermino
                     };
 
+                    const token = localStorage.getItem('authToken');
                     fetch('http://localhost:8081/api/v1/horarios', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(horarioData)

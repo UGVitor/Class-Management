@@ -1,9 +1,11 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.exception.TurnoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.TurnoRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TurnoDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import java.util.Optional;
 @Service
 
 public class TurnoService {
+
     private final TurnoRepository turnoRepository;
 
     @Transactional
@@ -58,4 +61,20 @@ public class TurnoService {
 
     @Transactional(readOnly = true)
     public List<Turno> buscarTodos(){ return turnoRepository.findAll();}
+
+    @PostConstruct
+    @Transactional
+    public void adicionarTurnoPadrao() {
+        adicionarTurnoSeNaoExistir("Matutino");
+        adicionarTurnoSeNaoExistir("Vespertino");
+        adicionarTurnoSeNaoExistir("Noturno");
+    }
+
+    private void adicionarTurnoSeNaoExistir(String nomeTurno) {
+        if (!turnoRepository.existsByTurno(nomeTurno)) {
+            Turno turno = new Turno();
+            turno.setTurno(nomeTurno);
+            turnoRepository.save(turno);
+        }
+    }
 }

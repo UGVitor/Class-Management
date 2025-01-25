@@ -36,49 +36,49 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                turno: {
-                    nome: '',                   
-                }
-            },
-            methods: {
-                createTurno() {
-                    const turnoData = {
-                        turno: this.turno.nome,
-                    };
+     new Vue({
+        el: '#app',
+        data: {
+        turno: {
+            nome: ''
+        }    
+    },
+    methods: {
+        async createTurno() {
+            try {
+                const data = {turno: this.turno.nome }; 
+                const token = localStorage.getItem('authToken');
 
-                    fetch('http://localhost:8081/api/v1/turnos', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(turnoData)
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        }
-                        throw new Error('Erro ao criar o turno');
-                    })
-                    .then(data => {
-                        alert('Turno criado com sucesso!');
-                        this.resetForm();
-                        window.location.href = 'Home.html';
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro ao criar o turno, tente novamente.');
-                    });
-                },
-                resetForm() {
-                    this.turno = {
-                        nome: '',
-                    };
+                const response = await fetch('http://localhost:8081/api/v1/turnos', {
+                    method: 'POST',
+                    headers: {  
+                        'Authorization': `Bearer ${token}`,  
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao criar o turno: ${errorMessage}`);
                 }
+
+                await response.json();
+                alert('Turno criado com sucesso!');
+
+                this.turno.nome = ''; // Resetando o campo de entrada
+                
+                window.location.href = 'home.html';
+
+            } catch (error) {
+                console.error('Erro:', error);
+                alert('Erro ao criar o turno, tente novamente.');
             }
-        });
+        }
+    }
+});
+
+
     </script>
     <footer>
         &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |

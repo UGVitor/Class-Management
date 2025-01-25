@@ -43,17 +43,39 @@
             },
             created() {
                 const params = new URLSearchParams(window.location.search);
-                this.id = params.get('id'); // Armazena o ID da URL para uso na atualização
-            },
+                this.id = params.get('id'); 
+                this.fetchSemestre();
+                        },
             methods: {
+                async fetchSemestre() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(`http://localhost:8081/api/v1/semestres/${this.id}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+                        if (!response.ok) {
+                            throw new Error('Erro ao carregar o semestre');
+                        }
+
+                        const data = await response.json();
+                        this.semestre = data.semestre; // Ajuste conforme retorno da API
+                    } catch (error) {
+                        console.error('Erro ao carregar os dados:', error);
+                    }
+                },
                 updateSemestre() {
                     const semestreData = { semestre: this.semestre };
 
-                    // Faz a requisição para atualizar o Semestre usando o ID da URL
+                    const token = localStorage.getItem('authToken'); 
                     fetch(`http://localhost:8081/api/v1/semestres/${this.id}`, {
                         method: 'PUT',
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(semestreData),
                     })

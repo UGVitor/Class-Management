@@ -48,80 +48,87 @@
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-       new Vue({
-    el: '#app',
-    data() {
-        return {
-            sala: {
-                sala: '',
-                numero: '',
-                capacidade: '',
-                tipoSala: '',
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    sala: {
+                        sala: '',
+                        numero: '',
+                        capacidade: '',
+                        tipoSala: '',
+                    },
+                    tiposSalas: [],
+                };
             },
-            tiposSalas: [],
-        };
-    },
-    created() {
-        this.fetchTiposSala();
-    },
-    methods: {
-        fetchTiposSala() {
-            fetch('http://localhost:8081/api/v1/tiposalas')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao carregar os tipos de sala');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    this.tiposSalas = data;
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar os tipos de sala:', error);
-                    alert('Não foi possível carregar os tipos de sala.');
-                });
-        },
-        createSala() {
-            const salaData = {
-                sala: this.sala.sala,
-                numero: parseInt(this.sala.numero, 10),
-                capacidade: parseInt(this.sala.capacidade, 10),
-                tipoSala: this.sala.tipoSala,
-            };
-
-            fetch('http://localhost:8081/api/v1/salas', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
+            created() {
+                this.fetchTiposSala();
+            },
+            methods: {
+                fetchTiposSala() {
+                    const token = localStorage.getItem('authToken'); 
+                    fetch('http://localhost:8081/api/v1/tiposalas', {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao carregar os tipos de sala');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            this.tiposSalas = data;
+                        })
+                        .catch(error => {
+                            console.error('Erro ao carregar os tipos de sala:', error);
+                            alert('Não foi possível carregar os tipos de sala.');
+                        });
                 },
-                body: JSON.stringify(salaData),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao criar a sala');
-                    }
-                    return response.json();
-                })
-                .then(() => {
-                    alert('Sala criada com sucesso!');
-                    this.resetForm();
-                    window.location.href = 'home.html';
-                })
-                .catch(error => {
-                    console.error('Erro ao criar a sala:', error);
-                    alert('Erro ao criar a sala. Tente novamente.');
-                });
-        },
-        resetForm() {
-            this.sala = {
-                sala: '',
-                numero: '',
-                capacidade: '',
-                tipoSala: '',
-            };
-        },
-    },
-});
+                createSala() {
+                    const salaData = {
+                        sala: this.sala.sala,
+                        numero: parseInt(this.sala.numero, 10),
+                        capacidade: parseInt(this.sala.capacidade, 10),
+                        tipoSala: this.sala.tipoSala,
+                    };
+                    const token = localStorage.getItem('authToken'); 
+                    fetch('http://localhost:8081/api/v1/salas', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(salaData),
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Erro ao criar a sala');
+                            }
+                            return response.json();
+                        })
+                        .then(() => {
+                            alert('Sala criada com sucesso!');
+                            this.resetForm();
+                            window.location.href = 'home.html';
+                        })
+                        .catch(error => {
+                            console.error('Erro ao criar a sala:', error);
+                            alert('Erro ao criar a sala. Tente novamente.');
+                        });
+                },
+                resetForm() {
+                    this.sala = {
+                        sala: '',
+                        numero: '',
+                        capacidade: '',
+                        tipoSala: '',
+                    };
+                },
+            },
+        });
 
     </script>
 </body>

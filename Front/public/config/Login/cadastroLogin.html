@@ -107,14 +107,20 @@
             },
             methods: {
                 fetchPerfis() {
-                    fetch('http://localhost:8081/api/v1/perfis')
-                        .then(response => response.json())
-                        .then(data => {
-                            this.perfis = data;
-                        })
-                        .catch(error => {
-                            console.error('Erro ao carregar perfis:', error);
-                        });
+                    const token = localStorage.getItem('authToken'); 
+                    fetch('http://localhost:8081/api/v1/perfis', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.perfis = data;
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar perfis:', error);
+                    });
                 },
                 createLogin() {
                     if (this.login.password !== this.login.confirmPassword) {
@@ -133,9 +139,11 @@
                         perfilId: this.login.perfil
                     };
 
+                    const token = localStorage.getItem('authToken'); // Obtém o token
                     fetch('http://localhost:8081/api/v1/logins', {
                         method: 'POST',
                         headers: {
+                            'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify(loginData)
@@ -155,7 +163,8 @@
                         console.error('Erro:', error);
                         alert('Erro ao criar o login, tente novamente.');
                     });
-                },resetForm() {
+                },
+                resetForm() {
                     this.login = {
                         login: '',
                         password: '',
@@ -163,7 +172,6 @@
                         perfil: ''
                     };
                 },
-                
             }
         });
     </script>

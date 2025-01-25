@@ -1,13 +1,20 @@
 package com.kvy.demogerenciamentoaulas.web.dto.LoginDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class LoginAuthenticateDTO {
+
+    @NotBlank(message = "O campo login não pode estar vazio.")
     private String login;
-    private String senha;
+
+    @NotBlank(message = "O campo senha não pode estar vazio.")
+    @Size(min = 6, max = 6, message = "A senha deve ter exatamente 6 caracteres.")
+    private String password;
 }

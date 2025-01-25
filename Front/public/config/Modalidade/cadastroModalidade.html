@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../../style/telasCadastro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="../../img/icon.png">
+    
 </head>
 <body>
     <div class="navbar">
@@ -26,7 +27,7 @@
           <h2>Criar Modalidade</h2>
           <div class="form-group">
             <label for="nome">Nome da Modalidade:<span class="asterisco">*</span></label>
-            <input type="text" v-model="modalidade.nome" maxlength="30" required placeholder="Ex: Presencial" />
+            <input type="text" v-model="modalidade.nome" maxlength="30"required />
           </div>
           <div class="form-group">
             <button type="submit">Criar Modalidade</button>
@@ -39,50 +40,52 @@
         new Vue({
             el: '#app',
             data: {
-                modalidade: {
-                    nome: '',
-                },
+                modalidades: {
+                    nome: ''                   
+                }
             },
             methods: {
-                async createModalidade() {
-                    try {
-                        const modalidadeData = {
-                            nome: this.modalidade.nome,
-                        };
+                createModalidade() {
+                    const modalidadeData = {
+                        nome: this.modalidades.nome,
+                    };
 
-                        const token = localStorage.getItem('authToken');
-
-                        const response = await fetch('http://localhost:8081/api/v1/modalidades', {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,  
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(modalidadeData),
-                        });
-
-                        if (!response.ok) {
-                            const errorMessage = await response.text();
-                            throw new Error(`Erro ao criar a modalidade: ${errorMessage}`);  
+                    fetch('http://localhost:8081/api/v1/modalidades', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(modalidadeData)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
                         }
-
-                        alert('Modalidade criada com sucesso!');
-                        this.resetForm();  
-                        window.location.href = 'home.html';  
-                    } catch (error) {
+                        throw new Error('Erro ao criar o modalidade');
+                    })
+                    .then(data => {
+                        alert('Modalidade criado com sucesso!');
+                        this.resetForm();
+                        window.location.href = 'home.html';
+                    })
+                    .catch(error => {
                         console.error('Erro:', error);
-                        alert('Erro ao criar a modalidade, tente novamente.');
-                    }
+                        alert('Erro ao criar o modalidade, tente novamente.');
+                    });
                 },
                 resetForm() {
-                    this.modalidade = {
+                    this.modalidades = {
                         nome: '',
                     };
-                },
-            },
+                }
+            }
         });
     </script>
     <footer>
-      
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
 </body>
 </html>
