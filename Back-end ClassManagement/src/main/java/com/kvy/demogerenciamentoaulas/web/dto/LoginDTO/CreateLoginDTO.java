@@ -10,12 +10,14 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CreateLoginDTO {
+
     @NotBlank(message = "O campo login não pode estar vazio.")
     private String login;
 
     @NotBlank(message = "O campo senha não pode estar vazio.")
     @Size(min = 6, max = 6, message = "A senha deve ter exatamente 6 caracteres.")
     private String password;
+
     @NotNull
     private Long perfilId;
 }

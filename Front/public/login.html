@@ -4,159 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
+    <link rel="icon" href="img/icon.png" type="image/x-icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Link para Font Awesome -->
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: url('img/background.png') no-repeat center center fixed; 
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .login-container1 {
-            background: rgba(255, 255, 255, 0.6); 
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .login-container2 {
-            padding: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.9); 
-        }
-
-        .login-container2 h2 {
-            margin-top: 0;
-            font-size: 2.4rem;
-            background: linear-gradient(20deg, #37baad, #268178);
-            -webkit-background-clip: text;
-            color: transparent;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 1.5rem; 
-        }
-
-        .login-container2 .input-group {
-            position: relative;
-            margin-bottom: 1.5rem; 
-        }
-
-        .login-container2 input[type="text"],
-        .login-container2 input[type="password"] {
-            width: 100%;
-            padding: 0.75rem 2.5rem; 
-            margin-bottom: 1rem;
-            border: 1px solid #d1d9e6;
-            border-radius: 4px;
-            background-color: #f7fafc;
-            transition: border-color 0.3s; 
-        }
-
-        .login-container2 input[type="text"]:focus,
-        .login-container2 input[type="password"]:focus {
-            border-color: #37baad; 
-            outline: none; 
-        }
-
-        .login-container2 button {
-            width: 80%;
-            padding: 0.8rem 1.6rem;
-            margin: 0.5rem auto; 
-            display: block;
-            font-weight: 600;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0px 4px 10px rgba(0, 137, 123, 0.3);
-            background-color: #00897b;
-            color: #fff;
-            border: none; 
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 5px; 
-        }
-
-        .login-container2 button:hover {
-            background-color: #00695c;
-            transform: scale(1.05);
-            box-shadow: 0px 8px 20px rgba(0, 137, 123, 0.5);
-        }
-
-        .error-message {
-            color: red;
-            margin-top: 10px;
-            display: none;
-            text-align: center; 
-        }
-
-        .input-group {
-            position: relative;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 15px;
-            top: 36%;
-            transform: translateY(-50%);
-            color: #d1d9e6; 
-            pointer-events: none;
-        }
-
-        .or-divider {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-        }
-
-        .or-divider:before, .or-divider:after {
-            content: '';
-            width: 40%;
-            height: 1px;
-            background: #d1d9e6;
-            position: absolute;
-            top: 50%;
-        }
-
-        .or-divider:before {
-            left: 0;
-        }
-
-        .or-divider:after {
-            right: 0;
-        }
-
-        .or-divider span {
-            background: rgba(255, 255, 255, 0); 
-            padding: 0 10px; 
-            color: #555; 
-            font-weight: 600; 
-        }
-
-        @media (max-width: 480px) {
-            .login-container2 {
-                padding: 1rem;
-            }
-
-            .login-container2 h2 {
-                font-size: 1.8rem;
-            }
-
-            .login-container2 button {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style/login.css">
 </head>
 <body>
     <div class="login-container1">
@@ -182,34 +32,62 @@
     
     <script>
         async function login() {
-        const loginInput = document.getElementById('login').value;
-        const passwordInput = document.getElementById('password').value;
-        const errorMessage = document.getElementById('error-message');
-
-        try {
-            const response = await fetch('http://localhost:8081/api/v1/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ login: loginInput, password: passwordInput })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                localStorage.setItem('authToken', data.token);
-                window.location.href = 'index2.html';
-            } else {
-                const errorText = await response.text();
-                errorMessage.textContent = errorText;
+            const loginInput = document.getElementById('login').value;
+            const passwordInput = document.getElementById('password').value;
+            const errorMessage = document.getElementById('error-message');
+    
+            try {
+                // Realiza a autenticação do usuário
+                const response = await fetch('http://localhost:8081/api/v1/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ login: loginInput, password: passwordInput })
+                });
+    
+                if (response.ok) {
+                    // Se a autenticação for bem-sucedida, armazena o token e busca o perfil do usuário
+                    const data = await response.json();
+                    localStorage.setItem('authToken', data.token);
+    
+                    // Busca o perfil do usuário
+                    const perfilResponse = await fetch(`http://localhost:8081/api/v1/logins/perfil/${loginInput}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${data.token}` // Adiciona o token ao cabeçalho de autorização
+                        }
+                    });
+    
+                    if (perfilResponse.ok) {
+                        const perfilData = await perfilResponse.text(); // Retorna o nome do perfil (ex: "Admin" ou "User")
+                        // Redireciona para a página com base no perfil
+                        if (perfilData === "ADMIN") {
+                            window.location.href = 'index2.html'; // Redireciona para a página do administrador
+                        } else if (perfilData === "PROFESSOR") {
+                            window.location.href = 'config/Aula/home.html'; // Redireciona para a página do usuário comum
+                        } else if (perfilData === "FISCAL DE CORREDOR") {
+                            window.location.href = 'config/filtro.html'; // Redireciona para a página do usuário comum
+                        } else {
+                            errorMessage.textContent = 'Perfil desconhecido.';
+                            errorMessage.style.display = 'block';
+                        }
+                    } else {
+                        const errorText = await perfilResponse.text();
+                        errorMessage.textContent = errorText;
+                        errorMessage.style.display = 'block';
+                    }
+                } else {
+                    const errorText = await response.text();
+                    errorMessage.textContent = errorText;
+                    errorMessage.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Erro na autenticação:', error);
+                errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
                 errorMessage.style.display = 'block';
             }
-        } catch (error) {
-            console.error('Erro na autenticação:', error);
-            errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
-            errorMessage.style.display = 'block';
         }
-    }
     </script>
 </body>
 </html>
