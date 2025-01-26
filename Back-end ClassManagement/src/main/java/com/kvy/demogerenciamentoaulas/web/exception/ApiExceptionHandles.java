@@ -23,6 +23,27 @@ public class ApiExceptionHandles {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
     }
+
+    @ExceptionHandler(TipoSalaUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> tipoSalaUniqueViolationException(TipoSalaUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TipoSalaEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> tipoSalaEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
     @ExceptionHandler(LoginEntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> loginEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
 
