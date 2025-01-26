@@ -15,13 +15,13 @@ public interface TurmaRepository extends JpaRepository<Turma, Long> {
             "p.nome AS periodoNome, " +
             "tu.turno AS turnoNome, " +
             "c.Curso AS cursoNome, " +
-            "s. AS semestreNome " +
+            "s.semestre AS semestreNome " +
             "FROM Turma t " +
             "JOIN t.periodo p " +
             "JOIN t.turno tu " +
             "JOIN t.curso c " +
             "JOIN t.semestre s")
-        List<TurmaProjection> findAllTurmas();
+    List<TurmaProjection> findAllTurmas();
 
     @Query("SELECT t FROM Turma t WHERE t.nome = :nome AND t.periodo.id = :periodoId AND t.turno.id = :turnoId AND t.semestre.id = :semestreId AND t.curso.id = :cursoId")
     Optional<Turma> findByUniqueAttributes(
