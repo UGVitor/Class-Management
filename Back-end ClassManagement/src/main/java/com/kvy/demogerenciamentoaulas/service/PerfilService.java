@@ -68,8 +68,9 @@ public class PerfilService {
     @PostConstruct
     @Transactional
     public void adicionarPerfisPadrao() {
-        adicionarPerfilSeNaoExistir("Professor");
-        adicionarPerfilSeNaoExistir("Admin");
+        adicionarPerfilSeNaoExistir("PROFESSOR");
+        adicionarPerfilSeNaoExistir("ADMIN");
+        adicionarPerfilSeNaoExistir("FISCAL DE CORREDOR");
     }
 
     private void adicionarPerfilSeNaoExistir(String nomePerfil) {

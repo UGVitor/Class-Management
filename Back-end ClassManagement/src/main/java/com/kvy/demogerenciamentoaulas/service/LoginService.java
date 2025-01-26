@@ -3,7 +3,8 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
-import com.kvy.demogerenciamentoaulas.exception.UsernameUniqueViolationException;
+import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
+import com.kvy.demogerenciamentoaulas.exception.PasswordInvalidException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
@@ -14,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -66,7 +65,7 @@ public class LoginService {
             login.setPassword(passwordEncoder.encode(login.getPassword()));
             return loginRepository.save(login);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            throw new UsernameUniqueViolationException(String.format("Username '%s' já cadastrado", login.getLogin()));
+            throw new LoginUniqueViolationException(String.format("Username '%s' já cadastrado", login.getLogin()));
         }
 
     }
@@ -81,12 +80,12 @@ public class LoginService {
     @Transactional
     public Login editarSenha(Long id, LoginSenhaDTO loginSenhaDTO) {
         if (!loginSenhaDTO.getNovaSenha().equals(loginSenhaDTO.getConfirmaSenha())){
-            throw new RuntimeException("Nova senha não confere com confirmação senha.");
+            throw new PasswordInvalidException("Nova senha não confere com confirmação senha.");
         }
 
         Login user = buscarPorId(id);
-        if (!passwordEncoder.matches(loginSenhaDTO.getSenhaAtual(), user.getPassword())){
-            throw new RuntimeException("Sua senha não confere.");
+        if (!loginSenhaDTO.getSenhaAtual().equals(user.getPassword())){
+            throw new PasswordInvalidException("Sua senha não confere.");
         }
         user.setPassword(passwordEncoder.encode(loginSenhaDTO.getNovaSenha()));
         return user;
@@ -105,13 +104,9 @@ public class LoginService {
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Login> optionalUser = loginRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            loginRepository.delete(optionalUser.get());
-            System.out.println("Deletado com Sucesso!");
-        } else {
-            throw new RuntimeException("Usuário não encontrado com o ID: " + id);
-        }
+        Login optionalUser = buscarPorId(id);
+        loginRepository.delete(optionalUser);
+        System.out.println("Deletado com Sucesso!");
     }
 
     @Transactional(readOnly = true)
@@ -122,13 +117,6 @@ public class LoginService {
     @Transactional(readOnly = true)
     public List<LoginProjection> buscarLoginsPorPerfilProfessor() {
         return loginRepository.findAllLoginsByPerfilProfessor();
-    }
-
-    @Transactional(readOnly = true)
-    public boolean validateLogin(String login, String password) {
-        return loginRepository.findByLogin(login)
-                .map(user -> user.getPassword().equals(password))
-                .orElse(false);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.exception.PeriodoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.service.LoginService;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.CreateLoginDTO;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,7 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<LoginDTO> create(@RequestBody CreateLoginDTO createLoginDTO) {
+    public ResponseEntity<LoginDTO> create(@Valid @RequestBody CreateLoginDTO createLoginDTO) {
         Login login = loginService.convertToEntityCreate(createLoginDTO);
         Login savedLogin  = loginService.salvar(login);
         return ResponseEntity.status(HttpStatus.CREATED).body(loginService.convertToDTO(savedLogin));
@@ -67,7 +69,7 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<LoginDTO> updateLogin(@PathVariable Long id, @RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<LoginDTO> updateLogin(@PathVariable Long id, @Valid @RequestBody LoginDTO loginDTO) {
         Login updatedLogin = loginService.editar(id, loginDTO);
         return ResponseEntity.ok(loginService.convertToDTO(updatedLogin));
     }
@@ -82,7 +84,7 @@ public class LoginController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}/senha")
-    public ResponseEntity<LoginDTO> updatePassword(@PathVariable Long id, @RequestBody LoginSenhaDTO loginSenhaDTO) {
+    public ResponseEntity<LoginDTO> updatePassword(@PathVariable Long id, @Valid @RequestBody LoginSenhaDTO loginSenhaDTO) {
         Login updatedLogin = loginService.editarSenha(id, loginSenhaDTO);
         return ResponseEntity.ok(loginService.convertToDTO(updatedLogin));
     }
@@ -124,20 +126,18 @@ public class LoginController {
         return ResponseEntity.ok(logins);
     }
 
-    @Operation(summary = "Autenticar login", description = "Valida o login e senha do usuário.",
+    @Operation(summary = "Buscar perfil pelo username", description = "Recurso para buscar o nome do perfil de um login pelo username.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Login bem-sucedido."),
-                    @ApiResponse(responseCode = "401", description = "Login ou senha inválidos.",
+                    @ApiResponse(responseCode = "200", description = "Perfil encontrado.",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class))),
+                    @ApiResponse(responseCode = "404", description = "Username não encontrado.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> authenticate(@RequestBody LoginAuthenticateDTO loginAuthenticateDTO) {
-        boolean isAuthenticated = loginService.validateLogin(loginAuthenticateDTO.getLogin(), loginAuthenticateDTO.getPassword());
-
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login aprovado");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login ou senha incorretos.");
-        }
+    @GetMapping("/perfil/{username}")
+    public ResponseEntity<String> buscarPerfilPorUsername(@PathVariable String username) {
+        String perfilNome = loginService.buscarPerfilPorUsername(username);
+        return ResponseEntity.ok(perfilNome);  // Retorna o nome do perfil com status 200 OK
     }
+
+
 }
