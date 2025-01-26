@@ -54,7 +54,7 @@ public class TurnoService {
             turnoRepository.delete(optionalTurno.get());
             System.out.println("Deletado com sucesso");
         } else {
-            throw new RuntimeException("Turno não encontrado com o ID " +id);
+            throw new TurnoEntityNotFoundException("Turno não encontrado com o ID " +id);
 
         }
     }

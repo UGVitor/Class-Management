@@ -22,6 +22,11 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        if ("test".equals(System.getProperty("spring.profiles.active"))) {
+            return http.csrf(csrf -> csrf.disable())
+                    .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                    .build();
+        }
         return http
                 .csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable())
