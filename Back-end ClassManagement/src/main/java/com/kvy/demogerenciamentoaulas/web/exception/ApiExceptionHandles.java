@@ -33,6 +33,15 @@ public class ApiExceptionHandles {
                 .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ErrorMessage> passwordInvalidException(RuntimeException ex, HttpServletRequest request) {
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
     @ExceptionHandler(DisciplinaUniqueViolationException.class)
     public ResponseEntity<ErrorMessage> disciplinaUniqueViolationException(RuntimeException ex, HttpServletRequest request){
 
