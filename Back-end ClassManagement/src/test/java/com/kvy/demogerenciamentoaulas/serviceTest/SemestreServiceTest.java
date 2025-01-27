@@ -48,7 +48,7 @@ class SemestreServiceTest {
 
 
     @Test
-    void deveTentarSalvarUmSemestreComNomeNull() {
+    void deveTentarSalvarUmSemestreComNomeNulleRetornarIllegalArgumentException() {
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTONullName();
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -57,7 +57,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveTentarSalvarUmSemestreComNomeVazio() {
+    void deveTentarSalvarUmSemestreComNomeVazioeRetornarIllegalArgumentException() {
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOEmptyName();
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -81,7 +81,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveBuscaroSemestrePorIdInexistente() {
+    void deveTentarBuscaroSemestrePorIdInexistenteeRetornarSemestreEntityNotFoundException() {
         Long semestreId = 1L;
 
         assertThrows(SemestreEntityNotFoundException.class, () ->
@@ -108,7 +108,7 @@ class SemestreServiceTest {
 
     }
     @Test
-    void deveTentarEditarUmSemestreComIdInvalido() {
+    void deveTentarEditarUmSemestreComIdInvalidoeRetornarSemestreEntityNotFoundException() {
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOIdInvalido();
 
         assertThrows(SemestreEntityNotFoundException.class, () ->
@@ -116,7 +116,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmSemestreComNomeNull(){
+    void deveTentarEditarUmSemestreComNomeNulleRetornarIllegalArgumentException(){
         Long semestreId = 1L;
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTONullName();
         Semestre semestre= SemestreAdapter.toEntity(semestreDTO);
@@ -129,7 +129,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmSemestreComNomeVazio() {
+    void deveTentarEditarUmSemestreComNomeVazioeRetornarIllegalArgumentException() {
         Long semestreId = 1L;
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOEmptyName();
         Semestre semestre= SemestreAdapter.toEntity(semestreDTO);
@@ -156,7 +156,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveTentarExcluirUmSemestreValido() {
+    void deveTentarExcluirUmSemestreValidoeRetornarRuntimeException() {
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOIdInvalido();
         assertThrows(RuntimeException.class, () ->
                 semestreService.excluir(semestreDTO.getId()));
@@ -181,10 +181,10 @@ class SemestreServiceTest {
     void deveBuscarTodosOsSemestreEmUmaTabelaVazia() {
 
         when(semestreRepository.findAll()).thenReturn(Collections.emptyList());
-        List<Semestre> semestresEncontradas = semestreService.buscarTodos();
+        List<Semestre> semestresEncontrados = semestreService.buscarTodos();
 
-        assertNotNull(semestresEncontradas);
-
+        assertNotNull(semestresEncontrados);
+        assertTrue(semestresEncontrados.isEmpty());
 
     }
 }

@@ -47,7 +47,7 @@ class TurnoServiceTest {
 
 
     @Test
-    void deveTentarSalvarUmTurnoComNomeNull() {
+    void deveTentarSalvarUmTurnoComNomeNulleRetornarIllegalArgumentException() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTONullName();
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -56,7 +56,7 @@ class TurnoServiceTest {
     }
 
     @Test
-    void deveTentarSalvarUmTurnoComNomeVazio() {
+    void deveTentarSalvarUmTurnoComNomeVazioeRetornarIllegalArgumentException() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOEmptyName();
 
         assertThrows(IllegalArgumentException.class, () -> {
@@ -80,7 +80,7 @@ class TurnoServiceTest {
     }
 
     @Test
-    void deveBuscaroTurnoPorIdInexistente() {
+    void deveTentarBuscaroTurnoPorIdInexistenteeRetornarTurnoEntityNotFoundException() {
         Long turnoId = 1L;
 
         assertThrows(TurnoEntityNotFoundException.class, () ->
@@ -108,7 +108,7 @@ class TurnoServiceTest {
         assertEquals("Turno Atualizado", turnoEditado.getTurno());
     }
     @Test
-    void deveTentarEditarUmTurnoComIdInvalido() {
+    void deveTentarEditarUmTurnoComIdInvalidoeRetornarTurnoEntityNotFoundException() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOIdInvalido();
 
         assertThrows(TurnoEntityNotFoundException.class, () ->
@@ -116,7 +116,7 @@ class TurnoServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmTurnoComNomeNull(){
+    void deveTentarEditarUmTurnoComNomeNulleRetornarIllegalArgumentException(){
         Long turnoId = 1L;
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTONullName();
         Turno turnoAtualizado = TurnoAdapter.toEntity(turnoDTO);
@@ -129,7 +129,7 @@ class TurnoServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmTurnoComNomeVazio() {
+    void deveTentarEditarUmTurnoComNomeVazioeRetornarIllegalArgumentException() {
         Long turnoId = 1L;
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOEmptyName();
         Turno turnoAtualizado = TurnoAdapter.toEntity(turnoDTO);
@@ -156,7 +156,7 @@ class TurnoServiceTest {
     }
 
     @Test
-    void deveTentarExcluirUmTurnoComIdInvalido() {
+    void deveTentarExcluirUmTurnoComIdInvalidoeRetornarRuntimeException() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOIdInvalido();
         assertThrows(RuntimeException.class, () ->
         {turnoService.excluir(turnoDTO.getId());});
@@ -182,10 +182,8 @@ class TurnoServiceTest {
     void deveBuscarTodosOsTurnosEmUmaTabelaVazia() {
 
         when(turnoRepository.findAll()).thenReturn(Collections.emptyList());
-
         List<Turno> turnosEncontrados = turnoService.buscarTodos();
-
-
         assertNotNull(turnosEncontrados);
+        assertTrue(turnosEncontrados.isEmpty());
     }
     }

@@ -49,7 +49,7 @@ class TipoSalaServiceTest {
 
 
     @Test
-    void deveTentarSalvarUmTipoSalaComNomeNull() {
+    void deveTentarSalvarUmTipoSalaComNomeNulleRetornarIllegalArgumentException() {
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTONullName();
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -58,7 +58,7 @@ class TipoSalaServiceTest {
     }
 
     @Test
-    void deveTentarSalvarUmTipoSalaComNomeVazio() {
+    void deveTentarSalvarUmTipoSalaComNomeVazioeRetornarIllegalArgumentException() {
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTOEmptyName();
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -82,7 +82,7 @@ class TipoSalaServiceTest {
     }
 
     @Test
-    void deveBuscaroTipoSalaPorIdInexistente() {
+    void deveTentarBuscaroTipoSalaPorIdInexistenteeRetornarTipoSalaEntityNotFoundException() {
         Long tipoSalaId = 1L;
 
         assertThrows(TipoSalaEntityNotFoundException.class, () ->
@@ -109,7 +109,7 @@ class TipoSalaServiceTest {
 
     }
     @Test
-    void deveTentarEditarUmTipoSalaComIdInvalido() {
+    void deveTentarEditarUmTipoSalaComIdInvalidoeRetornarTipoSalaEntityNotFoundException() {
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTOIdInvalido();
 
         assertThrows(TipoSalaEntityNotFoundException.class, () ->
@@ -117,7 +117,7 @@ class TipoSalaServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmTipoSalaComNomeNull(){
+    void deveTentarEditarUmTipoSalaComNomeNulleRetornarIllegalArgumentException(){
         Long tipoSalaId = 1L;
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTONullName();
         TipoSala tipoSala= TipoSalaAdapter.toEntity(tipoSalaDTO);
@@ -130,7 +130,7 @@ class TipoSalaServiceTest {
     }
 
     @Test
-    void deveTentarEditarUmTipoSalaComNomeVazio() {
+    void deveTentarEditarUmTipoSalaComNomeVazioeRetornarIllegalArgumentException() {
         Long tipoSalaId = 1L;
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTOEmptyName();
         TipoSala tipoSala= TipoSalaAdapter.toEntity(tipoSalaDTO);
@@ -157,7 +157,7 @@ class TipoSalaServiceTest {
     }
 
     @Test
-    void deveTentarExcluirUmTipoSalaValido() {
+    void deveTentarExcluirUmTipoSalaValidoeRetornarRuntimeException() {
         TipoSalaDTO tipoSalaDTO = TipoSalaDTOFixture.fixtureTipoSalaDTOIdInvalido();
         assertThrows(RuntimeException.class, () ->
                 tipoSalaService.excluir(tipoSalaDTO.getId()));
@@ -185,7 +185,7 @@ class TipoSalaServiceTest {
         List<TipoSala> tipoSalasEncontradas = tipoSalaService.buscarTodos();
 
         assertNotNull(tipoSalasEncontradas);
-
+        assertTrue(tipoSalasEncontradas.isEmpty());
 
     }
 }
