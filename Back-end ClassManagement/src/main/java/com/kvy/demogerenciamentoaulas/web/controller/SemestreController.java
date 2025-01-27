@@ -21,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/semestres")
-
 public class SemestreController {
 
     private final SemestreService semestreService;
@@ -48,13 +47,13 @@ public class SemestreController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<Semestre> getSemestreById(@PathVariable Long id) {
+    public ResponseEntity<SemestreDTO> getSemestreById(@PathVariable Long id) {
         Semestre semestre = semestreService.buscarPorId(id);
-        return ResponseEntity.ok(semestre);
+        return ResponseEntity.ok(semestreService.toDTO(semestre));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SemestreDTO> updateSemestre(@PathVariable Long id,@Valid @RequestBody SemestreDTO semestreDTO) {
+    public ResponseEntity<SemestreDTO> editarSemestre(@PathVariable Long id,@Valid @RequestBody SemestreDTO semestreDTO) {
         Semestre updatedSemestre = semestreService.editar(id, semestreDTO);
         return ResponseEntity.ok(semestreService.toDTO(updatedSemestre));
     }
