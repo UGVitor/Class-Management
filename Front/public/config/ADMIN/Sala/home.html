@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sala</title>
-    <link rel="icon" href="../../img/icon.png">
-    <link rel="stylesheet" href="../../style/telasHomes.css">
+    <link rel="icon" href="../../../img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../../style/telasHomes.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .filters-display table {
@@ -15,7 +14,6 @@
         }
     </style>
 </head>
-
 <body>
     <div id="app" class="container">
         <div class="navbar">
@@ -97,7 +95,10 @@
                     const endpoints = {
                         salas: 'http://localhost:8081/api/v1/salas',
                     };
-                    this.data = await this.fetchData(endpoints[entity]);
+                    let fetchedData = await this.fetchData(endpoints[entity]);
+                    this.data = fetchedData.sort((a, b) => {
+                        return a.numero - b.numero;
+                    });
                 },
                 async deleteSala(id) {
                     if (confirm("Tem certeza que deseja excluir esta sala?")) {

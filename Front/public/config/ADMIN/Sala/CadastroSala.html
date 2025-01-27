@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro Sala</title>
-    <link rel="stylesheet" href="../../style/telasCadastro.css">
-    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../../style/telasCadastro.css">
+    <link rel="icon" href="../../../img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
 </head>
 <body>
     <div class="navbar">
@@ -53,7 +52,6 @@
             data() {
                 return {
                     sala: {
-                        sala: '',
                         numero: '',
                         capacidade: '',
                         tipoSala: '',
@@ -89,7 +87,6 @@
                 },
                 createSala() {
                     const salaData = {
-                        sala: this.sala.sala,
                         numero: parseInt(this.sala.numero, 10),
                         capacidade: parseInt(this.sala.capacidade, 10),
                         tipoSala: this.sala.tipoSala,
