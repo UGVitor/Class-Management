@@ -164,7 +164,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveBuscarTodosOsTiposDeSalasExistentes() {
+    void deveBuscarTodosOsSemestreExistentes() {
         SemestreDTO semestreDTO1 = SemestreDTOFixture.fixtureSemestreDTO1();
         SemestreDTO semestreDTO2 = SemestreDTOFixture.fixtureSemestreDTO2();
         Semestre semestre1 = SemestreAdapter.toEntity(semestreDTO1);
@@ -178,7 +178,7 @@ class SemestreServiceTest {
     }
 
     @Test
-    void deveBuscarTodosOsTiposDeSalasEmUmaTabelaVazia() {
+    void deveBuscarTodosOsSemestreEmUmaTabelaVazia() {
 
         when(semestreRepository.findAll()).thenReturn(Collections.emptyList());
         List<Semestre> semestresEncontradas = semestreService.buscarTodos();
