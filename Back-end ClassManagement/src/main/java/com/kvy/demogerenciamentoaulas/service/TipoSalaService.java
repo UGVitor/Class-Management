@@ -1,7 +1,9 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
+import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TipoSalaDTO;
 import jakarta.annotation.PostConstruct;
@@ -19,15 +21,14 @@ public class TipoSalaService {
 
     @Transactional
     public TipoSalaDTO salvar(TipoSalaDTO tipoSalaDTO) {
-        if (tipoSalaDTO.getTipoSala() == null || tipoSalaDTO.getTipoSala().trim().isEmpty()) {
-            throw new IllegalArgumentException("O campo tipoSala não pode ser nulo ou vazio");
+        try {
+            TipoSala tipoSala = new TipoSala();
+            tipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
+            return toDTO(tipoSalaRepository.save(tipoSala));
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new TipoSalaUniqueViolationException(String.format("Tipo sala '%s' já cadastrado", tipoSalaDTO.getTipoSala()));
         }
 
-        TipoSala tipoSala = new TipoSala();
-        tipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
-
-        TipoSala savedTipoSala = tipoSalaRepository.save(tipoSala);
-        return toDTO(savedTipoSala);
     }
 
     @Transactional
@@ -39,23 +40,15 @@ public class TipoSalaService {
     @Transactional
     public TipoSala editar(Long id, TipoSalaDTO tipoSalaDTO) {
         TipoSala existingTipoSala = buscarPorId(id);
-
-        if (tipoSalaDTO.getTipoSala() == null || tipoSalaDTO.getTipoSala().isBlank()) {
-            throw new IllegalArgumentException("O nome do Tipo de Sala não pode ser nulo ou vazio");
-        }
         existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
         return tipoSalaRepository.save(existingTipoSala);
     }
 
     @Transactional
     public void excluir(Long id) {
-        Optional<TipoSala> optionalTipoSala = tipoSalaRepository.findById(id);
-        if (optionalTipoSala.isPresent()) {
-            tipoSalaRepository.delete(optionalTipoSala.get());
-            System.out.println("Tipo de sala excluida com sucesso");
-        }else {
-            throw new RuntimeException("Tipo de Sala não encontrado com o ID: " + id);
-        }
+        TipoSala optionalTipoSala = buscarPorId(id);
+        tipoSalaRepository.delete(optionalTipoSala);
+        System.out.println("Tipo de sala excluida com sucesso");
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +56,7 @@ public class TipoSalaService {
         return tipoSalaRepository.findAll();
     }
 
-    private TipoSalaDTO toDTO(TipoSala tipoSala) {
+    public TipoSalaDTO toDTO(TipoSala tipoSala) {
         return new TipoSalaDTO(tipoSala.getId(), tipoSala.getTipoSala());
     }
 
