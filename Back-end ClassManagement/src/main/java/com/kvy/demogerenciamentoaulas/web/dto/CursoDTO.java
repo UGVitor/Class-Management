@@ -2,7 +2,9 @@ package com.kvy.demogerenciamentoaulas.web.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.Builder;
 
+@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
