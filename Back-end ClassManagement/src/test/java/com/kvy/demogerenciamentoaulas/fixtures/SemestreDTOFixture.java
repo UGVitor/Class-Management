@@ -1,7 +1,7 @@
 package com.kvy.demogerenciamentoaulas.fixtures;
 
 import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
-import com.kvy.demogerenciamentoaulas.web.dto.TipoSalaDTO;
+
 
 public class SemestreDTOFixture {
     public static SemestreDTO fixtureSemestreDTO1() {
