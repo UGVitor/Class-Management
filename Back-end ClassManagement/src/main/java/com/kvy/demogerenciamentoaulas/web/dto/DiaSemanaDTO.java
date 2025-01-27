@@ -19,7 +19,7 @@ public class DiaSemanaDTO {
 
     @NotBlank(message = "O dia é obrigatório")
     @Size(max = 20)
-    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s-]+$", message = "O nome não pode conter caracteres especiais, exceto hífens, ou números")
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\s-]+$", message = "O nome não pode conter caracteres especiais, exceto hífens")
     private String dia;
 
 }

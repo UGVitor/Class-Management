@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -32,4 +33,23 @@ public class DiaSemana implements Serializable {
     @JsonManagedReference("diaSemana-aula")
     private Set<Aula> aulas = new HashSet<>();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiaSemana that = (DiaSemana) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Semestre{" +
+                "id=" + id +
+                '}';
+    }
 }
