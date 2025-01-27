@@ -30,8 +30,6 @@ public class TipoSalaController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Curso.class))),
-                    @ApiResponse(responseCode = "400", description = "Requisição inválida",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "409", description = "Curso já cadastrado no sistema",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",

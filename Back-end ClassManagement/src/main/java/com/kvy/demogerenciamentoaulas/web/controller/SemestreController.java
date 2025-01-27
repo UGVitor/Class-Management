@@ -36,9 +36,8 @@ public class SemestreController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Semestre> createSemestre(@Valid @RequestBody SemestreDTO semestreDTO) {
-        Semestre savedSemestre = semestreService.salvar(semestreDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedSemestre);
+    public ResponseEntity<SemestreDTO> createSemestre(@Valid @RequestBody SemestreDTO semestreDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(semestreService.toDTO(semestreService.salvar(semestreDTO)));
     }
 
     @Operation(summary = "Recuperar um semestre pelo id", description = "Recuperar um semestre pelo id",
@@ -48,7 +47,6 @@ public class SemestreController {
                     @ApiResponse(responseCode = "404", description = "Recursos não encontrado",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @GetMapping("/{id}")
     public ResponseEntity<Semestre> getSemestreById(@PathVariable Long id) {
         Semestre semestre = semestreService.buscarPorId(id);
@@ -56,9 +54,9 @@ public class SemestreController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Semestre> updateSemestre(@PathVariable Long id,@Valid @RequestBody SemestreDTO semestreDTO) {
+    public ResponseEntity<SemestreDTO> updateSemestre(@PathVariable Long id,@Valid @RequestBody SemestreDTO semestreDTO) {
         Semestre updatedSemestre = semestreService.editar(id, semestreDTO);
-        return ResponseEntity.ok(updatedSemestre);
+        return ResponseEntity.ok(semestreService.toDTO(updatedSemestre));
     }
 
     @Operation(summary = "Excluir semestre", description = "Recurso para excluir um semestre pelo ID",

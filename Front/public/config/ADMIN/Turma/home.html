@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Turma</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../style/telasHomes.css">
+    <style>
+        .filters-display table {
+            width: 80%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="navbar">
+            <header>
+                <h1><a href="Home.html">Turma</a></h1>
+                <nav>
+                    <li><a href="../../../index2.html">
+                        <i class="fas fa-home"></i>
+                    </a></li>
+                </nav>
+            </header>
+        </div>
+
+        <div class="filters-display">
+            <table v-if="currentEntity === 'turma'">
+                <thead>
+                    <tr>
+                        <th>Turma</th>
+                        <th>Periodo</th>
+                        <th>Turno</th>
+                        <th>Curso</th>
+                        <th>Semestre</th>
+                        <th><button @click="createTurma" class="create-btn">
+                            <i class="fas fa-plus"></i> Criar
+                        </button></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="turma in data" :key="turma.id">
+                        <td>{{ turma.nome }}</td>
+                        <td>{{ turma.periodoNome }}</td>
+                        <td>{{ turma.turnoNome }}</td>
+                        <td>{{ turma.cursoNome }}</td>
+                        <td>{{ turma.semestreNome }}</td>
+                        <td>
+                            <div class="button-group">
+                                <button @click="deleteTurma(turma.id)" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                                <button @click="editTurma(turma.id)" class="altera-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+   new Vue({
+    el: '#app',
+    data() {
+        return {      
+            data: [],
+            currentEntity: 'turma',
+        };
+    },
+    methods: {
+        // Corrigido fechamento da função fetchData
+        async fetchData(endpoint) {
+            try {
+                const token = localStorage.getItem('authToken');
+               
+                const response = await fetch(endpoint, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    throw new Error(`Erro ao buscar dados: ${errorMessage}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                return [];
+            }
+        },
+
+        // Corrigido método para usar dados de turma corretamente
+        async showAll(entity) {
+            this.currentEntity = entity;
+            const endpoints = {
+                turma: 'http://localhost:8081/api/v1/turmas'
+            };
+
+            if (endpoints[entity]) {
+                this.data = await this.fetchData(endpoints[entity]);
+            } else {
+                console.error("Entidade desconhecida:", entity);
+            }
+        },
+
+        // Corrigido método de delete para trabalhar com turma
+        async deleteTurma(id) {
+            if (confirm("Tem certeza que deseja deletar esta turma?")) {
+                try {
+                    const token = localStorage.getItem('authToken');
+                    const response = await fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    if (!response.ok) {
+                        const errorMessage = await response.text();
+                        throw new Error(`Erro ao deletar a Turma: ${errorMessage}`);
+                    }
+
+                    alert("Turma deletada com sucesso!");
+                    this.data = this.data.filter(turma => turma.id !== id);
+                } catch (error) {
+                    console.error('Erro ao deletar:', error);
+                    alert("Erro ao deletar a Turma.");
+                }
+            }
+        },
+
+        // Métodos de edição e criação de turma
+        editTurma(id) {
+            window.location.href = `alterarTurma.html?id=${id}`;
+        },
+
+        createTurma() {
+            window.location.href = "cadastroTurma.html";
+        }
+    },
+    mounted() {
+        this.showAll('turma'); // Usando o endpoint de turma
+    }
+});
+
+
+
+    </script>
+
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
+</body>
+
+</html>
