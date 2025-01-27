@@ -39,14 +39,8 @@ public class TipoSalaController {
             })
     @PostMapping
     public ResponseEntity<TipoSalaDTO> createTipoSala(@Valid @RequestBody TipoSalaDTO tipoSalaDTO) {
-        try {
-            TipoSalaDTO savedTipoSala = tipoSalaService.salvar(tipoSalaDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedTipoSala);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(tipoSalaService.salvar(tipoSalaDTO));
+
     }
 
     @Operation(summary = "Recuperar curso pelo ID", description = "Recurso para recuperar um curso específico pelo ID",
@@ -57,9 +51,9 @@ public class TipoSalaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @GetMapping("/{id}")
-    public ResponseEntity<TipoSala> getById(@PathVariable Long id) {
+    public ResponseEntity<TipoSalaDTO> getById(@PathVariable Long id) {
         TipoSala tipoSala = tipoSalaService.buscarPorId(id);
-        return ResponseEntity.ok(tipoSala);
+        return ResponseEntity.ok(tipoSalaService.toDTO(tipoSala));
     }
 
     @Operation(summary = "Excluir Tipo de Sala pelo ID", description = "Recurso para excluir um Tipo de Sala pelo ID",
@@ -85,9 +79,8 @@ public class TipoSalaController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<TipoSala> editarTipoSala(@PathVariable Long id,@Valid @RequestBody TipoSalaDTO tipoSalaDTO) {
-        TipoSala tipoSalaAtualizado = tipoSalaService.editar(id, tipoSalaDTO);
-        return ResponseEntity.ok(tipoSalaAtualizado);
+    public ResponseEntity<TipoSalaDTO> editarTipoSala(@PathVariable Long id,@Valid @RequestBody TipoSalaDTO tipoSalaDTO) {
+        return ResponseEntity.ok(tipoSalaService.toDTO(tipoSalaService.editar(id, tipoSalaDTO)));
     }
 
     @Operation(summary = "Listar todos os cursos", description = "Recurso para listar todos os cursos com o nome da modalidade",
