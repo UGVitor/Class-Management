@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.Builder;
 
+@Builder
 @Data
 @AllArgsConstructor
 public class PerfilDTO {
