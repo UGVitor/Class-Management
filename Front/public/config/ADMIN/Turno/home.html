@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Turno</title>
-    <link rel="icon" href="../../img/icon.png">
+    <link rel="icon" href="../../../img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../../style/telasHomes.css">
+    <link rel="stylesheet" href="../../../style/telasHomes.css">
 </head>
 
 <body>
@@ -59,85 +59,85 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-     new Vue({
-    el: '#app',
-    data() {
-        return {
-            data: [],
-            currentEntity: 'turno',
-        };
-    },
-    
-    methods: {
-        async fetchTurno(endpoint) { // Método correto
-            try {
-                const token = localStorage.getItem('authToken');
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        data: [],
+                        currentEntity: 'turno',
+                    };
+                },
                 
-                const response = await fetch(endpoint, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                methods: {
+                    async fetchTurno(endpoint) { // Método correto
+                        try {
+                            const token = localStorage.getItem('authToken');
+                            
+                            const response = await fetch(endpoint, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
 
-                if (!response.ok) {
-                    const errorMessage = await response.text();
-                    throw new Error('Network response was not ok');
-                }
+                            if (!response.ok) {
+                                const errorMessage = await response.text();
+                                throw new Error('Network response was not ok');
+                            }
 
-                return await response.json();
-            } catch (error) {
-                console.error('Erro ao buscar dados:', error);
-                return [];
-            }
-        },
-        async showAll(entity) {
-            this.currentEntity = entity;
-            const endpoints = {
-                turno: 'http://localhost:8081/api/v1/turnos',
-            };
-            if (endpoints[entity]) {
-                this.data = await this.fetchTurno(endpoints[entity]); // 🔥 Chamando o método correto
-            } else {
-                console.error("Entidade desconhecida:", entity);
-            }
-        },
-        async deleteTurno(id) {
-            if (confirm("Tem certeza que deseja deletar este turno?")) {
-                try {
-                    const token = localStorage.getItem('authToken');
-                    const response = await fetch(`http://localhost:8081/api/v1/turnos/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Content-Type': 'application/json'
+                            return await response.json();
+                        } catch (error) {
+                            console.error('Erro ao buscar dados:', error);
+                            return [];
                         }
-                    });
+                    },
+                    async showAll(entity) {
+                        this.currentEntity = entity;
+                        const endpoints = {
+                            turno: 'http://localhost:8081/api/v1/turnos',
+                        };
+                        let fetchedData = await this.fetchTurno(endpoints[entity]); 
+                        console.log(fetchedData);
+                        this.data = fetchedData.sort((a, b) => {
+                            return a.id - b.id;
+                        });
+                    },
+                    async deleteTurno(id) {
+                        if (confirm("Tem certeza que deseja deletar este turno?")) {
+                            try {
+                                const token = localStorage.getItem('authToken');
+                                const response = await fetch(`http://localhost:8081/api/v1/turnos/${id}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`,
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
 
-                    if (!response.ok) {
-                        const errorMessage = await response.text();
-                        throw new Error(`Erro ao deletar o Turno: ${errorMessage}`);
+                                if (!response.ok) {
+                                    const errorMessage = await response.text();
+                                    throw new Error(`Erro ao deletar o Turno: ${errorMessage}`);
+                                }
+
+                                alert("Turno deletado com sucesso!");
+                                this.data = this.data.filter(dia => dia.id !== id);
+                            } catch (error) {
+                                console.error('Erro ao deletar:', error);
+                                alert("Erro ao deletar o turno.");
+                            }
+                        }
+                    },
+                    editTurno(id) {
+                        window.location.href = `AlterarTurno.html?id=${id}`;
+                    },
+                    createTurno() {
+                        window.location.href = "CadastroTurno.html";
                     }
-
-                    alert("Turno deletado com sucesso!");
-                    this.data = this.data.filter(dia => dia.id !== id);
-                } catch (error) {
-                    console.error('Erro ao deletar:', error);
-                    alert("Erro ao deletar o turno.");
-                }
-            }
-        },
-        editTurno(id) {
-            window.location.href = `AlterarTurno.html?id=${id}`;
-        },
-        createTurno() {
-            window.location.href = "CadastroTurno.html";
-        }
-    },
-    mounted() {
-        this.showAll('turno');
-    },
-});
+                },
+                mounted() {
+                    this.showAll('turno');
+                },
+            });
 
     </script>
 

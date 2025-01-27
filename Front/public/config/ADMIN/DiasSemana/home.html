@@ -67,8 +67,6 @@
         async fetchData(endpoint) {
             try {
                 const token = localStorage.getItem('authToken');
-                
-
                 const response = await fetch(endpoint, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -92,12 +90,11 @@
             const endpoints = {
                 diasSemana: 'http://localhost:8081/api/v1/diasSemana'
             };
+            let fetchedData = await this.fetchData(endpoints[entity]);
+            this.data = fetchedData.sort((a, b) => {
+                return a.id - b.id;
+            });
 
-            if (endpoints[entity]) {
-                this.data = await this.fetchData(endpoints[entity]);
-            } else {
-                console.error("Entidade desconhecida:", entity);
-            }
         },
         async deleteDia(id) {
             if (confirm("Tem certeza que deseja deletar este dia da semana?")) {
