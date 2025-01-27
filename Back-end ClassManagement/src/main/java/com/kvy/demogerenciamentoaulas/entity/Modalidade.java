@@ -3,11 +3,10 @@ package com.kvy.demogerenciamentoaulas.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -15,6 +14,8 @@ import java.util.Set;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name = "Modalidade")
