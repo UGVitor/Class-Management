@@ -14,14 +14,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice @Slf4j
 public class ApiExceptionHandles {
 
-    @ExceptionHandler(LoginUniqueViolationException.class)
-    public ResponseEntity<ErrorMessage> loginUniqueViolationException(LoginUniqueViolationException ex, HttpServletRequest request){
+    @ExceptionHandler(SemestreUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> semestreUniqueViolationException(SemestreUniqueViolationException ex, HttpServletRequest request){
 
         log.error("Api Error - ", ex);
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(SemestreEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> semestreEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler(TipoSalaUniqueViolationException.class)
@@ -42,6 +52,16 @@ public class ApiExceptionHandles {
                 .status(HttpStatus.NOT_FOUND)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(LoginUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> loginUniqueViolationException(LoginUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
     }
 
     @ExceptionHandler(LoginEntityNotFoundException.class)

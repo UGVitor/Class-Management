@@ -3,6 +3,7 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.exception.SemestreEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.SemestreUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.SemestreRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
 import jakarta.annotation.PostConstruct;
@@ -18,15 +19,20 @@ import java.util.Optional;
 public class SemestreService {
     private final SemestreRepository semestreRepository;
 
+    public SemestreDTO toDTO(Semestre semestre) {
+        return new SemestreDTO(semestre.getId(), semestre.getSemestre());
+    }
+
     @Transactional
     public Semestre salvar(SemestreDTO semestreDTO) {
-        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().isBlank()) {
-            throw new IllegalArgumentException("O nome do Semestre não pode ser nulo ou vazio");
+        try {
+            Semestre semestre = new Semestre();
+            semestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
+            return semestreRepository.save(semestre);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new SemestreUniqueViolationException(String.format("Semestre '%s' já cadastrado", semestreDTO.getSemestre()));
         }
 
-        Semestre semestre = new Semestre();
-        semestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
-        return semestreRepository.save(semestre);
     }
 
     @Transactional
@@ -38,24 +44,16 @@ public class SemestreService {
     @Transactional
     public Semestre editar(Long id, SemestreDTO semestreDTO) {
         Semestre existingSemestre = buscarPorId(id);
-
-        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().isBlank()) {
-            throw new IllegalArgumentException("O nome do Semestre não pode ser nulo ou vazio");
-        }
-
         existingSemestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
         return semestreRepository.save(existingSemestre);
     }
     @Transactional
     public void excluir(Long id) {
-        Optional<Semestre> optionalSemestre = semestreRepository.findById(id);
-        if (optionalSemestre.isPresent()) {
-            semestreRepository.delete(optionalSemestre.get());
-            System.out.println("Deletado com Sucesso!");
-        } else {
-            throw new RuntimeException("Semestre não encontrado com o ID: " + id);
-        }
+        Semestre optionalSemestre = buscarPorId(id);
+        semestreRepository.delete(optionalSemestre);
+        System.out.println("Deletado com Sucesso!");
     }
+
     @Transactional(readOnly = true)
     public List<Semestre> buscarTodos() {
         return semestreRepository.findAll();

@@ -60,14 +60,14 @@
                     });
     
                     if (perfilResponse.ok) {
-                        const perfilData = await perfilResponse.text(); // Retorna o nome do perfil (ex: "Admin" ou "User")
+                        const perfilData = await perfilResponse.text(); // Retorna o nome do perfil 
                         // Redireciona para a página com base no perfil
                         if (perfilData === "ADMIN") {
                             window.location.href = 'index2.html'; // Redireciona para a página do administrador
                         } else if (perfilData === "PROFESSOR") {
-                            window.location.href = 'config/Aula/home.html'; // Redireciona para a página do usuário comum
+                            window.location.href = 'config/PROFESSOR/index2.html'; // Redireciona para a página do usuário comum
                         } else if (perfilData === "FISCAL DE CORREDOR") {
-                            window.location.href = 'config/filtro.html'; // Redireciona para a página do usuário comum
+                            window.location.href = 'config/FISCAL CORREDOR/index2.html'; // Redireciona para a página do usuário comum
                         } else {
                             errorMessage.textContent = 'Perfil desconhecido.';
                             errorMessage.style.display = 'block';

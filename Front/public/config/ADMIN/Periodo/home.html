@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Período</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../style/telasHomes.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="navbar">
+            <header>
+                <h1><a href="home.html">Período</a></h1>
+                <nav>
+                    <li>
+                        <a href="../../../index2.html">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                </nav>
+            </header>
+        </div>
+
+        <div class="filters-display">
+            <template v-if="currentEntity === 'periodos'">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Período</th>
+                            <th><button @click="createPeriodo" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="periodo in data" :key="periodo.id">
+                            <td>{{ periodo.nome }}</td>
+                            <td>
+                                <div class="button-group">
+                                    <button @click="deletePeriodo(periodo.id)" class="delete-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <button @click="editPeriodo(periodo.id)" class="altera-btn">
+                                        <i class="fas fa-edit"></i>
+                                    </button>   
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </template>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    data: [], 
+                    currentEntity: 'periodos',
+                };
+            },
+            methods: {
+                async fetchData(endpoint) {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(endpoint, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+
+                        if (!response.ok) {
+                            const errorMessage = await response.text();
+                            throw new Error(`Erro ao buscar dados: ${errorMessage}`);
+                        }
+
+                        return await response.json();
+                    } catch (error) {
+                        console.error('Erro ao buscar dados:', error);
+                        return [];
+                    }
+                },
+                async showAll(entity) {
+                    this.currentEntity = entity;
+                    const endpoints = {
+                        periodos: 'http://localhost:8081/api/v1/periodos',
+                    };
+
+                    if (endpoints[entity]) {
+                        this.data = await this.fetchData(endpoints[entity]);
+                    } else {
+                        console.error("Entidade desconhecida:", entity);
+                    }
+                },
+                async deletePeriodo(id) {
+                    if (confirm("Tem certeza que deseja deletar este período?")) {
+                        try {
+                            const token = localStorage.getItem('authToken');
+                            const response = await fetch(`http://localhost:8081/api/v1/periodos/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                            });
+
+                            if (!response.ok) {
+                                const errorMessage = await response.text();
+                                throw new Error(`Erro ao deletar o período: ${errorMessage}`);
+                            }
+
+                            alert("Período deletado com sucesso!");
+                            this.data = this.data.filter(periodo => periodo.id !== id);
+                        } catch (error) {
+                            console.error('Erro ao deletar o período:', error);
+                            alert("Erro ao deletar o período.");
+                        }
+                    }
+                },
+                editPeriodo(id) {
+                    window.location.href = `alterarPeriodo.html?id=${id}`;
+                },
+                createPeriodo() {
+                    window.location.href = "CadastroPeriodo.html";
+                },
+            },
+            mounted() {
+                this.showAll('periodos');
+            }
+        });
+    </script>
+
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
+</body>
+</html>

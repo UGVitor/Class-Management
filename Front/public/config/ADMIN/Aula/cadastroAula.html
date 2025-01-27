@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Aula</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="navbar">
+        <header>
+            <h1><a href="#">Aula</a></h1>
+            <nav>
+                <li>
+                    <a href="home.html">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+            </nav>
+        </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="createAula">
+            <h2>Cadastrar Aula</h2>
+            <div class="form-group">
+                <label for="disciplina">Disciplina:<span class="asterisco">*</span></label>
+                <select v-model="aula.disciplinaId" required>
+                    <option disabled value="">Selecione uma Disciplina</option>
+                    <option v-for="disciplina in disciplinas" :key="disciplina.id" :value="disciplina.id">
+                        {{ disciplina.nome }}
+                    </option>
+                </select>
+                <div class="form-group">
+                    <label for="diaSemana">Dia da Semana:<span class="asterisco">*</span></label>
+                    <select v-model="aula.diaSemanaId" required>
+                        <option disabled value="">Selecione um Dia</option>
+                        <option v-for="dia in diasSemana" :key="dia.id" :value="dia.id">
+                            {{ dia.dia }}
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="turma">Turma:<span class="asterisco">*</span></label>
+                    <select v-model="aula.turmaId" required>
+                        <option disabled value="">Selecione um Dia</option>
+                        <option v-for="turma in turmas" :key="turma.id" :value="turma.id">
+                            {{ turma.nome }}
+                        </option>
+                    </select>
+                </div>
+    
+            </div>
+            <div class="form-group">
+                <label for="horario">Horário:<span class="asterisco">*</span></label>
+                <select v-model="aula.horarioId" required>
+                    <option disabled value="">Selecione um Horário</option>
+                    <option v-for="horario in horarios" :key="horario.id" :value="horario.id">
+                        {{ horario.horaInicio }} - {{ horario.horaTermino }}
+                    </option>
+                </select>
+            </div>
+
+        
+            <div class="form-group">
+                <label for="sala">Sala:<span class="asterisco">*</span></label>
+                <select v-model="aula.salaId" required>
+                    <option disabled value="">Selecione uma Sala</option>
+                    <option v-for="sala in salas" :key="sala.id" :value="sala.id">
+                        {{ sala.tipoSalaNome }} {{sala.numero}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit">Cadastrar Aula</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                aula: {
+                    descricao: '',
+                    disciplinaId: '',
+                    horarioId: '',
+                    salaId: '',
+                    diaSemanaId: '',
+                    turmaId: ''
+                },
+                disciplinas: [],
+                horarios: [],
+                salas: [],
+                diasSemana: [],
+                turmas: []
+            },
+            created() {
+                this.fetchDisciplinas();
+                this.fetchHorarios();
+                this.fetchSalas();
+                this.fetchDiasSemana();
+                this.fetchTurmas();
+            },
+            methods: {
+                fetchDisciplinas() {
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/disciplinas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
+                        .then(response => response.json())
+                        .then(data => this.disciplinas = data)
+                        .catch(error => console.error('Erro ao carregar disciplinas:', error));
+                },
+                fetchHorarios() {
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/horarios', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
+                        .then(response => response.json())
+                        .then(data => this.horarios = data)
+                        .catch(error => console.error('Erro ao carregar horários:', error));
+                },
+                fetchSalas() {
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/salas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
+                        .then(response => response.json())
+                        .then(data => this.salas = data)
+                        .catch(error => console.error('Erro ao carregar salas:', error));
+                },
+                fetchDiasSemana() {
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/diasSemana', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
+                        .then(response => response.json())
+                        .then(data => this.diasSemana = data)
+                        .catch(error => console.error('Erro ao carregar dias da semana:', error));
+                },
+                fetchTurmas() {
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/turmas', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  
+                            'Content-Type': 'application/json'
+                        }
+                    }) 
+                        .then(response => response.json())
+                        .then(data => this.turmas = data)
+                        .catch(error => console.error('Erro ao carregar as Turmas:', error));
+                },
+                createAula() {
+                    
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/aulas', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(this.aula)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Erro ao cadastrar a aula');
+                    })
+                    .then(() => {
+                        alert('Aula cadastrada com sucesso!');
+                        this.aula = {
+                            descricao: '',
+                            disciplinaId: '',
+                            horarioId: '',
+                            salaId: '',
+                            diaSemanaId: '',
+                            turmaId: ''
+                        };
+                        window.location.href = 'home.html';
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao cadastrar a aula, tente novamente.');
+                    });
+                }
+            }
+        });
+    </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
+</body>
+</html>

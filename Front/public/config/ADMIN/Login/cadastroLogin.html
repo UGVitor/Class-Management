@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Login</title>
+    <link rel="icon" href="../../img/icon.png">
+    <link rel="stylesheet" href="../../style/telasCadastro.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5em; 
+        }
+    
+        .input-group select {
+            width: 100%; 
+            padding: 10px 40px 10px 40px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            font-size: 16px;
+        }
+    
+        .input-group select:focus {
+            border-color: black;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); 
+        }
+    
+        .input-group .iconss {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #d1d9e6;
+            pointer-events: none; 
+            transition: transform 0.3s ease, color 0.3s ease; 
+        }
+    
+        .input-group select:focus + .iconss {
+            transform: translateY(-50%) rotate(90deg); 
+            color: #019c5c;
+        }
+    
+        .input-group select:hover + .iconss {
+            color: #019c5c; 
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="navbar">
+        <header>
+            <h1><a href="#">Login</a></h1>
+            <nav>
+                <li>
+                    <a href="home.html">
+                        <i class="fas fa-home"></i>
+                    </a>
+                </li>
+            </nav>
+        </header>
+    </div>
+    <div id="app">
+        <form @submit.prevent="createLogin">
+            <h2>Criar Login</h2>
+            <div class="form-group">
+                <label for="login">Login:<span class="asterisco">*</span></label>
+                <input type="text" id="login" v-model="login.login" maxlength="50" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:<span class="asterisco">*</span></label>
+                <input type="password" id="password" v-model="login.password" maxlength="6" minlength="6" required />
+            </div>
+            <div class="form-group">
+                <label for="password">Confirme a Senha:<span class="asterisco">*</span></label>
+                <input type="password" id="password" v-model="login.confirmPassword" maxlength="6" minlength="6" required />
+            </div>
+            <div class="input-group">
+                <select v-model="login.perfil" required>
+                    <option disabled value="">Selecione um Perfil</option>
+                    <option v-for="perfil in perfis" :key="perfil.id" :value="perfil.id">{{ perfil.nome }}</option>
+                </select>
+                <i class="fa-solid fa-arrow-right iconss"></i>
+            </div>
+            <div class="form-group">
+                <button type="submit">Criar Login</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                login: {
+                    login: '',
+                    password: '',
+                    confirmPassword: '',
+                    perfil: ''
+                },
+                perfis: []
+            },
+            created() {
+                this.fetchPerfis(); 
+            },
+            methods: {
+                fetchPerfis() {
+                    const token = localStorage.getItem('authToken'); 
+                    fetch('http://localhost:8081/api/v1/perfis', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`, 
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.perfis = data;
+                    })
+                    .catch(error => {
+                        console.error('Erro ao carregar perfis:', error);
+                    });
+                },
+                createLogin() {
+                    if (this.login.password !== this.login.confirmPassword) {
+                        alert('As senhas não coincidem!');
+                        return;
+                    }
+
+                    if (!this.login.perfil) {
+                        alert('Por favor, selecione um perfil!');
+                        return;
+                    }
+
+                    const loginData = {
+                        login: this.login.login,
+                        password: this.login.password,
+                        perfilId: this.login.perfil
+                    };
+
+                    const token = localStorage.getItem('authToken'); // Obtém o token
+                    fetch('http://localhost:8081/api/v1/logins', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,  // Adiciona o token no cabeçalho
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(loginData)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Erro ao criar o login');
+                    })
+                    .then(() => {
+                        alert('Login criado com sucesso!');
+                        this.resetForm();
+                        window.location.href = 'home.html';
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro ao criar o login, tente novamente.');
+                    });
+                },
+                resetForm() {
+                    this.login = {
+                        login: '',
+                        password: '',
+                        confirmPassword: '',
+                        perfil: ''
+                    };
+                },
+            }
+        });
+    </script>
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
+</body>
+</html>
