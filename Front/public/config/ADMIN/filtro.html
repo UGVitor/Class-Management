@@ -91,31 +91,42 @@
                 };
             },
             methods: {
-                // Método para carregar os dias da semana da API
                 fetchDiasSemana() {
-                    fetch('http://localhost:8081/api/v1/diasSemana')
+                    const token = localStorage.getItem('authToken');
+                    fetch('http://localhost:8081/api/v1/diasSemana', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`, 
+                                'Content-Type': 'application/json',
+                            },
+                        })
                         .then(response => response.json())
                         .then(data => {
-                            this.diasSemana = data;
+                            this.diasSemana = data.sort((a, b) => a.id - b.id);
                         })
                         .catch(error => console.error('Erro ao carregar dias da semana:', error));
                 },
 
-                // Método para filtrar as aulas por dia selecionado
                 async filtrarPorDia() {
                     if (!this.selectedDiaSemana) {
                         alert('Por favor, selecione um dia da semana.');
                         return;
                     }
 
+                    const token = localStorage.getItem('authToken');
+
                     try {
-                        const response = await fetch(`http://localhost:8081/api/v1/aulas/por-dia?diaSemana=${this.selectedDiaSemana}`);
+                        const response = await fetch(`http://localhost:8081/api/v1/aulas/por-dia?diaSemana=${this.selectedDiaSemana}`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`, 
+                                'Content-Type': 'application/json',
+                            },
+                        });
                         if (!response.ok) {
                             throw new Error('Erro ao buscar aulas filtradas');
                         }
 
                         const data = await response.json();
-                        this.aulasFiltradas = data; // Salva o resultado do filtro
+                        this.aulasFiltradas = data; 
                     } catch (error) {
                         console.error('Erro ao buscar aulas:', error);
                     }
@@ -123,8 +134,8 @@
 
                 // Método para limpar os filtros
                 resetFiltro() {
-                    this.selectedDiaSemana = ''; // Reseta o campo do select
-                    this.aulasFiltradas = []; // Limpa os resultados filtrados
+                    this.selectedDiaSemana = ''; 
+                    this.aulasFiltradas = []; 
                 },
             },
             mounted() {

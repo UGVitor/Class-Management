@@ -84,7 +84,6 @@
             el: '#app',
             data: {
                 aula: {
-                    descricao: '',
                     disciplinaId: '',
                     horarioId: '',
                     salaId: '',
@@ -126,7 +125,31 @@
                         }
                     }) 
                         .then(response => response.json())
-                        .then(data => this.horarios = data)
+                        .then(data => {
+                            // Formatar e ordenar os horários
+                            const formattedData = data.map(item => ({
+                                ...item,
+                                horaInicio: this.formatTime(item.horaInicio),
+                                horaTermino: this.formatTime(item.horaTermino),
+                                aulas: item.aulas.map(aula => ({
+                                    ...aula,
+                                    horarioInicio: this.formatTime(aula.horarioInicio),
+                                    horarioTermino: this.formatTime(aula.horarioTermino)
+                                }))
+                            }));
+
+                            const sortedData = formattedData.sort((a, b) => {
+                                const [hourA, minuteA] = a.horaInicio.split(':').map(Number);
+                                const [hourB, minuteB] = b.horaInicio.split(':').map(Number);
+
+                                if (hourA === hourB) {
+                                    return minuteA - minuteB;
+                                }
+                                return hourA - hourB;
+                            });
+
+                            this.horarios = sortedData;
+                        })
                         .catch(error => console.error('Erro ao carregar horários:', error));
                 },
                 fetchSalas() {
@@ -150,7 +173,9 @@
                         }
                     }) 
                         .then(response => response.json())
-                        .then(data => this.diasSemana = data)
+                        .then(data => {
+                            this.diasSemana = data.sort((a, b) => a.id - b.id);
+                        })
                         .catch(error => console.error('Erro ao carregar dias da semana:', error));
                 },
                 fetchTurmas() {
@@ -185,7 +210,6 @@
                     .then(() => {
                         alert('Aula cadastrada com sucesso!');
                         this.aula = {
-                            descricao: '',
                             disciplinaId: '',
                             horarioId: '',
                             salaId: '',
@@ -198,6 +222,15 @@
                         console.error('Erro:', error);
                         alert('Erro ao cadastrar a aula, tente novamente.');
                     });
+                },
+                formatTime(timeArray) {
+                    if (Array.isArray(timeArray) && timeArray.length === 2) {
+                        const [hours, minutes] = timeArray;
+                        const formattedHours = hours.toString().padStart(2, '0');
+                        const formattedMinutes = minutes.toString().padStart(2, '0');
+                        return `${formattedHours}:${formattedMinutes}`;
+                    }
+                    return '00:00';
                 }
             }
         });

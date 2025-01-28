@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.PeriodoEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.PeriodoUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.PeriodoRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.PeriodoDTO;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +18,20 @@ import java.util.Optional;
 public class PeriodoService {
     private final PeriodoRepository periodoRepository;
 
+    public PeriodoDTO toDTO(Periodo periodo) {
+        return new PeriodoDTO(periodo.getId(), periodo.getNome());
+    }
 
     @Transactional
     public Periodo salvar(PeriodoDTO periodoDTO) {
-        if (periodoDTO.getNome() == null || periodoDTO.getNome().isBlank()) {
-            throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
+        try {
+            Periodo periodo = new Periodo();
+            periodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
+            return periodoRepository.save(periodo);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new PeriodoUniqueViolationException(String.format("Periodo '%s' já cadastrado", periodoDTO.getNome()));
         }
-        Periodo periodo = new Periodo();
-        periodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
 
-        return periodoRepository.save(periodo);
     }
 
     @Transactional
@@ -38,25 +43,15 @@ public class PeriodoService {
     @Transactional
     public Periodo editar(Long id, PeriodoDTO periodoDTO) {
         Periodo existingPeriodo = buscarPorId(id);
-
-
-        if (periodoDTO.getNome() == null || periodoDTO.getNome().isBlank()) {
-            throw new IllegalArgumentException("O nome do dia não pode ser nulo ou vazio");
-        }
-
         existingPeriodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
         return periodoRepository.save(existingPeriodo);
     }
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Periodo> optionalPeriodo = periodoRepository.findById(id);
-        if (optionalPeriodo.isPresent()) {
-            periodoRepository.delete(optionalPeriodo.get());
-            System.out.println("Deletado com Sucesso!");
-        } else {
-            throw new RuntimeException("Periodo não encontrado com o ID: " + id);
-        }
+        Periodo optionalPeriodo = buscarPorId(id);
+        periodoRepository.delete(optionalPeriodo);
+        System.out.println("Deletado com Sucesso!");
     }
 
     @Transactional(readOnly = true)

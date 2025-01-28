@@ -64,105 +64,129 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
-    new Vue({
-    el: '#app',
-    data() {
-        return {
-            turma: {
-                nome: '',
-                periodo: '',
-                turno: '',
-                curso: '',
-                semestre: ''
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    turma: {
+                        nome: '',
+                        periodo: '',
+                        turno: '',
+                        curso: '',
+                        semestre: ''
+                    },
+                    periodos: [],
+                    turnos: [],
+                    cursos: [],
+                    semestres: []
+                };
             },
-            periodos: [],
-            turnos: [],
-            cursos: [],
-            semestres: []
-        };
-    },
-    created() {
-        this.fetchPeriodos();
-        this.fetchTurnos();
-        this.fetchCursos();
-        this.fetchSemestres();
-    },
-    methods: {
-        async fetchPeriodos() {
-            try {
-                const token = localStorage.getItem('authToken');
-                const response = await fetch('http://localhost:8081/api/v1/periodos', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+            created() {
+                this.fetchPeriodos();
+                this.fetchTurnos();
+                this.fetchCursos();
+                this.fetchSemestres();
+            },
+            methods: {
+                async fetchPeriodos() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch('http://localhost:8081/api/v1/periodos', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (!response.ok) throw new Error('Erro ao buscar períodos');
+                        let fetchedDataPeriodo = await response.json();
+                        this.periodos = fetchedDataPeriodo.sort((a, b) => {
+                            return a.id - b.id;
+                        });
+                    } catch (error) {
+                        console.error('Erro ao carregar períodos:', error);
                     }
-                });
-                if (!response.ok) throw new Error('Erro ao buscar períodos');
-                this.periodos = await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar períodos:', error);
-            }
-        },
+                },
 
-        async fetchTurnos() {
-            try {
-                const token = localStorage.getItem('authToken');
-                const response = await fetch('http://localhost:8081/api/v1/turnos', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                async fetchTurnos() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch('http://localhost:8081/api/v1/turnos', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (!response.ok) throw new Error('Erro ao buscar turnos');
+                        this.turnos = await response.json();
+                    } catch (error) {
+                        console.error('Erro ao carregar turnos:', error);
                     }
-                });
-                if (!response.ok) throw new Error('Erro ao buscar turnos');
-                this.turnos = await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar turnos:', error);
-            }
-        },
+                },
 
-        async fetchCursos() {
-            try {
-                const token = localStorage.getItem('authToken');
-                const response = await fetch('http://localhost:8081/api/v1/curso', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                async fetchCursos() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch('http://localhost:8081/api/v1/curso', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (!response.ok) throw new Error('Erro ao buscar cursos');
+                        this.cursos = await response.json();
+                    } catch (error) {
+                        console.error('Erro ao carregar cursos:', error);
                     }
-                });
-                if (!response.ok) throw new Error('Erro ao buscar cursos');
-                this.cursos = await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar cursos:', error);
-            }
-        },
+                },
 
-        async fetchSemestres() {
-            try {
-                const token = localStorage.getItem('authToken');
-                const response = await fetch('http://localhost:8081/api/v1/semestres', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
+                async fetchSemestres() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch('http://localhost:8081/api/v1/semestres', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (!response.ok) throw new Error('Erro ao buscar semestres');
+                        this.semestres = await response.json();
+                    } catch (error) {
+                        console.error('Erro ao carregar semestres:', error);
                     }
-                });
-                if (!response.ok) throw new Error('Erro ao buscar semestres');
-                this.semestres = await response.json();
-            } catch (error) {
-                console.error('Erro ao carregar semestres:', error);
-            }
-        },
+                },
 
-        resetForm() {
-            this.turma = {
-                nome: '',
-                periodo: '',
-                turno: '',
-                curso: '',
-                semestre: ''
-            };
-        }
-    }
-});
+                async createTurma() {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch('http://localhost:8081/api/v1/turmas', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(this.turma)
+                        });
+                        if (!response.ok) throw new Error('Erro ao criar turma');
+                        const data = await response.json();
+                        alert('Turma criada com sucesso!');
+                        this.resetForm();
+                        window.location.href = 'home.html';
+                    } catch (error) {
+                        console.error('Erro ao criar turma:', error);
+                    }
+                },
+
+                resetForm() {
+                    this.turma = {
+                        nome: '',
+                        periodo: '',
+                        turno: '',
+                        curso: '',
+                        semestre: ''
+                    };
+                }
+            }
+        });
 
         
    
