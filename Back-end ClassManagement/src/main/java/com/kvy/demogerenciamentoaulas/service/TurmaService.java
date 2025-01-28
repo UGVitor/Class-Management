@@ -89,10 +89,18 @@ public class TurmaService {
 
     @Transactional
     public Turma editar(Long id, TurmaDTO turmaDTO) {
+        // Valida o nome da turma
+        if (turmaDTO.getNome() == null || turmaDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da turma não pode ser vazio.");
+        }
+
+        // Busca a turma existente pelo ID
         Turma existingTurma = buscarPorId(id);
 
+        // Atualiza o nome da turma
         existingTurma.setNome(TratamentoDeString.capitalizeWords(turmaDTO.getNome()));
 
+        // Atualiza o período, turno, semestre e curso se os valores forem fornecidos
         if (turmaDTO.getPeriodo() != null) {
             Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
                     .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turmaDTO.getPeriodo()));
@@ -104,6 +112,7 @@ public class TurmaService {
                     .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turmaDTO.getTurno()));
             existingTurma.setTurno(turno);
         }
+
         if (turmaDTO.getSemestre() != null) {
             Semestre semestre = semestreRepository.findById(turmaDTO.getSemestre())
                     .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turmaDTO.getSemestre()));
@@ -116,9 +125,10 @@ public class TurmaService {
             existingTurma.setCurso(curso);
         }
 
-
+        // Salva a turma atualizada no repositório
         return turmaRepository.save(existingTurma);
     }
+
 
 
     @Transactional
