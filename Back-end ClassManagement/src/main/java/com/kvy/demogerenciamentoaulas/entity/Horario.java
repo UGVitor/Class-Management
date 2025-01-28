@@ -2,11 +2,10 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -14,8 +13,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "horarios")
 public class Horario {
 
