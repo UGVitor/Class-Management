@@ -36,9 +36,9 @@ public class PeriodoController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
-    public ResponseEntity<Periodo> createPeriodo(@Valid @RequestBody PeriodoDTO periodoDTO) {
+    public ResponseEntity<PeriodoDTO> createPeriodo(@Valid @RequestBody PeriodoDTO periodoDTO) {
         Periodo savedPeriodo = periodoService.salvar(periodoDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPeriodo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(periodoService.toDTO(savedPeriodo));
     }
 
     @Operation(summary = "Recuperar um periodo pelo id", description = "Recuperar um periodo pelo id",
@@ -48,17 +48,16 @@ public class PeriodoController {
                     @ApiResponse(responseCode = "404", description = "Recursos não encontrado",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
-
     @GetMapping("/{id}")
-    public ResponseEntity<Periodo> getPeriodoById(@PathVariable Long id) {
+    public ResponseEntity<PeriodoDTO> getPeriodoById(@PathVariable Long id) {
         Periodo periodo = periodoService.buscarPorId(id);
-        return ResponseEntity.ok(periodo);
+        return ResponseEntity.ok(periodoService.toDTO(periodo));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Periodo> updatePeriodo(@PathVariable Long id, @Valid @RequestBody PeriodoDTO periodoDTO) {
+    public ResponseEntity<PeriodoDTO> updatePeriodo(@PathVariable Long id, @Valid @RequestBody PeriodoDTO periodoDTO) {
         Periodo updatedPeriodo = periodoService.editar(id, periodoDTO);
-        return ResponseEntity.ok(updatedPeriodo);
+        return ResponseEntity.ok(periodoService.toDTO(updatedPeriodo));
     }
 
     @Operation(summary = "Excluir periodo", description = "Recurso para excluir um periodo pelo ID",

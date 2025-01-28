@@ -1,50 +1,50 @@
 package com.kvy.demogerenciamentoaulas.controllerTest;
 
-import com.kvy.demogerenciamentoaulas.web.dto.SemestreDTO;
+import com.kvy.demogerenciamentoaulas.web.dto.PeriodoDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "/sql/semestre/semestre-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(scripts = "/sql/semestre/semestre-delete.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "/sql/periodo/periodo-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "/sql/periodo/periodo-delete.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(addFilters = false)
-public class SemestreControllerTest {
+public class PeriodoControllerTest {
 
     @Autowired
     WebTestClient testClient;
 
     @Test
-    public void deveCriarSemestre_ComSemestreValido_RetornarSemestreCriadoComStatus201() {
-        SemestreDTO responseBody = testClient
+    public void deveCriarPeriodo_ComPeriodoValido_RetornarPeriodoCriadoComStatus201() {
+        PeriodoDTO responseBody = testClient
                 .post()
-                .uri("/api/v1/semestres")
+                .uri("/api/v1/periodos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(null, "Quinto"))
+                .bodyValue(new PeriodoDTO(null, "Quinto"))
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(SemestreDTO.class)
+                .expectBody(PeriodoDTO.class)
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
         org.assertj.core.api.Assertions.assertThat(responseBody.getId()).isNotNull();
-        org.assertj.core.api.Assertions.assertThat(responseBody.getSemestre()).isEqualTo("Quinto");
+        org.assertj.core.api.Assertions.assertThat(responseBody.getNome()).isEqualTo("Quinto");
     }
 
     @Test
-    public void deveCriarSemestre_ComSemestreInvalido_RetornarErrorMessageStatus422() {
+    public void deveCriarPeriodo_ComPeriodoInvalido_RetornarErrorMessageStatus422() {
         ErrorMessage responseBody = testClient
                 .post()
-                .uri("/api/v1/semestres")
+                .uri("/api/v1/periodos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(null, ""))
+                .bodyValue(new PeriodoDTO(null, ""))
                 .exchange()
                 .expectStatus().isEqualTo(422)
                 .expectBody(ErrorMessage.class)
@@ -55,12 +55,12 @@ public class SemestreControllerTest {
     }
 
     @Test
-    public void deveCriarSemestre_ComSemestreRepetido_RetornarErrorMessageComStatus409() {
+    public void deveCriarPeriodo_ComPeriodoRepetido_RetornarErrorMessageComStatus409() {
         ErrorMessage responseBody = testClient
                 .post()
-                .uri("/api/v1/semestres")
+                .uri("/api/v1/periodos")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(100L, "Terceiro"))
+                .bodyValue(new PeriodoDTO(100L, "Terceiro"))
                 .exchange()
                 .expectStatus().isEqualTo(409)
                 .expectBody(ErrorMessage.class)
@@ -71,25 +71,25 @@ public class SemestreControllerTest {
     }
 
     @Test
-    public void deveBuscarSemestre_ComIdExistente_RetornarSemestreComStatus200() {
-        SemestreDTO responseBody = testClient
+    public void deveBuscarPeriodo_ComIdExistente_RetornarPeriodoComStatus200() {
+        PeriodoDTO responseBody = testClient
                 .get()
-                .uri("/api/v1/semestres/100")
+                .uri("/api/v1/periodos/100")
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(SemestreDTO.class)
+                .expectBody(PeriodoDTO.class)
                 .returnResult().getResponseBody();
 
         org.assertj.core.api.Assertions.assertThat(responseBody).isNotNull();
         org.assertj.core.api.Assertions.assertThat(responseBody.getId()).isEqualTo(100);
-        org.assertj.core.api.Assertions.assertThat(responseBody.getSemestre()).isEqualTo("Terceiro");
+        org.assertj.core.api.Assertions.assertThat(responseBody.getNome()).isEqualTo("Segundo");
     }
 
     @Test
-    public void deveBuscarSemestre_ComIdInexistente_RetornarErrorMessageComStatus404() {
+    public void deveBuscarPeriodo_ComIdInexistente_RetornarErrorMessageComStatus404() {
         ErrorMessage responseBody = testClient
                 .get()
-                .uri("/api/v1/semestres/0")
+                .uri("/api/v1/periodos/0")
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody(ErrorMessage.class)
@@ -100,23 +100,23 @@ public class SemestreControllerTest {
     }
 
     @Test
-    public void deveEditarSemestre_ComDadosValidos_RetornarStatus200() {
+    public void deveEditarPeriodo_ComDadosValidos_RetornarStatus200() {
         testClient
                 .put()
-                .uri("/api/v1/semestres/100")
+                .uri("/api/v1/periodos/100")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(100L, "Sexto"))
+                .bodyValue(new PeriodoDTO(100L, "Sexto"))
                 .exchange()
                 .expectStatus().isEqualTo(200);
     }
 
     @Test
-    public void deveEditarSemestre_ComIdInexistente_RetornarErrorMessageComStatus404() {
+    public void deveEditarPeriodo_ComIdInexistente_RetornarErrorMessageComStatus404() {
         ErrorMessage responseBody = testClient
                 .put()
-                .uri("/api/v1/semestres/0")
+                .uri("/api/v1/periodos/0")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(0L, "Sexto"))
+                .bodyValue(new PeriodoDTO(0L, "Sexto"))
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody(ErrorMessage.class)
@@ -127,12 +127,12 @@ public class SemestreControllerTest {
     }
 
     @Test
-    public void deveEditarSemestre_ComCamposInvalidos_RetornarErrorMessageComStatus422() {
+    public void deveEditarPeriodo_ComCamposInvalidos_RetornarErrorMessageComStatus422() {
         ErrorMessage responseBody = testClient
                 .put()
-                .uri("/api/v1/semestres/100")
+                .uri("/api/v1/periodos/100")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new SemestreDTO(null, ""))
+                .bodyValue(new PeriodoDTO(null, ""))
                 .exchange()
                 .expectStatus().isEqualTo(422)
                 .expectBody(ErrorMessage.class)
@@ -143,28 +143,28 @@ public class SemestreControllerTest {
     }
 
     @Test
-    public void deveDeletarSemestre_ComIdExistente_RetornarComStatus204() {
+    public void deveDeletarPeriodo_ComIdExistente_RetornarComStatus204() {
         testClient
                 .delete()
-                .uri("/api/v1/semestres/100")
+                .uri("/api/v1/periodos/100")
                 .exchange()
                 .expectStatus().isEqualTo(204);
     }
 
     @Test
-    public void deveDeletarSemestre_ComIdInexistente_RetornarComStatus404() {
+    public void deveDeletarPeriodo_ComIdInexistente_RetornarComStatus404() {
         testClient
                 .delete()
-                .uri("/api/v1/semestres/0")
+                .uri("/api/v1/periodos/0")
                 .exchange()
                 .expectStatus().isEqualTo(404);
     }
 
     @Test
-    public void deveListarSemestre_SemQualquerParametro_RetornarComStatus200() {
+    public void deveListarPeriodo_SemQualquerParametro_RetornarComStatus200() {
         testClient
                 .get()
-                .uri("/api/v1/semestres")
+                .uri("/api/v1/periodos")
                 .exchange()
                 .expectStatus().isOk();
     }

@@ -80,7 +80,7 @@
                     const formattedMinutes = minutes.toString().padStart(2, '0');
                     return `${formattedHours}:${formattedMinutes}`;
                 }
-                return '00:00'; // Retorno padrão para valores inesperados
+                return '00:00';
             },
             async fetchData(endpoint) {
                 try {

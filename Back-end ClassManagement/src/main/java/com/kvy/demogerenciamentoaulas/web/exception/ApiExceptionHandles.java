@@ -14,6 +14,26 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice @Slf4j
 public class ApiExceptionHandles {
 
+    @ExceptionHandler(PeriodoUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> periodoUniqueViolationException(PeriodoUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(PeriodoEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> periodoEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
     @ExceptionHandler(DiaSemanaUniqueViolationException.class)
     public ResponseEntity<ErrorMessage> diaSemanaUniqueViolationException(DiaSemanaUniqueViolationException ex, HttpServletRequest request){
 
