@@ -36,8 +36,7 @@ public class PerfilController {
             })
     @PostMapping
     public ResponseEntity<PerfilDTO> createPerfil(@Valid @RequestBody PerfilDTO perfilDTO) {
-        Perfil perfil = perfilService.convertToEntity(perfilDTO);
-        Perfil savedPerfil = perfilService.salvar(perfil);
+        Perfil savedPerfil = perfilService.salvar(perfilDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(perfilService.convertToDTO(savedPerfil));
     }
 

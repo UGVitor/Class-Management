@@ -77,7 +77,7 @@
             },
             updateLogin() {
                 const { id, login, perfil } = this.logins;
-                const loginData = { login, perfil };
+                const loginData = { id, login, perfil };
 
                 const token = localStorage.getItem('authToken'); 
                 fetch(`http://localhost:8081/api/v1/logins/${id}`, {

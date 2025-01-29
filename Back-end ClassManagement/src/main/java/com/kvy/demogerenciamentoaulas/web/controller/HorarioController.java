@@ -36,11 +36,7 @@ public class HorarioController {
             })
     @PostMapping
     public ResponseEntity<HorarioDTO> createHorario(@Valid @RequestBody HorarioDTO horarioDTO) {
-        if (!horarioDTO.isHorarioValido()) {
-            throw new IllegalArgumentException("O horário de início deve ser anterior ao horário de término");
-        }
-        Horario horario = horarioService.convertToEntity(horarioDTO);
-        Horario savedHorario = horarioService.salvar(horario);
+        Horario savedHorario = horarioService.salvar(horarioDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(horarioService.convertToDTO(savedHorario));
     }
 

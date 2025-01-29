@@ -70,10 +70,11 @@ footer a:hover {
 
 .navbar {
     background-color: #019c5c;
-    padding: 15px;
+    padding: 1px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
+
 
 .navbar header {
     display: flex;
@@ -99,19 +100,26 @@ footer a:hover {
 }
 
 .navbar nav li {
-    display: inline;
+    display: flex;
     margin-left: 15px;
+    align-items: center;
 }
 
 .navbar nav a {
-    color: white;
     text-decoration: none;
-    font-size: 24px;
+    font-size: 20px;
     margin-right: 30px;
+    color: #fff;
+    transition: ease .3s;
+    cursor: pointer;
+    padding: 0px 10px;
+    line-height: 40px
 }
 
 .navbar nav a:hover {
-    color: black;
+    background-color: #ffffffa8;
+    color: #137049;
+    border-radius: 7px;
 }
 
 @media (max-width: 768px) {

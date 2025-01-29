@@ -1,15 +1,14 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
-import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.ModalidadeUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.ModalidadeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,12 +19,14 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade salvar(ModalidadeDTO modalidadeDTO) {
-        if (modalidadeDTO.getNome() == null || modalidadeDTO.getNome().isBlank()) {
-            throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
+        try {
+            Modalidade modalidade = new Modalidade();
+            modalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
+            return modalidadeRepository.save(modalidade);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new ModalidadeUniqueViolationException(String.format("Modalidade '%s' já cadastrado", modalidadeDTO.getNome()));
         }
-        Modalidade modalidade = new Modalidade();
-        modalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
-        return modalidadeRepository.save(modalidade);
+
     }
 
     @Transactional(readOnly = true)
@@ -38,24 +39,15 @@ public class ModalidadeService {
     @Transactional
     public Modalidade editar(Long id, ModalidadeDTO modalidadeDTO) {
         Modalidade existingModalidade = buscarPorId(id);
-
-        if (modalidadeDTO.getNome() == null || modalidadeDTO.getNome().isBlank()) {
-            throw new IllegalArgumentException("O nome da Modalidade não pode ser nulo ou vazio");
-        }
         existingModalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
         return modalidadeRepository.save(existingModalidade);
-
     }
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Modalidade> optionalModalidade = modalidadeRepository.findById(id);
-        if (optionalModalidade.isPresent()) {
-            modalidadeRepository.delete(optionalModalidade.get());
-            System.out.println("Deletado com Sucesso!");
-        } else {
-            throw new RuntimeException("Modalidade não encontrado com o ID: " + id);
-        }
+        Modalidade optionalModalidade = buscarPorId(id);
+        modalidadeRepository.delete(optionalModalidade);
+        System.out.println("Deletado com Sucesso!");
     }
 
     @Transactional(readOnly = true)

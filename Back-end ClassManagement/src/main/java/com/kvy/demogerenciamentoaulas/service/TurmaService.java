@@ -6,6 +6,7 @@ import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
+import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.*;
 import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
@@ -23,48 +24,37 @@ import java.util.stream.Collectors;
 @Service
 public class TurmaService {
     private TurmaRepository turmaRepository;
-    private CursoRepository cursoRepository;
-    private SemestreRepository semestreRepository;
-    private TurnoRepository turnoRepository;
-    private PeriodoRepository periodoRepository;
+    private CursoService cursoService;
+    private SemestreService semestreService;
+    private TurnoService turnoService;
+    private PeriodoService periodoService;
 
     @Transactional
     public Turma salvar(TurmaDTO turmaDTO) {
-        String nomeFormatado = TratamentoDeString.convertToUpperCase(turmaDTO.getNome());
+        try {
+            String nomeFormatado = TratamentoDeString.convertToUpperCase(turmaDTO.getNome());
 
-        // Verifica se já existe uma turma com os mesmos atributos
-        Optional<Turma> turmaExistente = turmaRepository.findByUniqueAttributes(
-                nomeFormatado,
-                turmaDTO.getPeriodo(),
-                turmaDTO.getTurno(),
-                turmaDTO.getSemestre(),
-                turmaDTO.getCurso()
-        );
+            Turma turma = new Turma();
+            turma.setNome(nomeFormatado);
 
-        if (turmaExistente.isPresent()) {
-            throw new RuntimeException("Já existe uma turma com os mesmos atributos.");
+            Periodo periodo = periodoService.buscarPorId(turmaDTO.getPeriodo());
+            turma.setPeriodo(periodo);
+
+            Turno turno = turnoService.buscarPorId(turmaDTO.getTurno());
+            turma.setTurno(turno);
+
+            Semestre semestre = semestreService.buscarPorId(turmaDTO.getSemestre());
+            turma.setSemestre(semestre);
+
+            Curso curso = cursoService.buscarPorId(turmaDTO.getCurso());
+            turma.setCurso(curso);
+
+            return turmaRepository.save(turma);
+
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new TipoSalaUniqueViolationException(String.format("Turma '%s' já cadastrado", turmaDTO.getNome()));
         }
 
-        Turma turma = new Turma();
-        turma.setNome(nomeFormatado);
-
-        Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
-                .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turmaDTO.getPeriodo()));
-        turma.setPeriodo(periodo);
-
-        Turno turno = turnoRepository.findById(turmaDTO.getTurno())
-                .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turmaDTO.getTurno()));
-        turma.setTurno(turno);
-
-        Semestre semestre = semestreRepository.findById(turmaDTO.getSemestre())
-                .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turmaDTO.getSemestre()));
-        turma.setSemestre(semestre);
-
-        Curso curso = cursoRepository.findById(turmaDTO.getCurso())
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + turmaDTO.getCurso()));
-        turma.setCurso(curso);
-
-        return turmaRepository.save(turma);
     }
 
     @Transactional(readOnly = true)
@@ -72,75 +62,40 @@ public class TurmaService {
         return turmaRepository.findById(id)
                 .orElseThrow(() -> new TurmaEntityNotFoundException(String.format("Turma id=%s não encontrado", id)));
     }
+
+
     @Transactional
     public List<TurmaProjection> buscarTodasTurmasComDetalhes() {
         return turmaRepository.findAllTurmas();
     }
 
-
-    @Autowired
-    public TurmaService(PeriodoRepository periodoRepository, TurnoRepository turnoRepository, TurmaRepository turmaRepository ,CursoRepository cursoRepository, SemestreRepository semestreRepository) {
-        this.periodoRepository = periodoRepository;
-        this.turnoRepository = turnoRepository;
-        this.cursoRepository = cursoRepository;
-        this.semestreRepository = semestreRepository;
-        this.turmaRepository = turmaRepository;
-    }
-
     @Transactional
     public Turma editar(Long id, TurmaDTO turmaDTO) {
-        // Valida o nome da turma
-        if (turmaDTO.getNome() == null || turmaDTO.getNome().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome da turma não pode ser vazio.");
-        }
 
-        // Busca a turma existente pelo ID
         Turma existingTurma = buscarPorId(id);
 
-        // Atualiza o nome da turma
         existingTurma.setNome(TratamentoDeString.capitalizeWords(turmaDTO.getNome()));
 
-        // Atualiza o período, turno, semestre e curso se os valores forem fornecidos
-        if (turmaDTO.getPeriodo() != null) {
-            Periodo periodo = periodoRepository.findById(turmaDTO.getPeriodo())
-                    .orElseThrow(() -> new RuntimeException("Periodo não encontrado com o ID: " + turmaDTO.getPeriodo()));
-            existingTurma.setPeriodo(periodo);
-        }
+        Periodo periodo = periodoService.buscarPorId(turmaDTO.getPeriodo());
+        existingTurma.setPeriodo(periodo);
 
-        if (turmaDTO.getTurno() != null) {
-            Turno turno = turnoRepository.findById(turmaDTO.getTurno())
-                    .orElseThrow(() -> new RuntimeException("Turno não encontrado com o ID: " + turmaDTO.getTurno()));
-            existingTurma.setTurno(turno);
-        }
+        Turno turno = turnoService.buscarPorId(turmaDTO.getTurno());
+        existingTurma.setTurno(turno);
 
-        if (turmaDTO.getSemestre() != null) {
-            Semestre semestre = semestreRepository.findById(turmaDTO.getSemestre())
-                    .orElseThrow(() -> new RuntimeException("Semestre não encontrado com o ID: " + turmaDTO.getSemestre()));
-            existingTurma.setSemestre(semestre);
-        }
+        Semestre semestre = semestreService.buscarPorId(turmaDTO.getSemestre());
+        existingTurma.setSemestre(semestre);
 
-        if (turmaDTO.getCurso() != null) {
-            Curso curso = cursoRepository.findById(turmaDTO.getCurso())
-                    .orElseThrow(() -> new RuntimeException("Curso não encontrado com o ID: " + turmaDTO.getCurso()));
-            existingTurma.setCurso(curso);
-        }
+        Curso curso = cursoService.buscarPorId(turmaDTO.getCurso());
+        existingTurma.setCurso(curso);
 
-        // Salva a turma atualizada no repositório
         return turmaRepository.save(existingTurma);
     }
 
-
-
     @Transactional
     public void excluir(Long id){
-        Optional<Turma> optionalTurma = turmaRepository.findById(id);
-        if (optionalTurma.isPresent()) {
-            turmaRepository.delete(optionalTurma.get());
-            System.out.println("Deletado com sucesso!");
-        } else {
-            throw new RuntimeException("Turma não encontrada com o ID: " + id);
-        }
-
+        Turma optionalTurma = buscarPorId(id);
+        turmaRepository.delete(optionalTurma);
+        System.out.println("Deletado com sucesso!");
     }
 
 }

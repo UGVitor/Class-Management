@@ -2,6 +2,8 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Horario;
 import com.kvy.demogerenciamentoaulas.exception.HorarioEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.HorarioUniqueViolationException;
+import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +32,14 @@ public class HorarioService {
     }
 
     @Transactional
-    public Horario salvar(Horario horario) {
-        return horarioRepository.save(horario);
+    public Horario salvar(HorarioDTO horario) {
+        try {
+            Horario horario1 = convertToEntity(horario);
+            return horarioRepository.save(horario1);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new HorarioUniqueViolationException("Horario já cadastrado");
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +51,6 @@ public class HorarioService {
     @Transactional
     public Horario editar(Long id, Horario horario) {
         Horario existingHorario = buscarPorId(id);
-
         existingHorario.setHoraInicio(horario.getHoraInicio());
         existingHorario.setHoraTermino(horario.getHoraTermino());
         return horarioRepository.save(existingHorario);
@@ -51,13 +58,9 @@ public class HorarioService {
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Horario> optionalHorario = horarioRepository.findById(id);
-        if (optionalHorario.isPresent()) {
-            horarioRepository.delete(optionalHorario.get());
-            System.out.println("Horario deletado com sucesso!");
-        } else {
-            throw new RuntimeException("Horario não encontrado com o ID: " + id);
-        }
+        Horario optionalHorario = buscarPorId(id);
+        horarioRepository.delete(optionalHorario);
+        System.out.println("Horario deletado com sucesso!");
     }
 
     @Transactional(readOnly = true)

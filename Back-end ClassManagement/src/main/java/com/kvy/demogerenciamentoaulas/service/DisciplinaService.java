@@ -2,9 +2,10 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.exception.DiaSemanaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.ProfInvalidException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
-import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaDTO;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,25 +22,27 @@ public class DisciplinaService {
     private static final Logger logger = LoggerFactory.getLogger(DisciplinaService.class);
 
     private final DisciplinaRepository disciplinaRepository;
-    private final LoginRepository loginRepository;
+    private final LoginService loginService;
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
-        Login login = loginRepository.findById(disciplinaDTO.getLoginId())
-                .orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+        try {
+            Login login = loginService.buscarPorId(disciplinaDTO.getLoginId());
 
-        // Verifica se o perfil do login é do tipo "Professor"
-        if (!"Professor".equalsIgnoreCase(login.getPerfil().getNome())) {
-            throw new IllegalArgumentException("A disciplina só pode ser criada por um login com perfil de 'Professor'");
+            // Verifica se o perfil do login é do tipo "Professor"
+            if (!"Professor".equalsIgnoreCase(login.getPerfil().getNome())) {
+                throw new ProfInvalidException("A disciplina só pode ser criada por um login com perfil de 'Professor'");
+            }
+
+            Disciplina disciplina = new Disciplina();
+            disciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
+            disciplina.setLogin(login);
+
+            return disciplinaRepository.save(disciplina);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new DiaSemanaUniqueViolationException(String.format("Disciplina '%s' já cadastrado", disciplinaDTO.getNome()));
         }
 
-        // Cria e preenche a entidade Disciplina
-        Disciplina disciplina = new Disciplina();
-        disciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
-        disciplina.setLogin(login);
-
-        // Salva e retorna a disciplina
-        return disciplinaRepository.save(disciplina);
     }
 
     @Transactional(readOnly = true)
@@ -55,13 +57,12 @@ public class DisciplinaService {
         Disciplina existingDisciplina = buscarPorId(id);
         existingDisciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
-        Login login = loginRepository.findById(disciplinaDTO.getLoginId()).orElseThrow(() -> new IllegalArgumentException("Login não encontrado"));
+        Login login = loginService.buscarPorId(disciplinaDTO.getLoginId());
         if (!"Professor".equalsIgnoreCase(login.getPerfil().getNome())) {
-            throw new IllegalArgumentException("A disciplina só pode ser associada a um login com perfil de 'Professor'");
+            throw new ProfInvalidException("A disciplina só pode ser associada a um login com perfil de 'Professor'");
         }
 
         existingDisciplina.setLogin(login);
-
 
         return disciplinaRepository.save(existingDisciplina);
     }
@@ -70,12 +71,9 @@ public class DisciplinaService {
 
     @Transactional
     public void excluir(Long id) {
-        if (!disciplinaRepository.existsById(id)) {
-            throw new DisciplinaEntityNotFoundException(
-                    String.format("Disciplina com id=%s não encontrada", id));
-        }
-        disciplinaRepository.deleteById(id);
-        DisciplinaService.logger.info("Disciplina com id={} excluída com sucesso", id);
+        Disciplina disciplina = buscarPorId(id);
+        disciplinaRepository.delete(disciplina);
+        System.out.println("Disciplina excluida com sucesso");
     }
 
     @Transactional(readOnly = true)

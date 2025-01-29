@@ -2,7 +2,9 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
+import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TurnoEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.TurnoUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.TurnoRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.TurnoDTO;
 import jakarta.annotation.PostConstruct;
@@ -21,12 +23,13 @@ public class TurnoService {
 
     @Transactional
     public Turno salvar(TurnoDTO turnoDTO) {
-        if(turnoDTO.getTurno() == null || turnoDTO.getTurno().isBlank()) {
-            throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio.");
+        try {
+            Turno turno = new Turno();
+            turno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
+            return turnoRepository.save(turno);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new TurnoUniqueViolationException(String.format("Turma '%s' já cadastrado", turnoDTO.getTurno()));
         }
-        Turno turno = new Turno();
-        turno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
-        return turnoRepository.save(turno);
     }
 
     @Transactional
@@ -39,24 +42,16 @@ public class TurnoService {
     public Turno editar(Long id, TurnoDTO turnoDTO) {
         Turno existingTurno = buscarPorId(id);
 
-
-        if (turnoDTO.getTurno() == null || turnoDTO.getTurno().isBlank()) {
-            throw new IllegalArgumentException("O nome do Turno não pode ser nulo ou vazio");
-        }
         existingTurno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
         return turnoRepository.save(existingTurno);
     }
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Turno> optionalTurno = turnoRepository.findById(id);
-        if (optionalTurno.isPresent()) {
-            turnoRepository.delete(optionalTurno.get());
-            System.out.println("Deletado com sucesso");
-        } else {
-            throw new TurnoEntityNotFoundException("Turno não encontrado com o ID " +id);
+        Turno optionalTurno = buscarPorId(id);
+        turnoRepository.delete(optionalTurno);
+        System.out.println("Deletado com sucesso");
 
-        }
     }
 
     @Transactional(readOnly = true)
