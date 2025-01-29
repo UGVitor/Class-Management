@@ -6,7 +6,6 @@ import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.PasswordInvalidException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
-import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.CreateLoginDTO;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginDTO;
@@ -22,8 +21,8 @@ import java.util.List;
 public class LoginService {
 
     private final LoginRepository loginRepository;
-    private final PerfilRepository perfilRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PerfilService perfilService;
 
     public LoginDTO convertToDTO(Login login) {
         return new LoginDTO(login.getId(), login.getLogin(), login.getPerfil().getId());
@@ -38,8 +37,7 @@ public class LoginService {
         login.setId(loginDTO.getId());
         login.setLogin(loginDTO.getLogin());
 
-        Perfil perfil = perfilRepository.findById(loginDTO.getPerfil())
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + loginDTO.getPerfil()));
+        Perfil perfil = perfilService.buscarPorId(loginDTO.getPerfil());
         login.setPerfil(perfil);
 
         return login;
@@ -50,14 +48,11 @@ public class LoginService {
         login.setLogin(createLoginDTO.getLogin());
         login.setPassword(createLoginDTO.getPassword());
 
-        Perfil perfil = perfilRepository.findById(createLoginDTO.getPerfilId())
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + createLoginDTO.getPerfilId()));
+        Perfil perfil = perfilService.buscarPorId(createLoginDTO.getPerfilId());
         login.setPerfil(perfil);
 
         return login;
     }
-
-
 
     @Transactional
     public Login salvar(Login login) {
@@ -96,8 +91,7 @@ public class LoginService {
         Login existingUser = buscarPorId(id);
         existingUser.setLogin(login.getLogin());
 
-        Perfil perfil = perfilRepository.findById(login.getPerfil())
-                .orElseThrow(() -> new RuntimeException("Perfil não encontrado: " + login.getPerfil()));
+        Perfil perfil = perfilService.buscarPorId(login.getPerfil());
 
         existingUser.setPerfil(perfil);
         return loginRepository.save(existingUser);

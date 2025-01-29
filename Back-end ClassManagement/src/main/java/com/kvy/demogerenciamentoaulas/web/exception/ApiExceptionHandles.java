@@ -124,7 +124,7 @@ public class ApiExceptionHandles {
     }
 
     @ExceptionHandler(DisciplinaUniqueViolationException.class)
-    public ResponseEntity<ErrorMessage> disciplinaUniqueViolationException(RuntimeException ex, HttpServletRequest request){
+    public ResponseEntity<ErrorMessage> disciplinaUniqueViolationException(DisciplinaUniqueViolationException ex, HttpServletRequest request){
 
         log.error("Api Error - ", ex);
         return ResponseEntity
@@ -132,6 +132,7 @@ public class ApiExceptionHandles {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
     }
+
     @ExceptionHandler(DisciplinaEntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> disciplinaEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
 
@@ -142,6 +143,54 @@ public class ApiExceptionHandles {
                 .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
+    @ExceptionHandler(ProfInvalidException.class)
+    public ResponseEntity<ErrorMessage> profInvalidException(RuntimeException ex, HttpServletRequest request) {
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request, HttpStatus.BAD_REQUEST, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ModalidadeUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> modalidadeUniqueViolationException(ModalidadeUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(ModalidadeEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> modalidadeEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TurmaUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> turmaUniqueViolationException(TurmaUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TurmaEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> turmaEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
 
     @ExceptionHandler(CursoEntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> cursoEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
@@ -153,6 +202,36 @@ public class ApiExceptionHandles {
                 .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
+    @ExceptionHandler(CursoUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> cursoUniqueViolationException(CursoUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TurnoEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> turnoEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(TurnoUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> turnoUniqueViolationException(TurnoUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
     @ExceptionHandler(AulaEntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> aulaEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
 
@@ -162,6 +241,37 @@ public class ApiExceptionHandles {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
     }
+
+    @ExceptionHandler(AulaUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> aulaUniqueViolationException(AulaUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
+    @ExceptionHandler(HorarioEntityNotFoundException.class)
+    public ResponseEntity<ErrorMessage> horarioEntityNotFoundException(RuntimeException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.NOT_FOUND, ex.getMessage()));
+    }
+
+    @ExceptionHandler(HorarioUniqueViolationException.class)
+    public ResponseEntity<ErrorMessage> horarioUniqueViolationException(HorarioUniqueViolationException ex, HttpServletRequest request){
+
+        log.error("Api Error - ", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ErrorMessage(request,HttpStatus.CONFLICT, ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessage> methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request, BindingResult result){
 

@@ -43,15 +43,8 @@ public class CursoController {
             })
     @PostMapping
     public ResponseEntity<Curso> createCurso(@Valid @RequestBody CursoDTO cursoDTO) {
-        try {
-            System.out.println("CursoDTO recebido: " + cursoDTO);
             Curso savedCurso = cursoService.salvar(cursoDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedCurso);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
     }
 
     @Operation(summary = "Recuperar curso pelo ID", description = "Recurso para recuperar um curso específico pelo ID",

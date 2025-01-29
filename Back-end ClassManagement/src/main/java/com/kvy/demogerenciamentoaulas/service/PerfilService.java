@@ -2,15 +2,14 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.PerfilEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.PerfilUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.PerfilDTO;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,9 +29,15 @@ public class PerfilService {
     }
 
     @Transactional
-    public Perfil salvar(Perfil perfil) {
-        perfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
-        return perfilRepository.save(perfil);
+    public Perfil salvar(PerfilDTO perfilDTO) {
+        try {
+            Perfil perfil = new Perfil();
+            perfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
+            return perfilRepository.save(perfil);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new PerfilUniqueViolationException(String.format("Tipo sala '%s' já cadastrado", perfilDTO.getNome()));
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -51,13 +56,9 @@ public class PerfilService {
 
     @Transactional
     public void excluir(Long id) {
-        Optional<Perfil> optionalPerfil = perfilRepository.findById(id);
-        if (optionalPerfil.isPresent()) {
-            perfilRepository.delete(optionalPerfil.get());
-            System.out.println("Perfil deletado com sucesso!");
-        } else {
-            throw new RuntimeException("Perfil não encontrado com o ID: " + id);
-        }
+        Perfil optionalPerfil = buscarPorId(id);
+        perfilRepository.delete(optionalPerfil);
+        System.out.println("Perfil deletado com sucesso!");
     }
 
     @Transactional(readOnly = true)

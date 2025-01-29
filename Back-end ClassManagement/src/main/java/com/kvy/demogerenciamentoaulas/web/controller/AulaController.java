@@ -31,21 +31,16 @@ public class AulaController {
             responses = {
                     @ApiResponse(responseCode = "201", description = "Recurso criado com sucesso",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
-                    @ApiResponse(responseCode = "400", description = "Requisição inválida",
+                    @ApiResponse(responseCode = "409", description = "Aula já cadastrada.",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
                     @ApiResponse(responseCode = "422", description = "Dados de entrada inválidos",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PostMapping
     public ResponseEntity<Aula> createAula(@Valid @RequestBody AulaDTO aulaDTO) {
-        try {
-            Aula savedAula = aulaService.salvar(aulaDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+        Aula savedAula = aulaService.salvar(aulaDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAula);
+
     }
 
 
@@ -86,14 +81,7 @@ public class AulaController {
             })
     @PutMapping("/{id}")
     public ResponseEntity<Aula> editarAula(@PathVariable Long id, @Valid @RequestBody AulaDTO aulaDTO) {
-        try {
-            Aula aulaAtualizada = aulaService.editar(id, aulaDTO);
-            return ResponseEntity.ok(aulaAtualizada);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+            return ResponseEntity.ok(aulaService.editar(id, aulaDTO));
     }
 
 

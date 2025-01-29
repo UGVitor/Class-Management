@@ -9,17 +9,90 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../../../style/telasHomes.css">
     <style>
+        .filters-display {
+            margin-top: 80px; 
+            padding: 20px;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
+            height: 70px;
+            gap: 40px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background-color: #019c5c;
+        }
         .filters-display table {
             width: 40%;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px; 
+            flex-grow: 1;
+        }
+
+        .search-container {
+            width: 300px;
+            margin-right: auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 15px;
+            border: 2px solid #fff;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-input:focus {
+            background-color: #fff;
+            color: #019c5c;
+            outline: none;
+            border-color: #019c5c;
+        }
+
+        h1 a {
+            color: #fff;
+            font-size: 28px !important;
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
-    <div id="app" class="container">
+    <div id="app">
         <div class="navbar">
             <header>
                 <h1><a href="home.html">Disciplina</a></h1>
                 <nav>
+                    <!-- Adicione a barra de pesquisa aqui -->
+                    <div class="search-container">
+                        <input 
+                            type="text" 
+                            v-model="searchDisciplina" 
+                            placeholder="Pesquisar disciplina..." 
+                            list="disciplinaList"
+                            class="search-input"
+                        >
+                        <datalist id="disciplinaList">
+                            <option v-for="disciplina in uniqueDisciplinas" :value="disciplina"></option>
+                        </datalist>
+                    </div>
                     <li><a href="../../../index2.html">
                         <i class="fas fa-home"></i>
                     </a></li>
@@ -33,13 +106,15 @@
                     <tr>
                         <th>Nome</th>
                         <th>Professor(a)</th>
-                        <th><button @click="createDisciplina" class="create-btn">
-                            <i class="fas fa-plus"></i> Criar
-                        </button></th>
+                        <th>
+                            <button @click="createDisciplina" class="create-btn">
+                                <i class="fas fa-plus"></i> Criar
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="disciplina in data" :key="disciplina.id">
+                    <tr v-for="disciplina in filteredData" :key="disciplina.id">
                         <td>{{ disciplina.nome }}</td>
                         <td>{{ disciplina.loginNome}}</td>
                         <td>
@@ -57,7 +132,6 @@
             </table>
         </div>
     </div>
-
    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
@@ -68,7 +142,18 @@
                 return {
                     data: [],
                     currentEntity: 'disciplina',
+                    searchDisciplina: '',
+                    uniqueDisciplinas: [] // Alterado para armazenar nomes de disciplinas
                 };
+            },
+            computed: {
+                filteredData() {
+                    if (!this.searchDisciplina) return this.data;
+                    const searchTerm = this.searchDisciplina.toLowerCase();
+                    return this.data.filter(disciplina => 
+                        disciplina.nome.toLowerCase().includes(searchTerm)
+                    );
+                }
             },
             methods: {
                 async fetchData(endpoint) {
@@ -96,6 +181,12 @@
                         disciplina: 'http://localhost:8081/api/v1/disciplinas'
                     };
                     let fetchedData = await this.fetchData(endpoints[entity]);
+                    
+                    // Extrair nomes de disciplinas únicos
+                    const disciplinaSet = new Set();
+                    fetchedData.forEach(d => disciplinaSet.add(d.nome));
+                    this.uniqueDisciplinas = Array.from(disciplinaSet).sort();
+
                     this.data = fetchedData.sort((a, b) => {
                         return a.nome.localeCompare(b.nome);
                     });
