@@ -179,7 +179,7 @@ class TurmaServiceTest {
         Turma turma2 = TurmaAdapter.toEntity(turmaDTO2);
 
         when(turmaRepository.findAll()).thenReturn(Arrays.asList(turma1, turma2));
-        var turmas = turmaService.buscarTodasTurmasComDetalhes();
+        var turmas = turmaService.buscarTodasTurmas();
 
         assertNotNull(turmas);
         assertEquals(2, turmas.size());
@@ -189,7 +189,8 @@ class TurmaServiceTest {
     void deveBuscarTodosAsTurmasEmUmaTabelaVazia() {
 
         when(turmaRepository.findAll()).thenReturn(Collections.emptyList());
-        List<TurmaProjection> turmasEncontrados = turmaService.buscarTodasTurmasComDetalhes();
+        List<TurmaProjection> turmasEncontrados = turmaService.buscarTodasTurmas
+                ();
         assertNotNull(turmasEncontrados);
         assertTrue(turmasEncontrados.isEmpty());
     }

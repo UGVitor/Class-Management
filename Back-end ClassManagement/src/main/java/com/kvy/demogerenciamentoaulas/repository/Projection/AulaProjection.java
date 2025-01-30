@@ -12,4 +12,5 @@ public interface AulaProjection {
     LocalTime getHorarioTermino();
     String getDiaSemanaNome();
     String getTurmaNome();
+    String getTurnoNome();
 }

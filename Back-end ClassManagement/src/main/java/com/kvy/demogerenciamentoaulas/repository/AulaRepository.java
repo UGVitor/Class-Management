@@ -19,7 +19,8 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
             "s.id AS salaId, ts.tipoSala AS tipoSalaNome, s.numero AS salaNumero, " +
             "h.id AS horarioId, h.horaInicio AS horarioInicio, h.horaTermino AS horarioTermino, " +
             "ds.id AS diasDaSemanaId, ds.dia AS diaSemanaNome, " +
-            "t.id AS turmaId, t.nome AS turmaNome " +
+            "t.id AS turmaId, t.nome AS turmaNome, " +
+            "tn.turno as turnoNome " +
             "FROM Aula a " +
             "JOIN a.disciplina d " +
             "JOIN d.login l " +
@@ -27,6 +28,7 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
             "JOIN s.tipoSala ts " +
             "JOIN a.horario h " +
             "JOIN a.turma t "+
+            "JOIN t.turno tn " +
             "JOIN a.diaSemana ds")
     List<AulaProjection> findAllAulasWithDisciplinaNomeAndHorario();
 
@@ -36,7 +38,8 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
             "s.id AS salaId, ts.tipoSala AS tipoSalaNome, s.numero AS salaNumero, " +
             "h.id AS horarioId, h.horaInicio AS horarioInicio, h.horaTermino AS horarioTermino, " +
             "ds.id AS diasDaSemanaId, ds.dia AS diaSemanaNome, " +
-            "t.id AS turmaId, t.nome AS turmaNome " +
+            "t.id AS turmaId, t.nome AS turmaNome, " +
+            "tn.turno as turnoNome " +
             "FROM Aula a " +
             "JOIN a.disciplina d " +
             "JOIN d.login l " +
@@ -44,6 +47,7 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
             "JOIN s.tipoSala ts " +
             "JOIN a.horario h " +
             "JOIN a.turma t " +
+            "JOIN t.turno tn " +
             "JOIN a.diaSemana ds " +
             "WHERE ds.dia = :diaSemanaDia")
     List<AulaProjection> findByDiaSemanaDia(@Param("diaSemanaDia") String diaSemanaDia);

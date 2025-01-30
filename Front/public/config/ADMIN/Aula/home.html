@@ -137,7 +137,7 @@
                 <div class="filters">
                     <h3>Filtros</h3>
         
-                    <!-- Filtro de Dias da Semana -->
+                
                     <div class="filter-group">
                         <label for="diaSemana">Dia da Semana:</label>
                         <select id="diaSemana" v-model="filters.diaSemana">
@@ -146,7 +146,7 @@
                         </select>
                     </div>
         
-                    <!-- Filtro de Professor -->
+                    
                     <div class="filter-group">
                         <label for="professor">Professor:</label>
                         <select id="professor" v-model="filters.professor">
@@ -155,7 +155,7 @@
                         </select>
                     </div>
         
-                    <!-- Filtro de Turma -->
+                   
                     <div class="filter-group">
                         <label for="turma">Turma:</label>
                         <select id="turma" v-model="filters.turma">
@@ -163,7 +163,16 @@
                             <option v-for="t in turmas" :key="t" :value="t">{{ t }}</option>
                         </select>
                     </div>
-        
+
+                    <div class="filter-group">
+                        <label for="turno">Turno:</label>
+                        <select id="turno" v-model="filters.turno">
+                            <option value="">Todos</option>
+                            <option v-for="tn in turnos" :key="tn" :value="tn">{{ tn }}</option>
+                        </select>
+                    </div>
+
+                    
                     <button @click="applyFilters" class="apply-btn">Aplicar Filtros</button>
                 </div>
             </div>
@@ -179,6 +188,7 @@
                                 <th style="width: 158px;">Dias da Semana</th>
                                 <th>Turma</th>
                                 <th>Horário</th>
+                                <th>Turno</th>
                                 <th>Tipo de Sala</th>
                                 <th>Número da Sala</th>
                                 <th>
@@ -196,6 +206,7 @@
                                 <td>{{ aula.diaSemanaNome }}</td>
                                 <td>{{ aula.turmaNome }}</td>
                                 <td style="width: 145px;">{{ aula.horarioInicio }} | {{ aula.horarioTermino }}</td>
+                                <td>{{ aula.turnoNome }}</td>
                                 <td style="width: 120px;">{{ aula.tipoSalaNome }}</td>
                                 <td>{{ aula.salaNumero }}</td>
                                 <td>
@@ -238,11 +249,13 @@
                         filters: {
                             diaSemana: '',
                             professor: '',
-                            turma: ''
+                            turma: '',
+                            turno: ''
                         },
                         diasSemana: [], // Dias da semana dinâmicos
                         professores: [], // Professores dinâmicos
-                        turmas: [] // Turmas dinâmicas
+                        turmas: [],
+                        turnos: [] // Turmas dinâmicas
                     };
                 },
                 methods: {
@@ -281,6 +294,7 @@
                         this.diasSemana = [...new Set(this.rawData.map(aula => aula.diaSemanaNome))];
                         this.professores = [...new Set(this.rawData.map(aula => aula.loginNome))];
                         this.turmas = [...new Set(this.rawData.map(aula => aula.turmaNome))];
+                        this.turnos = [...new Set(this.rawData.map(aula => aula.turnoNome))];
 
                         // Aplicar filtros iniciais
                         this.applyFilters();
@@ -291,7 +305,8 @@
                             return (
                                 (this.filters.diaSemana === '' || aula.diaSemanaNome === this.filters.diaSemana) &&
                                 (this.filters.professor === '' || aula.loginNome === this.filters.professor) &&
-                                (this.filters.turma === '' || aula.turmaNome === this.filters.turma)
+                                (this.filters.turma === '' || aula.turmaNome === this.filters.turma) &&
+                                (this.filters.turno === '' || aula.turnoNome === this.filters.turno)
                             );
                         });
 

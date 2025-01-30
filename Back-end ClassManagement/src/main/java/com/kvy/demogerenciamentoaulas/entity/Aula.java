@@ -87,6 +87,8 @@ public class Aula implements Serializable {
     public String getTurmaNome() {
         return turma != null ? turma.getNome() : null;
     }
+    public String getTurnoNome() {return turma != null ? turma.getTurno().getTurno() : null;
+    }
     public Long getDisciplinaId() {
         return disciplina != null ? disciplina.getId() : null;
     }
