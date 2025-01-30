@@ -1,33 +1,29 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-
 import com.kvy.demogerenciamentoaulas.entity.Turma;
 import com.kvy.demogerenciamentoaulas.entity.Turno;
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Semestre;
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
-import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
+import com.kvy.demogerenciamentoaulas.exception.TurmaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.*;
 import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 
 @RequiredArgsConstructor
 @Service
 public class TurmaService {
-    private TurmaRepository turmaRepository;
-    private CursoService cursoService;
-    private SemestreService semestreService;
-    private TurnoService turnoService;
-    private PeriodoService periodoService;
+
+    private final TurmaRepository turmaRepository;
+    private final CursoService cursoService;
+    private final SemestreService semestreService;
+    private final TurnoService turnoService;
+    private final PeriodoService periodoService;
 
     @Transactional
     public Turma salvar(TurmaDTO turmaDTO) {
@@ -52,7 +48,7 @@ public class TurmaService {
             return turmaRepository.save(turma);
 
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            throw new TipoSalaUniqueViolationException(String.format("Turma '%s' já cadastrado", turmaDTO.getNome()));
+            throw new TurmaUniqueViolationException(String.format("Turma '%s' já cadastrado", turmaDTO.getNome()));
         }
 
     }
@@ -65,9 +61,10 @@ public class TurmaService {
 
 
     @Transactional
-    public List<TurmaProjection> buscarTodasTurmasComDetalhes() {
-        return turmaRepository.findAllTurmas();
+    public List<TurmaProjection> buscarTodasTurmas() {
+        return turmaRepository.findAllTurmasWithPeriodoAndTurnoAndCursoAndSemestre();
     }
+
 
     @Transactional
     public Turma editar(Long id, TurmaDTO turmaDTO) {

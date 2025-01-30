@@ -1,9 +1,10 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
-
+import com.kvy.demogerenciamentoaulas.entity.Aula;
 import com.kvy.demogerenciamentoaulas.entity.Turma;
 import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
 import com.kvy.demogerenciamentoaulas.service.TurmaService;
+import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
 import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
 import com.kvy.demogerenciamentoaulas.web.exception.ErrorMessage;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,15 +44,27 @@ public class TurmaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTurma);
     }
 
+    @Operation(summary = "Recuperar turma pelo ID", description = "Recurso para recuperar uma turma específica pelo ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Turma recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Aula.class))),
+                    @ApiResponse(responseCode = "404", description = "Turma não encontrada",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            })
     @GetMapping("/{id}")
     public ResponseEntity<Turma> getTurmaById(@PathVariable Long id) {
         Turma turma= turmaService.buscarPorId(id);
         return ResponseEntity.ok(turma);
     }
 
+    @Operation(summary = "Listar todas as Turmas", description = "Recurso para listar todas as Turmas",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de Turmas recuperada com sucesso",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AulaDTO.class)))
+            })
     @GetMapping
     public List<TurmaProjection> getAllTurmas() {
-        return turmaService.buscarTodasTurmasComDetalhes();
+        return turmaService.buscarTodasTurmas();
     }
 
     @Operation(summary = "Atualizar uma turma existente", description = "Recurso para atualizar uma turma existente",
