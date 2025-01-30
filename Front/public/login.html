@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tela de Login</title>
     <link rel="icon" href="img/icon.png" type="image/x-icon">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Link para Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style/login.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
             <div class="or-divider">
                 <span>ou</span>
             </div>
-            <button onclick="window.location.href='cadastro.html'">Cadastre-se</button> <!-- Botão Cadastre-se -->
+            <button onclick="window.location.href='cadastro.html'">Cadastre-se</button>
             <p class="error-message" id="error-message">Login ou senha incorretos!</p>
         </div>
     </div>
@@ -35,9 +35,8 @@
             const loginInput = document.getElementById('login').value;
             const passwordInput = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
-    
+
             try {
-                // Realiza a autenticação do usuário
                 const response = await fetch('http://localhost:8081/api/v1/auth', {
                     method: 'POST',
                     headers: {
@@ -45,29 +44,28 @@
                     },
                     body: JSON.stringify({ login: loginInput, password: passwordInput })
                 });
-    
+
                 if (response.ok) {
-                    // Se a autenticação for bem-sucedida, armazena o token e busca o perfil do usuário
                     const data = await response.json();
                     localStorage.setItem('authToken', data.token);
-    
-                    // Busca o perfil do usuário
+
                     const perfilResponse = await fetch(`http://localhost:8081/api/v1/logins/perfil/${loginInput}`, {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${data.token}` // Adiciona o token ao cabeçalho de autorização
+                            'Authorization': `Bearer ${data.token}`
                         }
                     });
-    
+
                     if (perfilResponse.ok) {
-                        const perfilData = await perfilResponse.text(); // Retorna o nome do perfil 
-                        // Redireciona para a página com base no perfil
+                        const perfilData = await perfilResponse.text();
+                        localStorage.setItem('userProfile', perfilData); // Armazena o perfil do usuário
+
                         if (perfilData === "ADMIN") {
-                            window.location.href = 'index2.html'; // Redireciona para a página do administrador
+                            window.location.href = 'index2.html';
                         } else if (perfilData === "PROFESSOR") {
-                            window.location.href = 'config/PROFESSOR/index2.html'; // Redireciona para a página do usuário comum
+                            window.location.href = 'config/PROFESSOR/index2.html';
                         } else if (perfilData === "FISCAL DE CORREDOR") {
-                            window.location.href = 'config/FISCAL CORREDOR/index2.html'; // Redireciona para a página do usuário comum
+                            window.location.href = 'config/FISCAL CORREDOR/index2.html';
                         } else {
                             errorMessage.textContent = 'Perfil desconhecido.';
                             errorMessage.style.display = 'block';
@@ -88,6 +86,7 @@
                 errorMessage.style.display = 'block';
             }
         }
+
     </script>
 </body>
 </html>
