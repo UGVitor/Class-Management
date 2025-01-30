@@ -13,18 +13,21 @@
         }
 
         .navbar-vertical {
-            width: 250px;
-            height: 408px;
+            width: 190px;
+            height: 430px;
             background-color: #019c5c;
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+            margin-top: 60px;
             color: white;
             padding: 20px;
             transition: width 0.3s ease, padding 0.3s ease; /* Transição para width e padding */
         }
 
         .navbar-vertical.collapsed {
-            width: 50px;
+            width: 47px;
             padding: 10px;
-            height: 95px;
+            height: 41px;
         }
 
         .collapse-btn {
@@ -33,13 +36,11 @@
             color: white;
             font-size: 20px;
             cursor: pointer;
-            margin-top: 50px; /* Ajuste conforme necessário */
             margin-bottom: 20px;
         }
 
         .navbar-vertical.collapsed .collapse-btn {
-            margin-top: 50px; /* Ajuste o espaçamento superior */
-            margin-bottom: 10px; /* Ajuste o espaçamento inferior */
+            margin-bottom: 10px; 
         }
 
         .collapse-btn i {
@@ -95,7 +96,7 @@
         .main-content {
             flex: 1;
             padding: 20px;
-            margin-left: 50px;
+            margin-left: 40px;
             transition: margin-left 0.3s ease;
         }
 
@@ -108,7 +109,7 @@
         }
 
         .filters-display table {
-            width: 90%;
+            width: 100%;
         }
     </style>
 </head>
@@ -226,6 +227,7 @@
             </div>
         </div>
 
+        <script src="../../../js/VerificarPerfil.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
         <script>
             const diasSemanaOrdem = {

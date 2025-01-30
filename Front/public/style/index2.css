@@ -1,26 +1,53 @@
 @media (max-width: 768px) {
     .navbar {
-        width: 150px;
+        width: 100%;
+        padding: 10px 15px;
     }
 
-    nav {
-        gap: 15px;
-        font-size: 16px;
+    .navbar h1 {
+        font-size: 18px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        text-align: center;
+    }
+
+    .filter-button, .logout-button {
+        padding: 4px 8px;
+        font-size: 14px;
+    }
+
+    .filter-button {
+        position: static;
+        margin-right: 10px;
+    }
+
+    .logout-button {
+        margin-left: 10px;
     }
 }
 
 @media (max-width: 480px) {
     .navbar {
-        width: 100px;
+        padding: 8px 10px;
     }
 
-    nav {
-        gap: 10px;
-        font-size: 14px;
+    .navbar h1 {
+        font-size: 16px;
     }
 
-    li a {
-        padding: 5px;
+    .filter-button, .logout-button {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
+
+    .filter-button {
+        margin-right: 5px;
+    }
+
+    .logout-button {
+        margin-left: 5px;
     }
 }
 
