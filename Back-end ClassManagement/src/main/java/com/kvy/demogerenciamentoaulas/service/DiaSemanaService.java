@@ -24,6 +24,15 @@ public class DiaSemanaService {
 
     @Transactional
     public DiaSemana salvar(DiaSemanaDTO diaSemanaDTO) {
+        // Validação do DTO e campos obrigatórios
+        if (diaSemanaDTO == null) {
+            throw new IllegalArgumentException("DiaSemanaDTO não pode ser nulo");
+        }
+
+        String dia = diaSemanaDTO.getDia();
+        if (dia == null || dia.trim().isEmpty()) {
+            throw new IllegalArgumentException("O campo 'dia' é obrigatório");
+        }
         try {
             DiaSemana diaSemana = new DiaSemana();
             diaSemana.setDia(TratamentoDeString.capitalizeWords(diaSemanaDTO.getDia()));
@@ -41,6 +50,15 @@ public class DiaSemanaService {
 
     @Transactional
     public DiaSemana editar(Long id, DiaSemanaDTO diaSemanaDTO) {
+        // Validação do DTO e campos obrigatórios
+        if (diaSemanaDTO == null) {
+            throw new IllegalArgumentException("DiaSemanaDTO não pode ser nulo");
+        }
+
+        String dia = diaSemanaDTO.getDia();
+        if (dia == null || dia.trim().isEmpty()) {
+            throw new IllegalArgumentException("O campo 'dia' é obrigatório");
+        }
         DiaSemana existingDiaSemana = buscarPorId(id);
         existingDiaSemana.setDia(TratamentoDeString.capitalizeWords(diaSemanaDTO.getDia()));
         return diaSemanaRepository.save(existingDiaSemana);

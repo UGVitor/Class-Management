@@ -6,7 +6,6 @@ import com.kvy.demogerenciamentoaulas.exception.HorarioUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +32,19 @@ public class HorarioService {
     }
 
     @Transactional
-    public Horario salvar(@Valid HorarioDTO horario) {
+    public Horario salvar(HorarioDTO horario) {
+        // Validação do DTO e campos obrigatórios
+        if (horario == null) {
+            throw new IllegalArgumentException("HorarioDTO não pode ser nulo");
+        }
+
+        if (horario.getHoraInicio() == null) {
+            throw new IllegalArgumentException("A hora de início é obrigatória");
+        }
+
+        if (horario.getHoraTermino() == null) {
+            throw new IllegalArgumentException("A hora de fim é obrigatória");
+        }
         try {
             Horario horario1 = convertToEntity(horario);
             return horarioRepository.save(horario1);

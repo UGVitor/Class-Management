@@ -19,6 +19,15 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade salvar(ModalidadeDTO modalidadeDTO) {
+        // Validação do DTO e campo obrigatório
+        if (modalidadeDTO == null) {
+            throw new IllegalArgumentException("ModalidadeDTO não pode ser nulo");
+        }
+
+        String nomeModalidade = modalidadeDTO.getNome();
+        if (nomeModalidade == null || nomeModalidade.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da modalidade é obrigatório");
+        }
         try {
             Modalidade modalidade = new Modalidade();
             modalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
@@ -26,7 +35,6 @@ public class ModalidadeService {
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             throw new ModalidadeUniqueViolationException(String.format("Modalidade '%s' já cadastrado", modalidadeDTO.getNome()));
         }
-
     }
 
     @Transactional(readOnly = true)
@@ -38,6 +46,15 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade editar(Long id, ModalidadeDTO modalidadeDTO) {
+        // Validação do DTO e campo obrigatório
+        if (modalidadeDTO == null) {
+            throw new IllegalArgumentException("ModalidadeDTO não pode ser nulo");
+        }
+
+        String nomeModalidade = modalidadeDTO.getNome();
+        if (nomeModalidade == null || nomeModalidade.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da modalidade é obrigatório");
+        }
         Modalidade existingModalidade = buscarPorId(id);
         existingModalidade.setNome(TratamentoDeString.capitalizeWords(modalidadeDTO.getNome()));
         return modalidadeRepository.save(existingModalidade);

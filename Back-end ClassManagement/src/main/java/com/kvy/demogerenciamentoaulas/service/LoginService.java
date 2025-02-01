@@ -56,6 +56,17 @@ public class LoginService {
 
     @Transactional
     public Login salvar(Login login) {
+        if (login == null) {
+            throw new IllegalArgumentException("Login não pode ser nulo");
+        }
+
+        if (login.getLogin() == null || login.getLogin().trim().isEmpty()) {
+            throw new IllegalArgumentException("O username é obrigatório");
+        }
+
+        if (login.getPassword() == null || login.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("A senha é obrigatória");
+        }
         try{
             login.setPassword(passwordEncoder.encode(login.getPassword()));
             return loginRepository.save(login);
@@ -74,6 +85,9 @@ public class LoginService {
 
     @Transactional
     public Login editarSenha(Long id, LoginSenhaDTO loginSenhaDTO) {
+        if (loginSenhaDTO == null) {
+            throw new IllegalArgumentException("LoginSenhaDTO não pode ser nulo");
+        }
         if (!loginSenhaDTO.getNovaSenha().equals(loginSenhaDTO.getConfirmaSenha())){
             throw new PasswordInvalidException("Nova senha não confere com confirmação senha.");
         }
@@ -88,6 +102,17 @@ public class LoginService {
 
     @Transactional
     public Login editar(Long id, LoginDTO login) {
+        if (login == null) {
+            throw new IllegalArgumentException("Login não pode ser nulo");
+        }
+
+        if (login.getLogin() == null || login.getLogin().trim().isEmpty()) {
+            throw new IllegalArgumentException("O username é obrigatório");
+        }
+
+        if (login.getPerfil() == null) {
+            throw new IllegalArgumentException("O ID do perfil é obrigatório");
+        }
         Login existingUser = buscarPorId(id);
         existingUser.setLogin(login.getLogin());
 

@@ -21,6 +21,17 @@ public class CursoService {
 
     @Transactional
     public Curso salvar(CursoDTO cursoDTO) {
+        if (cursoDTO == null) {
+            throw new IllegalArgumentException("Curso não pode ser nulo");
+        }
+
+        if (cursoDTO.getCurso() == null || cursoDTO.getCurso().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do curso é obrigatório");
+        }
+
+        if (cursoDTO.getModalidade() == null) {
+            throw new IllegalArgumentException("A modalidade é obrigatória");
+        }
         try {
             Curso curso = new Curso();
             curso.setCurso(TratamentoDeString.capitalizeWords(cursoDTO.getCurso()));
@@ -41,6 +52,17 @@ public class CursoService {
 
     @Transactional
     public Curso editar(Long id, CursoDTO cursoDTO) {
+        if (cursoDTO == null) {
+            throw new IllegalArgumentException("Curso não pode ser nulo");
+        }
+
+        if (cursoDTO.getCurso() == null) {
+            throw new IllegalArgumentException("O nome do curso é obrigatório");
+        }
+
+        if (cursoDTO.getModalidade() == null) {
+            throw new IllegalArgumentException("A modalidade é obrigatória");
+        }
         Curso existingCurso = buscarPorId(id);
         existingCurso.setCurso(cursoDTO.getCurso());
         Modalidade modalidade = modalidadeService.buscarPorId(cursoDTO.getModalidade());
