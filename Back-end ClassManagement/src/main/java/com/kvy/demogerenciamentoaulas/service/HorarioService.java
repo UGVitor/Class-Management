@@ -3,15 +3,12 @@ package com.kvy.demogerenciamentoaulas.service;
 import com.kvy.demogerenciamentoaulas.entity.Horario;
 import com.kvy.demogerenciamentoaulas.exception.HorarioEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.HorarioUniqueViolationException;
-import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +30,18 @@ public class HorarioService {
 
     @Transactional
     public Horario salvar(HorarioDTO horario) {
+        // Validação do DTO e campos obrigatórios
+        if (horario == null) {
+            throw new IllegalArgumentException("HorarioDTO não pode ser nulo");
+        }
+
+        if (horario.getHoraInicio() == null) {
+            throw new IllegalArgumentException("A hora de início é obrigatória");
+        }
+
+        if (horario.getHoraTermino() == null) {
+            throw new IllegalArgumentException("A hora de fim é obrigatória");
+        }
         try {
             Horario horario1 = convertToEntity(horario);
             return horarioRepository.save(horario1);
@@ -50,6 +59,18 @@ public class HorarioService {
 
     @Transactional
     public Horario editar(Long id, Horario horario) {
+        // Validação do DTO e campos obrigatórios
+        if (horario == null) {
+            throw new IllegalArgumentException("HorarioDTO não pode ser nulo");
+        }
+
+        if (horario.getHoraInicio() == null) {
+            throw new IllegalArgumentException("A hora de início é obrigatória");
+        }
+
+        if (horario.getHoraTermino() == null) {
+            throw new IllegalArgumentException("A hora de fim é obrigatória");
+        }
         Horario existingHorario = buscarPorId(id);
         existingHorario.setHoraInicio(horario.getHoraInicio());
         existingHorario.setHoraTermino(horario.getHoraTermino());
