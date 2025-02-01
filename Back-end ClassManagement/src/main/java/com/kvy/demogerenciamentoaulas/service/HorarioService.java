@@ -6,6 +6,7 @@ import com.kvy.demogerenciamentoaulas.exception.HorarioUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class HorarioService {
     }
 
     @Transactional
-    public Horario salvar(HorarioDTO horario) {
+    public Horario salvar(@Valid HorarioDTO horario) {
         try {
             Horario horario1 = convertToEntity(horario);
             return horarioRepository.save(horario1);

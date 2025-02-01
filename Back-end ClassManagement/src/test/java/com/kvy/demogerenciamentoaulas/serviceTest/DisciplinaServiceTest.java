@@ -141,7 +141,7 @@ class DisciplinaServiceTest {
         verify(loginService, times(1)).buscarPorId(disciplinaDTO.getLoginId());
         verify(disciplinaRepository, times(1)).save(any(Disciplina.class));
     }
-    
+
 
     @Test
     void deveLancarExcecaoAoTentarEditarDisciplinaComLoginNaoProfessor() {
