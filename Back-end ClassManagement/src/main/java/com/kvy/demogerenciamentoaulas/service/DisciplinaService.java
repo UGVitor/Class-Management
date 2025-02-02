@@ -26,6 +26,19 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
+        // Validação do DTO e campos obrigatórios
+        if (disciplinaDTO == null) {
+            throw new IllegalArgumentException("DisciplinaDTO não pode ser nulo");
+        }
+
+        if (disciplinaDTO.getLoginId() == null) {
+            throw new IllegalArgumentException("O ID do login é obrigatório");
+        }
+
+        String nomeDisciplina = disciplinaDTO.getNome();
+        if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da disciplina é obrigatório");
+        }
         try {
             Login login = loginService.buscarPorId(disciplinaDTO.getLoginId());
 
@@ -54,6 +67,19 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina editar(Long id, DisciplinaDTO disciplinaDTO) {
+        // Validação do DTO e campos obrigatórios
+        if (disciplinaDTO == null) {
+            throw new IllegalArgumentException("DisciplinaDTO não pode ser nulo");
+        }
+
+        if (disciplinaDTO.getLoginId() == null) {
+            throw new IllegalArgumentException("O ID do login é obrigatório");
+        }
+
+        String nomeDisciplina = disciplinaDTO.getNome();
+        if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da disciplina é obrigatório");
+        }
         Disciplina existingDisciplina = buscarPorId(id);
         existingDisciplina.setNome(TratamentoDeString.capitalizeWords(disciplinaDTO.getNome()));
 
