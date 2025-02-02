@@ -1,6 +1,7 @@
 package com.kvy.demogerenciamentoaulas.web.controller;
 
 import com.kvy.demogerenciamentoaulas.entity.Aula;
+import com.kvy.demogerenciamentoaulas.repository.AulaRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
 import com.kvy.demogerenciamentoaulas.service.AulaService;
 import com.kvy.demogerenciamentoaulas.web.dto.AulaDTO;
@@ -10,9 +11,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,18 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/aulas")
+
+
 public class AulaController {
 
     private final AulaService aulaService;
+    private AulaRepository aulaRepository;
+
+    @GetMapping("/{id}/status")
+    public String getStatusAula(@PathVariable Long id) {
+        Aula aula = aulaRepository.findById(id).orElseThrow();
+        return aula.getStatus();
+    }
 
     @Operation(summary = "Criar uma nova aula", description = "Recurso para criar uma nova aula",
             responses = {
@@ -101,5 +111,6 @@ public class AulaController {
         List<AulaProjection> aulas = aulaService.buscarAulasPorDia(diaSemana);
         return ResponseEntity.ok(aulas);
     }
+
 
 }
