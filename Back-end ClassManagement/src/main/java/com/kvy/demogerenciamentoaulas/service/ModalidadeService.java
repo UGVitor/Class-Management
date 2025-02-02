@@ -21,7 +21,6 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade salvar(ModalidadeDTO modalidadeDTO) {
-        // Validação do DTO e campo obrigatório
         if (modalidadeDTO == null) {
             throw new IllegalArgumentException("ModalidadeDTO não pode ser nulo");
         }
@@ -48,7 +47,6 @@ public class ModalidadeService {
 
     @Transactional
     public Modalidade editar(Long id, ModalidadeDTO modalidadeDTO) {
-        // Validação do DTO e campo obrigatório
         if (modalidadeDTO == null) {
             throw new IllegalArgumentException("ModalidadeDTO não pode ser nulo");
         }

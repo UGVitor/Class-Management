@@ -27,7 +27,7 @@ public class TipoSalaDTOFixture {
     }
     public static TipoSalaDTO fixtureTipoSalaDTOEmptyName() {
         return TipoSalaDTO.builder()
-                .id(6L)
+                .id(1L)
                 .tipoSala("")
                 .build();
     }

@@ -26,6 +26,13 @@ public class PeriodoService {
 
     @Transactional
     public Periodo salvar(PeriodoDTO periodoDTO) {
+        if (periodoDTO == null) {
+            throw new IllegalArgumentException("Periodo não pode ser nulo");
+        }
+
+        if (periodoDTO.getNome() == null || periodoDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do periodo é obrigatório");
+        }
         try {
             Periodo periodo = new Periodo();
             periodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
@@ -44,6 +51,13 @@ public class PeriodoService {
 
     @Transactional
     public Periodo editar(Long id, PeriodoDTO periodoDTO) {
+        if (periodoDTO == null) {
+            throw new IllegalArgumentException("Periodo não pode ser nulo");
+        }
+
+        if (periodoDTO.getNome() == null || periodoDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do periodo é obrigatório");
+        }
         Periodo existingPeriodo = buscarPorId(id);
         existingPeriodo.setNome(TratamentoDeString.capitalizeWords(periodoDTO.getNome()));
         return periodoRepository.save(existingPeriodo);

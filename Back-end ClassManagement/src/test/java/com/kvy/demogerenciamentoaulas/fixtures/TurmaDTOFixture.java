@@ -7,6 +7,10 @@ public class TurmaDTOFixture {
         return TurmaDTO.builder()
                 .id(1L)
                 .nome("ADS5")
+                .periodo(1L)
+                .semestre(1L)
+                .curso(1L)
+                .turno(1L)
                 .build();
     }
 

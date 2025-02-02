@@ -108,10 +108,10 @@ class SemestreServiceTest {
 
     }
     @Test
-    void deveTentarEditarUmSemestreComIdInvalidoeRetornarSemestreEntityNotFoundException() {
+    void deveTentarEditarUmSemestreComIdInvalidoeRetornarIllegalArgumentException() {
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOIdInvalido();
 
-        assertThrows(SemestreEntityNotFoundException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 semestreService.editar(semestreDTO.getId(), semestreDTO));
     }
 
@@ -119,9 +119,6 @@ class SemestreServiceTest {
     void deveTentarEditarUmSemestreComNomeNulleRetornarIllegalArgumentException(){
         Long semestreId = 1L;
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTONullName();
-        Semestre semestre= SemestreAdapter.toEntity(semestreDTO);
-
-        when(semestreRepository.findById(semestreId)).thenReturn(Optional.of(semestre));
 
         assertThrows(IllegalArgumentException.class, () ->
                 semestreService.editar(semestreId, semestreDTO));
@@ -132,9 +129,6 @@ class SemestreServiceTest {
     void deveTentarEditarUmSemestreComNomeVazioeRetornarIllegalArgumentException() {
         Long semestreId = 1L;
         SemestreDTO semestreDTO = SemestreDTOFixture.fixtureSemestreDTOEmptyName();
-        Semestre semestre= SemestreAdapter.toEntity(semestreDTO);
-
-        when(semestreRepository.findById(semestreId)).thenReturn(Optional.of(semestre));
 
         assertThrows(IllegalArgumentException.class, () ->
                 semestreService.editar(semestreId, semestreDTO));

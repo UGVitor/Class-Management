@@ -25,6 +25,13 @@ public class SemestreService {
 
     @Transactional
     public Semestre salvar(SemestreDTO semestreDTO) {
+        if (semestreDTO == null) {
+            throw new IllegalArgumentException("Semestre não pode ser nulo");
+        }
+
+        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do semestre é obrigatório");
+        }
         try {
             Semestre semestre = new Semestre();
             semestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
@@ -43,12 +50,20 @@ public class SemestreService {
 
     @Transactional
     public Semestre editar(Long id, SemestreDTO semestreDTO) {
+        if (semestreDTO == null) {
+            throw new IllegalArgumentException("Semestre não pode ser nulo");
+        }
+
+        if (semestreDTO.getSemestre() == null || semestreDTO.getSemestre().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do semestre é obrigatório");
+        }
         Semestre existingSemestre = buscarPorId(id);
         existingSemestre.setSemestre(TratamentoDeString.capitalizeWords(semestreDTO.getSemestre()));
         return semestreRepository.save(existingSemestre);
     }
     @Transactional
     public void excluir(Long id) {
+
         Semestre optionalSemestre = buscarPorId(id);
         semestreRepository.delete(optionalSemestre);
         System.out.println("Deletado com Sucesso!");

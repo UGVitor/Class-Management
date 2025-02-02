@@ -115,10 +115,10 @@ class DiaSemanaServiceTest {
 
     }
     @Test
-    void deveTentarEditarUmDiaSemanaComIdInvalido() {
+    void deveTentarEditarUmDiaSemanaComIdInvalidoERetornarIllegalArgumentException() {
         DiaSemanaDTO diaSemanaDTO =  DiaSemanaDTOFixture.fixtureDiaSemanaDTOIdInvalido();
 
-        assertThrows(DiaSemanaEntityNotFoundException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 diaSemanaService.editar(diaSemanaDTO.getId(), diaSemanaDTO));
     }
 
@@ -126,9 +126,6 @@ class DiaSemanaServiceTest {
     void deveTentarEditarUmDiaSemanaComNomeNull(){
         Long disSemanaId = 1L;
         DiaSemanaDTO diaSemanaDTO =  DiaSemanaDTOFixture.fixtureDiaSemanaDTONullName();
-        DiaSemana diaSemana=  DiaSemanaAdapter.toEntity(diaSemanaDTO);
-
-        when(diaSemanaRepository.findById(disSemanaId)).thenReturn(Optional.of(diaSemana));
 
         assertThrows(IllegalArgumentException.class, () ->
                 diaSemanaService.editar(disSemanaId, diaSemanaDTO));
@@ -139,9 +136,6 @@ class DiaSemanaServiceTest {
     void deveTentarEditarUmDiaSemanaComNomeVazio() {
         Long disSemanaId = 1L;
         DiaSemanaDTO diaSemanaDTO =  DiaSemanaDTOFixture.fixtureDiaSemanaDTOEmptyName();
-        DiaSemana diaSemana= DiaSemanaAdapter.toEntity(diaSemanaDTO);
-
-        when(diaSemanaRepository.findById(disSemanaId)).thenReturn(Optional.of(diaSemana));
 
         assertThrows(IllegalArgumentException.class, () ->
                 diaSemanaService.editar(disSemanaId, diaSemanaDTO));

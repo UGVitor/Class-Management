@@ -57,7 +57,20 @@ class HorarioServiceTest {
         verify(horarioRepository, times(1)).save(any(Horario.class));
     }
 
+    @Test
+    void deveTentarSalvarUmHorarioComHoraInicioNulaERetornarIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> horarioService.salvar(horarioDTOComHoraInicioNula));
+    }
 
+    @Test
+    void deveTentarSalvarUmHorarioComHoraTerminoNulaERetornarIllegalArgumentException() {
+        assertThrows(IllegalArgumentException.class, () -> horarioService.salvar(horarioDTOComHoraTerminoNula));
+    }
+
+    @Test
+    void deveTentarSalvarUmHorarioComIdNuloERetornarErro() {
+        assertThrows(IllegalArgumentException.class, () -> horarioService.salvar(horarioDTOSemId));
+    }
     @Test
     void deveBuscarUmHorarioPorId() {
         Horario horario = horarioService.convertToEntity(horarioDTOValido);
@@ -98,6 +111,31 @@ class HorarioServiceTest {
 
         assertThrows(HorarioEntityNotFoundException.class, () -> horarioService.editar(1L, new Horario()));
     }
+
+    @Test
+    void deveTentarEditarUmHorarioComHoraInicioNulaERetornarHorarioEntityNotFoundException() {
+        Horario horario = horarioService.convertToEntity(horarioDTOComHoraInicioNula);
+        assertThrows(HorarioEntityNotFoundException.class, () -> horarioService.editar(1L, horario));
+    }
+
+    @Test
+    void deveTentarEditarUmHorarioComHoraTerminoNulaERetornarHorarioEntityNotFoundException() {
+        Horario horario = horarioService.convertToEntity(horarioDTOComHoraTerminoNula);
+        assertThrows(HorarioEntityNotFoundException.class, () -> horarioService.editar(1L, horario));
+    }
+
+    @Test
+    void deveTentarEditarUmHorarioComHoraInicioPosteriorAHoraTerminoERetornarHorarioEntityNotFoundException() {
+        Horario horario = horarioService.convertToEntity(horarioDTOInvalido);
+        assertThrows(HorarioEntityNotFoundException.class, () -> horarioService.editar(1L, horario));
+    }
+
+    @Test
+    void deveTentarEditarUmHorarioComIdNuloERetornarHorarioEntityNotFoundException() {
+        Horario horario = horarioService.convertToEntity(horarioDTOSemId);
+        assertThrows(HorarioEntityNotFoundException.class, () -> horarioService.editar(null, horario));
+    }
+
 
 
     @Test

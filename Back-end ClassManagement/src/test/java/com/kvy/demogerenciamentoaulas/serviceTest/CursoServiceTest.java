@@ -1,15 +1,19 @@
 package com.kvy.demogerenciamentoaulas.serviceTest;
 
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
+import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.kvy.demogerenciamentoaulas.fixtures.CursoDTOFixture;
+
+import static org.junit.Assert.assertThrows;
 
 
-    @Nested
+@Nested
     @ExtendWith(MockitoExtension.class)
     class CursoServiceTest {
 
@@ -17,11 +21,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
         private CursoRepository cursoRepository;
 
         @InjectMocks
-        private com.kvy.demogerenciamentoaulas.service.CursoService CursoService;
+        private com.kvy.demogerenciamentoaulas.service.CursoService cursoService;
 
         @Test
         void deveSalvarUmCurso() {
+            CursoDTO cursoDTO = CursoDTOFixture.fixtureCursoDTONullName();
+            assertThrows(IllegalArgumentException.class, () -> cursoService.salvar(cursoDTO));
         }
+
 
         @Test
         void deveBuscarUmCursoPorId() {

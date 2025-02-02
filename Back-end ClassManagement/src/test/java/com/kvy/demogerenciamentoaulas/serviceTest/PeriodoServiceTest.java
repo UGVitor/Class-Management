@@ -113,9 +113,6 @@ class PeriodoServiceTest {
     void deveTentarEditarUmPeriodoComNomeNulleRetornarIllegalArgumentException() {
         Long periodoId = 1L;
         PeriodoDTO periodoDTO = PeriodoDTOFixture.fixturePeriodoDTONullName();
-        Periodo periodoAtual = PeriodoAdapter.toEntity(periodoDTO);
-
-        when(periodoRepository.findById(periodoId)).thenReturn(Optional.of(periodoAtual));
 
         assertThrows(IllegalArgumentException.class, () ->
                 periodoService.editar(periodoId, periodoDTO));
@@ -125,9 +122,7 @@ class PeriodoServiceTest {
     void deveTentarEditarUmPeriodoComNomeVazioeRetornarIllegalArgumentException() {
         Long periodoId = 1L;
         PeriodoDTO periodoDTO = PeriodoDTOFixture.fixturePeriodoDTOEmptyName();
-        Periodo periodoAtual = PeriodoAdapter.toEntity(periodoDTO);
 
-        when(periodoRepository.findById(periodoId)).thenReturn(Optional.of(periodoAtual));
 
         assertThrows(IllegalArgumentException.class, () ->
                 periodoService.editar(periodoId, periodoDTO));

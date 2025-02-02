@@ -21,6 +21,13 @@ public class TipoSalaService {
 
     @Transactional
     public TipoSalaDTO salvar(TipoSalaDTO tipoSalaDTO) {
+        if (tipoSalaDTO == null) {
+            throw new IllegalArgumentException("O tipo de sala não pode ser nulo");
+        }
+
+        if (tipoSalaDTO.getTipoSala() == null) {
+            throw new IllegalArgumentException("O nome do Tipo de Sala é obrigatório");
+        }
         try {
             TipoSala tipoSala = new TipoSala();
             tipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
@@ -39,6 +46,13 @@ public class TipoSalaService {
 
     @Transactional
     public TipoSala editar(Long id, TipoSalaDTO tipoSalaDTO) {
+        if (tipoSalaDTO == null) {
+            throw new IllegalArgumentException("O tipo de sala não pode ser nulo");
+        }
+
+        if (tipoSalaDTO.getTipoSala() == null) {
+            throw new IllegalArgumentException("O nome do Tipo de Sala é obrigatório");
+        }
         TipoSala existingTipoSala = buscarPorId(id);
         existingTipoSala.setTipoSala(TratamentoDeString.capitalizeWords(tipoSalaDTO.getTipoSala()));
         return tipoSalaRepository.save(existingTipoSala);

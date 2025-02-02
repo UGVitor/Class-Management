@@ -37,7 +37,9 @@ public class HorarioService {
         if (horario == null) {
             throw new IllegalArgumentException("HorarioDTO não pode ser nulo");
         }
-
+        if(horario.getId() == null) {
+            throw new IllegalArgumentException("O Id de Horario não pode ser nulo");
+        }
         if (horario.getHoraInicio() == null) {
             throw new IllegalArgumentException("A hora de início é obrigatória");
         }

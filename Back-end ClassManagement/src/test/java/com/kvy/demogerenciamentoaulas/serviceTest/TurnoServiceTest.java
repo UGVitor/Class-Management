@@ -108,10 +108,10 @@ class TurnoServiceTest {
         assertEquals("Turno Atualizado", turnoEditado.getTurno());
     }
     @Test
-    void deveTentarEditarUmTurnoComIdInvalidoeRetornarTurnoEntityNotFoundException() {
+    void deveTentarEditarUmTurnoComIdInvalidoeRetornarIllegalArgumentException() {
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOIdInvalido();
 
-        assertThrows(TurnoEntityNotFoundException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
         {turnoService.editar(turnoDTO.getId(), turnoDTO);});
     }
 
@@ -119,9 +119,6 @@ class TurnoServiceTest {
     void deveTentarEditarUmTurnoComNomeNulleRetornarIllegalArgumentException(){
         Long turnoId = 1L;
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTONullName();
-        Turno turnoAtualizado = TurnoAdapter.toEntity(turnoDTO);
-
-        when(turnoRepository.findById(turnoId)).thenReturn(Optional.of(turnoAtualizado));
 
         assertThrows(IllegalArgumentException.class, () ->
         {turnoService.editar(turnoId, turnoDTO);});
@@ -132,9 +129,6 @@ class TurnoServiceTest {
     void deveTentarEditarUmTurnoComNomeVazioeRetornarIllegalArgumentException() {
         Long turnoId = 1L;
         TurnoDTO turnoDTO = TurnoDTOFixture.fixtureTurnoDTOEmptyName();
-        Turno turnoAtualizado = TurnoAdapter.toEntity(turnoDTO);
-
-        when(turnoRepository.findById(turnoId)).thenReturn(Optional.of(turnoAtualizado));
 
         assertThrows(IllegalArgumentException.class, () ->
         {turnoService.editar(turnoId, turnoDTO);});

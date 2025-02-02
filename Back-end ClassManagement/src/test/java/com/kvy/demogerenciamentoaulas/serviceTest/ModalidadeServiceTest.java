@@ -111,7 +111,7 @@ class ModalidadeServiceTest {
     void deveTentarEditarUmModalidadeComIdInvalido() {
         ModalidadeDTO modalideDTO = ModalidadeDTOFixture.fixtureModalidadeDTOIdInvalido();
 
-        assertThrows(ModalidadeEntityNotFoundException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 modalideService.editar(modalideDTO.getId(), modalideDTO));
     }
 
@@ -119,9 +119,6 @@ class ModalidadeServiceTest {
     void deveTentarEditarUmModalidadeComNomeNull(){
         Long modalideId = 1L;
         ModalidadeDTO modalideDTO = ModalidadeDTOFixture.fixtureModalidadeDTONullName();
-        Modalidade modalide= ModalidadeAdapter.toEntity(modalideDTO);
-
-        when(modalideRepository.findById(modalideId)).thenReturn(Optional.of(modalide));
 
         assertThrows(IllegalArgumentException.class, () ->
                 modalideService.editar(modalideId, modalideDTO));
@@ -132,9 +129,6 @@ class ModalidadeServiceTest {
     void deveTentarEditarUmModalidadeComNomeVazio() {
         Long modalideId = 1L;
         ModalidadeDTO modalideDTO = ModalidadeDTOFixture.fixtureModalidadeDTOEmptyName();
-        Modalidade modalide= ModalidadeAdapter.toEntity(modalideDTO);
-
-        when(modalideRepository.findById(modalideId)).thenReturn(Optional.of(modalide));
 
         assertThrows(IllegalArgumentException.class, () ->
                 modalideService.editar(modalideId, modalideDTO));

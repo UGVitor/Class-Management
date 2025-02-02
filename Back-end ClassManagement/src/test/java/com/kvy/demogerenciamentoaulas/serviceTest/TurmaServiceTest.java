@@ -1,8 +1,7 @@
 package com.kvy.demogerenciamentoaulas.serviceTest;
 import com.kvy.demogerenciamentoaulas.Adapter.TurmaAdapter;
 import com.kvy.demogerenciamentoaulas.Adapter.TurnoAdapter;
-import com.kvy.demogerenciamentoaulas.entity.Turma;
-import com.kvy.demogerenciamentoaulas.entity.Turno;
+import com.kvy.demogerenciamentoaulas.entity.*;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.TurnoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.fixtures.TurmaDTOFixture;
@@ -10,15 +9,16 @@ import com.kvy.demogerenciamentoaulas.fixtures.TurnoDTOFixture;
 import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
 import com.kvy.demogerenciamentoaulas.repository.TurmaRepository;
 import com.kvy.demogerenciamentoaulas.repository.TurnoRepository;
-import com.kvy.demogerenciamentoaulas.service.TurmaService;
-import com.kvy.demogerenciamentoaulas.service.TurnoService;
+import com.kvy.demogerenciamentoaulas.service.*;
 import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
 import com.kvy.demogerenciamentoaulas.web.dto.TurnoDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
@@ -36,9 +36,18 @@ class TurmaServiceTest {
 
     @Mock
     private TurmaRepository turmaRepository;
+    @Mock
+    private CursoService cursoService;
+    @Mock
+    private TurnoService turnoService;
+    @Mock
+    private SemestreService semestreService;
+    @Mock
+    private PeriodoService periodoService;
 
     @InjectMocks
     private TurmaService turmaService;
+
 
     @Test
     void deveSalvarUmTurmaValido() {
@@ -49,7 +58,7 @@ class TurmaServiceTest {
 
         Turma turmaSalvo = turmaService.salvar(turmaDTO);
 
-        assertEquals(turmaEsperado.getTurno(), turmaSalvo.getNome());
+        assertEquals(turmaEsperado.getNome(), turmaSalvo.getNome());
     }
 
 
@@ -97,28 +106,72 @@ class TurmaServiceTest {
 
     @Test
     void deveEditarUmTurmaComIdValido() {
-
         Long turmaId = 1L;
-        TurmaDTO turmaDTO = TurmaDTOFixture.fixtureTurmaDTO1(); // Usando o fixture para o DTO inicial
+        TurmaDTO turmaDTO = TurmaDTOFixture.fixtureTurmaDTO1();
         turmaDTO.setNome("Turma Atualizado");
+        turmaDTO.setPeriodo(1L);
+        turmaDTO.setSemestre(1L);
+        turmaDTO.setCurso(1L);
+        turmaDTO.setTurno(1L);
 
-        Turma turmaAtualizado = TurmaAdapter.toEntity(turmaDTO);
+        Periodo periodo = new Periodo();
+        periodo.setId(1L);
 
+        Semestre semestre = new Semestre();
+        semestre.setId(1L);
 
-        when(turmaRepository.findById(turmaId)).thenReturn(Optional.of(turmaAtualizado));
-        when(turmaRepository.save(Mockito.any(Turma.class))).thenReturn(turmaAtualizado);
+        Curso curso = new Curso();
+        curso.setId(1L);
 
+        Turno turno = new Turno();
+        turno.setId(1L);
+
+        Turma turmaExistente = new Turma();
+        turmaExistente.setId(turmaId);
+        turmaExistente.setNome("Turma Antiga");
+        turmaExistente.setPeriodo(periodo);
+        turmaExistente.setSemestre(semestre);
+        turmaExistente.setCurso(curso);
+        turmaExistente.setTurno(turno);
+
+        Turma turmaAtualizado = new Turma();
+        turmaAtualizado.setId(turmaId);
+        turmaAtualizado.setNome("Turma Atualizado");
+        turmaAtualizado.setPeriodo(periodo);
+        turmaAtualizado.setSemestre(semestre);
+        turmaAtualizado.setCurso(curso);
+        turmaAtualizado.setTurno(turno);
+
+        when(turmaRepository.findById(turmaId)).thenReturn(Optional.of(turmaExistente));
+        when(periodoService.buscarPorId(turmaDTO.getPeriodo())).thenReturn(periodo);
+        when(semestreService.buscarPorId(turmaDTO.getSemestre())).thenReturn(semestre);
+        when(cursoService.buscarPorId(turmaDTO.getCurso())).thenReturn(curso);
+        when(turnoService.buscarPorId(turmaDTO.getTurno())).thenReturn(turno);
+        when(turmaRepository.save(any(Turma.class))).thenReturn(turmaAtualizado);
 
         Turma turmaEditado = turmaService.editar(turmaId, turmaDTO);
 
-        assertNotNull(turmaEditado);
-        assertEquals("Turma Atualizado", turmaEditado.getTurno());
+        assertNotNull(turmaEditado, "A turma editada não deveria ser nula.");
+        assertEquals("Turma Atualizado", turmaEditado.getNome(), "O nome da turma não foi atualizado corretamente.");
+        assertEquals(1L, turmaEditado.getPeriodo().getId(), "O período da turma não foi atualizado corretamente.");
+        assertEquals(1L, turmaEditado.getSemestre().getId(), "O semestre da turma não foi atualizado corretamente.");
+        assertEquals(1L, turmaEditado.getCurso().getId(), "O curso da turma não foi atualizado corretamente.");
+        assertEquals(1L, turmaEditado.getTurno().getId(), "O turno da turma não foi atualizado corretamente.");
+
+        verify(turmaRepository, times(1)).findById(turmaId);
+        verify(periodoService, times(1)).buscarPorId(turmaDTO.getPeriodo());
+        verify(semestreService, times(1)).buscarPorId(turmaDTO.getSemestre());
+        verify(cursoService, times(1)).buscarPorId(turmaDTO.getCurso());
+        verify(turnoService, times(1)).buscarPorId(turmaDTO.getTurno());
+        verify(turmaRepository, times(1)).save(any(Turma.class));
     }
+
+
     @Test
-    void deveTentarEditarUmTurmaComIdInvalidoeRetornarTurnoEntityNotFoundException() {
+    void deveTentarEditarUmTurmaComIdInvalidoeRetornarIllegalArgumentException() {
         TurmaDTO turmaDTO = TurmaDTOFixture.fixtureTurmaDTOIdInvalido();
 
-        assertThrows(TurmaEntityNotFoundException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
         {turmaService.editar(turmaDTO.getId(), turmaDTO);});
     }
 
@@ -126,9 +179,6 @@ class TurmaServiceTest {
     void deveTentarEditarUmTurmaComNomeNulleRetornarIllegalArgumentException(){
         Long turmaId = 1L;
         TurmaDTO turmaDTO = TurmaDTOFixture.fixtureTurmaDTONullName();
-        Turma turmaAtualizado = TurmaAdapter.toEntity(turmaDTO);
-
-        when(turmaRepository.findById(turmaId)).thenReturn(Optional.of(turmaAtualizado));
 
         assertThrows(IllegalArgumentException.class, () ->
         {turmaService.editar(turmaId, turmaDTO);});
@@ -139,9 +189,6 @@ class TurmaServiceTest {
     void deveTentarEditarUmTurmaComNomeVazioeRetornarIllegalArgumentException() {
         Long turmaId = 1L;
         TurmaDTO turmaDTO = TurmaDTOFixture.fixtureTurmaDTOEmptyName();
-        Turma turmaAtualizado = TurmaAdapter.toEntity(turmaDTO);
-
-        when(turmaRepository.findById(turmaId)).thenReturn(Optional.of(turmaAtualizado));
 
         assertThrows(IllegalArgumentException.class, () ->
         {turmaService.editar(turmaId, turmaDTO);});
@@ -173,22 +220,30 @@ class TurmaServiceTest {
     @Test
     void deveBuscarTodosOsTurmasExistentes() {
 
-        TurmaDTO turmaDTO1 = TurmaDTOFixture.fixtureTurmaDTO1();
-        TurmaDTO turmaDTO2 = TurmaDTOFixture.fixtureTurmaDTO2();
-        Turma turma1 = TurmaAdapter.toEntity(turmaDTO1);
-        Turma turma2 = TurmaAdapter.toEntity(turmaDTO2);
+        TurmaProjection turmaProjection1 = mock(TurmaProjection.class);
+        TurmaProjection turmaProjection2 = mock(TurmaProjection.class);
 
-        when(turmaRepository.findAll()).thenReturn(Arrays.asList(turma1, turma2));
+        when(turmaProjection1.getId()).thenReturn(1L);
+        when(turmaProjection1.getNome()).thenReturn("Turma A");
+        when(turmaProjection2.getId()).thenReturn(2L);
+        when(turmaProjection2.getNome()).thenReturn("Turma B");
+
+        List<TurmaProjection> listaTurmas = List.of(turmaProjection1, turmaProjection2);
+        when(turmaRepository.findAllTurmasWithPeriodoAndTurnoAndCursoAndSemestre()).thenReturn(listaTurmas);
+
         var turmas = turmaService.buscarTodasTurmas();
 
-        assertNotNull(turmas);
-        assertEquals(2, turmas.size());
+        assertNotNull(turmas, "A lista de turmas não deveria ser nula.");
+        assertEquals(2, turmas.size(), "A quantidade de turmas retornada é diferente da esperada.");
+        assertEquals(1L, turmas.get(0).getId());
+        assertEquals("Turma A", turmas.get(0).getNome());
+        assertEquals(2L, turmas.get(1).getId());
+        assertEquals("Turma B", turmas.get(1).getNome());
+        verify(turmaRepository, times(1)).findAllTurmasWithPeriodoAndTurnoAndCursoAndSemestre();
     }
 
     @Test
     void deveBuscarTodosAsTurmasEmUmaTabelaVazia() {
-
-        when(turmaRepository.findAll()).thenReturn(Collections.emptyList());
         List<TurmaProjection> turmasEncontrados = turmaService.buscarTodasTurmas
                 ();
         assertNotNull(turmasEncontrados);

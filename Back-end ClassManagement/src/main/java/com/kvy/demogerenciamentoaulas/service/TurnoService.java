@@ -23,6 +23,13 @@ public class TurnoService {
 
     @Transactional
     public Turno salvar(TurnoDTO turnoDTO) {
+        if (turnoDTO == null) {
+            throw new IllegalArgumentException("Turno não pode ser nulo");
+        }
+
+        if (turnoDTO.getTurno() == null || turnoDTO.getTurno().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do turno é obrigatório");
+        }
         try {
             Turno turno = new Turno();
             turno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));
@@ -40,6 +47,13 @@ public class TurnoService {
 
     @Transactional
     public Turno editar(Long id, TurnoDTO turnoDTO) {
+        if (turnoDTO == null) {
+            throw new IllegalArgumentException("Turno não pode ser nulo");
+        }
+
+        if (turnoDTO.getTurno() == null || turnoDTO.getTurno().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do turno é obrigatório");
+        }
         Turno existingTurno = buscarPorId(id);
 
         existingTurno.setTurno(TratamentoDeString.capitalizeWords(turnoDTO.getTurno()));

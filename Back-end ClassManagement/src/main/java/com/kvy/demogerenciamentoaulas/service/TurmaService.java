@@ -27,6 +27,30 @@ public class TurmaService {
 
     @Transactional
     public Turma salvar(TurmaDTO turmaDTO) {
+        if (turmaDTO == null) {
+            throw new IllegalArgumentException("TurmaDTO não pode ser nulo");
+        }
+
+        if (turmaDTO.getNome() == null || turmaDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da turma é obrigatório");
+        }
+
+        if (turmaDTO.getPeriodo() == null) {
+            throw new IllegalArgumentException("O período da turma é obrigatório");
+        }
+
+        if (turmaDTO.getTurno() == null) {
+            throw new IllegalArgumentException("O turno da turma é obrigatório");
+        }
+
+        if (turmaDTO.getSemestre() == null) {
+            throw new IllegalArgumentException("O semestre da turma é obrigatório");
+        }
+
+        if (turmaDTO.getCurso() == null) {
+            throw new IllegalArgumentException("O curso da turma é obrigatório");
+        }
+
         try {
             String nomeFormatado = TratamentoDeString.convertToUpperCase(turmaDTO.getNome());
 
@@ -68,6 +92,30 @@ public class TurmaService {
 
     @Transactional
     public Turma editar(Long id, TurmaDTO turmaDTO) {
+        if (turmaDTO == null) {
+            throw new IllegalArgumentException("TurmaDTO não pode ser nulo");
+        }
+
+        if (turmaDTO.getNome() == null || turmaDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da turma é obrigatório");
+        }
+
+        if (turmaDTO.getPeriodo() == null) {
+            throw new IllegalArgumentException("O período da turma é obrigatório");
+        }
+
+        if (turmaDTO.getTurno() == null) {
+            throw new IllegalArgumentException("O turno da turma é obrigatório");
+        }
+
+        if (turmaDTO.getSemestre() == null) {
+            throw new IllegalArgumentException("O semestre da turma é obrigatório");
+        }
+
+        if (turmaDTO.getCurso() == null) {
+            throw new IllegalArgumentException("O curso da turma é obrigatório");
+        }
+
 
         Turma existingTurma = buscarPorId(id);
 
