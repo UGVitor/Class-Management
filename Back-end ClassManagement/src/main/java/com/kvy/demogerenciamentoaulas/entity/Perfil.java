@@ -27,6 +27,9 @@ public class Perfil implements Serializable {
     @JsonManagedReference("perfil-login")
     private Set<Login> logins = new HashSet<>();
 
+    public Perfil(long l, String professor) {
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
