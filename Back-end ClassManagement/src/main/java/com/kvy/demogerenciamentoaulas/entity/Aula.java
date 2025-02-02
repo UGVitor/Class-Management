@@ -17,7 +17,6 @@ public class Aula implements Serializable {
 
     public Aula() {}
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -72,25 +71,30 @@ public class Aula implements Serializable {
     public LocalTime getHorarioInicio() {return horario != null ? horario.getHoraInicio() : null;}
     public LocalTime getHorarioTermino() {return horario != null ? horario.getHoraTermino() : null;}
     public String getDiaSemanaNome() {return diaSemana != null ? diaSemana.getDia() : null;}
-
     public String getTipoSalaNome(){return sala != null ? sala.getTipoSala().getTipoSala() : null;}
+    public String getDisciplinaNome() { return disciplina != null ? disciplina.getNome() : null; }
+    public String getLoginNome() { return disciplina != null ? disciplina.getLogin().getLogin() : null; }
+    public String getTurmaNome() { return turma != null ? turma.getNome() : null; }
+    public String getTurnoNome() { return turma != null ? turma.getTurno().getTurno() : null; }
+    public Long getDisciplinaId() { return disciplina != null ? disciplina.getId() : null; }
 
 
-    public String getDisciplinaNome() {
-        return disciplina != null ? disciplina.getNome() : null;
-    }
 
-    public String getLoginNome() {
-        return disciplina != null ? disciplina.getLogin().getLogin() : null;
-    }
+    public String getStatus() {
+        LocalTime agora = LocalTime.now();
+        LocalTime inicio = getHorarioInicio();
+        LocalTime termino = getHorarioTermino();
 
-    public String getTurmaNome() {
-        return turma != null ? turma.getNome() : null;
-    }
-    public String getTurnoNome() {return turma != null ? turma.getTurno().getTurno() : null;
-    }
-    public Long getDisciplinaId() {
-        return disciplina != null ? disciplina.getId() : null;
-    }
+        if (inicio == null || termino == null) {
+            return "Horário não definido";
+        }
 
+        if (agora.isBefore(inicio)) {
+            return "Não Iniciada";
+        } else if (agora.isAfter(inicio) && agora.isBefore(termino)) {
+            return "Em Andamento";
+        } else {
+            return "Finalizada";
+        }
+    }
 }

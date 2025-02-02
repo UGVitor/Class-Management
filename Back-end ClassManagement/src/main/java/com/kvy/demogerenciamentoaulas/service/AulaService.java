@@ -23,6 +23,31 @@ public class AulaService {
 
     @Transactional
     public Aula salvar(AulaDTO aulaDTO) {
+
+        if (aulaDTO == null) {
+            throw new IllegalArgumentException("AulaDTO não pode ser nulo");
+        }
+
+        if (aulaDTO.getDisciplinaId() == null) {
+            throw new IllegalArgumentException("O ID da disciplina é obrigatório");
+        }
+
+        if (aulaDTO.getHorarioId() == null) {
+            throw new IllegalArgumentException("O ID do horário é obrigatório");
+        }
+
+        if (aulaDTO.getSalaId() == null) {
+            throw new IllegalArgumentException("O ID da sala é obrigatório");
+        }
+
+        if (aulaDTO.getTurmaId() == null) {
+            throw new IllegalArgumentException("O ID da turma é obrigatório");
+        }
+
+        if (aulaDTO.getDiaSemanaId() == null) {
+            throw new IllegalArgumentException("O ID do dia da semana é obrigatório");
+        }
+
         try {
             Aula aula = new Aula();
 
@@ -57,6 +82,30 @@ public class AulaService {
 
     @Transactional
     public Aula editar(Long id, AulaDTO aulaDTO) {
+        if (aulaDTO == null) {
+            throw new IllegalArgumentException("AulaDTO não pode ser nulo");
+        }
+
+        if (aulaDTO.getDisciplinaId() == null) {
+            throw new IllegalArgumentException("O ID da disciplina é obrigatório");
+        }
+
+        if (aulaDTO.getHorarioId() == null) {
+            throw new IllegalArgumentException("O ID do horário é obrigatório");
+        }
+
+        if (aulaDTO.getSalaId() == null) {
+            throw new IllegalArgumentException("O ID da sala é obrigatório");
+        }
+
+        if (aulaDTO.getTurmaId() == null) {
+            throw new IllegalArgumentException("O ID da turma é obrigatório");
+        }
+
+        if (aulaDTO.getDiaSemanaId() == null) {
+            throw new IllegalArgumentException("O ID do dia da semana é obrigatório");
+        }
+
         Aula aulaExistente = buscarPorId(id);
 
         Disciplina disciplina = disciplinaService.buscarPorId(aulaDTO.getDisciplinaId());
