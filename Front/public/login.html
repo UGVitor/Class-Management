@@ -36,6 +36,10 @@
             const passwordInput = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
 
+            // Limpa a mensagem de erro anterior
+            errorMessage.textContent = '';
+            errorMessage.style.display = 'none';
+
             try {
                 const response = await fetch('http://localhost:8081/api/v1/auth', {
                     method: 'POST',
@@ -72,12 +76,17 @@
                         }
                     } else {
                         const errorText = await perfilResponse.text();
-                        errorMessage.textContent = errorText;
+                        errorMessage.textContent = 'Erro ao obter perfil do usuário.';
                         errorMessage.style.display = 'block';
                     }
                 } else {
-                    const errorText = await response.text();
-                    errorMessage.textContent = errorText;
+                    // Captura o erro da resposta
+                    const errorData = await response.json();
+                    if (errorData.message === "Credenciais Inválidas") {
+                        errorMessage.textContent = 'Login ou senha incorretos. Tente novamente.';
+                    } else {
+                        errorMessage.textContent = 'Ocorreu um erro ao tentar fazer login. Tente novamente.';
+                    }
                     errorMessage.style.display = 'block';
                 }
             } catch (error) {
@@ -86,7 +95,6 @@
                 errorMessage.style.display = 'block';
             }
         }
-
     </script>
 </body>
 </html>
