@@ -1,10 +1,12 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Periodo;
+import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.PeriodoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.PeriodoUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.PeriodoRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.PeriodoDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,5 +59,24 @@ public class PeriodoService {
     @Transactional(readOnly = true)
     public List<Periodo> buscarTodos() {
         return periodoRepository.findAll();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarPeriodoPadrao() {
+        adicionarPeriodoSeNaoExistir("Primeiro");
+        adicionarPeriodoSeNaoExistir("Segundo");
+        adicionarPeriodoSeNaoExistir("Terceiro");
+        adicionarPeriodoSeNaoExistir("Quarto");
+        adicionarPeriodoSeNaoExistir("Quinto");
+        adicionarPeriodoSeNaoExistir("Sexto");
+    }
+
+    private void adicionarPeriodoSeNaoExistir(String nomePeriodo) {
+        if (!periodoRepository.existsByNome(nomePeriodo)) {
+            Periodo periodo = new Periodo();
+            periodo.setNome(nomePeriodo);
+            periodoRepository.save(periodo);
+        }
     }
 }

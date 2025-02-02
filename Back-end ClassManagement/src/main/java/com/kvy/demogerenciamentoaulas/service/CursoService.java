@@ -2,11 +2,13 @@ package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
+import com.kvy.demogerenciamentoaulas.entity.Periodo;
 import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.CursoUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.CursoProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,5 +82,21 @@ public class CursoService {
     @Transactional(readOnly = true)
     public List<CursoProjection> buscarTodos() {
         return cursoRepository.findAllCursosWithModalidadeNome();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarCursoPadrao() {
+        adicionarCursoSeNaoExistir("Análise e Desenvolvimento de Sistemas");
+    }
+
+    private void adicionarCursoSeNaoExistir(String nomeCurso) {
+        if (!cursoRepository.existsByCurso(nomeCurso)) {
+            Curso curso = new Curso();
+            curso.setCurso(nomeCurso);
+            Modalidade modalidade = modalidadeService.buscarPorId(1L);
+            curso.setModalidade(modalidade);
+            cursoRepository.save(curso);
+        }
     }
 }

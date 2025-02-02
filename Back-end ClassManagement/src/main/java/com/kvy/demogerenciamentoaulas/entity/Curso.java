@@ -26,8 +26,8 @@ public class Curso implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "Curso", nullable = false, unique = true, length = 100)
-    private String Curso;
+    @Column(name = "curso", nullable = false, unique = true, length = 100)
+    private String curso;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_modalidade", nullable = false)
