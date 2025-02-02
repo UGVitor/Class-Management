@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ModalidadeRepository extends JpaRepository<Modalidade, Long> {
+    boolean existsByNome(String nomeTipoSala);
 }

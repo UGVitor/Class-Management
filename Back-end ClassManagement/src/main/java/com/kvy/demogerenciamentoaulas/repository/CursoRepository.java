@@ -10,7 +10,10 @@ import java.util.List;
 @Repository
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
-    @Query("SELECT c.id AS id, c.Curso AS curso, m.nome AS modalidadeNome " +
+    @Query("SELECT c.id AS id, c.curso AS curso, m.nome AS modalidadeNome " +
             "FROM Curso c JOIN c.modalidade m")
     List<CursoProjection> findAllCursosWithModalidadeNome();
+
+
+    boolean existsByCurso(String nomeCurso);
 }

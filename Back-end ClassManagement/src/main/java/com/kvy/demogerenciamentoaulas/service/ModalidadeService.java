@@ -1,10 +1,12 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
+import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.ModalidadeUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.ModalidadeRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.ModalidadeDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +72,20 @@ public class ModalidadeService {
     @Transactional(readOnly = true)
     public List<Modalidade> buscarTodos() {
         return modalidadeRepository.findAll();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarModalidadePadrao() {
+        adicionarModalidadeSeNaoExistir("Superior");
+    }
+
+    private void adicionarModalidadeSeNaoExistir(String nomeModalidade) {
+        if (!modalidadeRepository.existsByNome(nomeModalidade)) {
+            Modalidade modalidade = new Modalidade();
+            modalidade.setNome(nomeModalidade);
+            modalidadeRepository.save(modalidade);
+        }
     }
 }
 
