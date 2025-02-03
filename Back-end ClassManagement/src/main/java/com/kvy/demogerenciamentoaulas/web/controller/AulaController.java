@@ -29,13 +29,6 @@ import java.util.List;
 public class AulaController {
 
     private final AulaService aulaService;
-    private AulaRepository aulaRepository;
-
-    @GetMapping("/{id}/status")
-    public String getStatusAula(@PathVariable Long id) {
-        Aula aula = aulaRepository.findById(id).orElseThrow();
-        return aula.getStatus();
-    }
 
     @Operation(summary = "Criar uma nova aula", description = "Recurso para criar uma nova aula",
             responses = {

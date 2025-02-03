@@ -7,8 +7,7 @@
     <title>Home Aula</title>
     <link rel="icon" href="../../../img/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="/style/telasHomes.css">
-
+    <link rel="stylesheet" href="../../style/telasHomes.css">
     <style>
         .container {
             display: flex;
@@ -115,10 +114,7 @@
         }
 
         .status-balao {
-            padding: 2px 6px;
-            border-radius: 1px;
             color: rgb(0, 0, 0);
-
         }
 
         .status-nao-iniciada {
@@ -197,7 +193,7 @@
                             <th>Status</th>
                             <th style="width: 250px;">Disciplina</th>
                             <th>Professor(a)</th>
-                            <th style="width: 158px;">Dias da Semana</th>
+                            <th style="width: 170px;">Dias da Semana</th>
                             <th>Turma</th>
                             <th>Horário</th>
                             <th>Turno</th>
@@ -221,7 +217,7 @@
                             <td>{{ aula.loginNome }}</td>
                             <td>{{ aula.diaSemanaNome }}</td>
                             <td>{{ aula.turmaNome }}</td>
-                            <td style="width: 145px;">{{ aula.horarioInicio }} | {{ aula.horarioTermino }}</td>
+                            <td style="width: 165px;">{{ aula.horarioInicio }} | {{ aula.horarioTermino }}</td>
                             <td>{{ aula.turnoNome }}</td>
                             <td style="width: 120px;">{{ aula.tipoSalaNome }}</td>
                             <td>{{ aula.salaNumero }}</td>
@@ -233,7 +229,7 @@
         </div>
     </div>
 
-    <script src="/js/VerificarAdminANDProf.js"></script>
+    <script src="../../js/VerificarAdminANDProf.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script>
         const diasSemanaOrdem = {
@@ -287,7 +283,7 @@
 
                         const aulasComStatus = data.map(aula => ({
                             ...aula,
-                            status: this.calcularStatus(aula.horarioInicio, aula.horarioTermino)
+                            status: this.calcularStatus(aula.diaSemanaNome, aula.horarioInicio, aula.horarioTermino)
                         }));
 
                         return aulasComStatus;
@@ -297,11 +293,35 @@
                     }
                 },
 
-                calcularStatus(horarioInicio, horarioTermino) {
+                calcularStatus(diaSemanaNome, horarioInicio, horarioTermino) {
                     const agora = new Date();
+                    const diaAtual = agora.getDay(); 
                     const horaAtual = agora.getHours();
                     const minutoAtual = agora.getMinutes();
 
+                    // Mapeia o nome do dia da semana para o valor correspondente (0 a 6)
+                    const diasSemanaMap = {
+                        "Domingo": 0,
+                        "Segunda-Feira": 1,
+                        "Terça-Feira": 2,
+                        "Quarta-Feira": 3,
+                        "Quinta-Feira": 4,
+                        "Sexta-Feira": 5,
+                        "Sábado": 6
+                    };
+
+                    const diaAula = diasSemanaMap[diaSemanaNome] || 0;
+
+                    // Se o dia da aula for diferente do dia atual, a aula não está em andamento
+                    if (diaAula !== diaAtual) {
+                        if (diaAula < diaAtual || (diaAula === 0 && diaAtual !== 0)) {
+                            return "Concluída";
+                        } else {
+                            return "Não Iniciada";
+                        }
+                    }
+
+                    // Se o dia da aula for o mesmo que o dia atual, compara os horários
                     const [horaInicio, minutoInicio] = horarioInicio;
                     const [horaTermino, minutoTermino] = horarioTermino;
 
