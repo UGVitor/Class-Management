@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Aula</title>
+    <link rel="icon" href="../../../img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/style/telasHomes.css">
+
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .navbar-vertical {
+            width: 190px;
+            height: 430px;
+            background-color: #019c5c;
+            border-top: 1px solid #ccc;
+            border-left: 1px solid #ccc;
+            margin-top: 60px;
+            color: white;
+            padding: 20px;
+            transition: width 0.3s ease, padding 0.3s ease;
+        }
+
+        .navbar-vertical.collapsed {
+            width: 47px;
+            padding: 10px;
+            height: 41px;
+        }
+
+        .collapse-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .navbar-vertical.collapsed .collapse-btn {
+            margin-bottom: 10px;
+        }
+
+        .collapse-btn i {
+            font-size: 24px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .collapse-btn:hover i {
+            transform: scale(1.1);
+        }
+
+        .filters {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .navbar-vertical.collapsed .filters {
+            display: none;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+        }
+
+        .filter-group select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .apply-btn {
+            background-color: #00341e;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .apply-btn:hover {
+            background-color: #015c36;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 40px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .navbar-vertical.collapsed+.main-content {
+            margin-left: 50px;
+        }
+
+        .filters-display {
+            margin-top: 70px;
+        }
+
+        .filters-display table {
+            width: 100%;
+        }
+
+        .status-balao {
+            padding: 2px 6px;
+            border-radius: 1px;
+            color: rgb(0, 0, 0);
+
+        }
+
+        .status-nao-iniciada {
+            background-color: rgb(255, 0, 0);
+        }
+
+        .status-em-andamento {
+            background-color: rgb(255, 255, 0);
+        }
+
+        .status-concluida {
+            background-color: rgb(0, 228, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" class="container">
+        <div class="navbar">
+            <header>
+                <h1><a href="home.html">Aula</a></h1>
+                <nav>
+                    <li>
+                        <a href="index2.html">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </li>
+                </nav>
+            </header>
+        </div>
+
+        <div class="navbar-vertical" :class="{ 'collapsed': isCollapsed }">
+            <button @click="toggleCollapse" class="collapse-btn">
+                <i :class="isCollapsed ? 'fas fa-bars' : 'fas fa-times'"></i>
+            </button>
+
+            <div class="filters">
+                <h3>Filtros</h3>
+                <div class="filter-group">
+                    <label for="diaSemana">Dia da Semana:</label>
+                    <select id="diaSemana" v-model="filters.diaSemana">
+                        <option value="">Todos</option>
+                        <option v-for="dia in diasSemana" :key="dia" :value="dia">{{ dia }}</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="professor">Professor:</label>
+                    <select id="professor" v-model="filters.professor">
+                        <option value="">Todos</option>
+                        <option v-for="prof in professores" :key="prof" :value="prof">{{ prof }}</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="turma">Turma:</label>
+                    <select id="turma" v-model="filters.turma">
+                        <option value="">Todos</option>
+                        <option v-for="t in turmas" :key="t" :value="t">{{ t }}</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="turno">Turno:</label>
+                    <select id="turno" v-model="filters.turno">
+                        <option value="">Todos</option>
+                        <option v-for="tn in turnos" :key="tn" :value="tn">{{ tn }}</option>
+                    </select>
+                </div>
+                <button @click="applyFilters" class="apply-btn">Aplicar Filtros</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="filters-display">
+                <table v-if="currentEntity === 'aula'">
+                    <thead>
+                        <tr>
+                            <th>Status</th>
+                            <th style="width: 250px;">Disciplina</th>
+                            <th>Professor(a)</th>
+                            <th style="width: 158px;">Dias da Semana</th>
+                            <th>Turma</th>
+                            <th>Horário</th>
+                            <th>Turno</th>
+                            <th>Tipo de Sala</th>
+                            <th>Número da Sala</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="aula in data" :key="aula.id">
+                            <td :class="[
+                                'status-balao',
+                                {
+                                    'status-nao-iniciada': aula.status === 'Não Iniciada',
+                                    'status-em-andamento': aula.status === 'Em Andamento',
+                                    'status-concluida': aula.status === 'Concluída'
+                                }
+                            ]">
+                                {{ aula.status }}
+                            </td>
+                            <td>{{ aula.disciplinaNome }}</td>
+                            <td>{{ aula.loginNome }}</td>
+                            <td>{{ aula.diaSemanaNome }}</td>
+                            <td>{{ aula.turmaNome }}</td>
+                            <td style="width: 145px;">{{ aula.horarioInicio }} | {{ aula.horarioTermino }}</td>
+                            <td>{{ aula.turnoNome }}</td>
+                            <td style="width: 120px;">{{ aula.tipoSalaNome }}</td>
+                            <td>{{ aula.salaNumero }}</td>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/VerificarAdminANDProf.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        const diasSemanaOrdem = {
+            "Segunda-Feira": 1,
+            "Terça-Feira": 2,
+            "Quarta-Feira": 3,
+            "Quinta-Feira": 4,
+            "Sexta-Feira": 5,
+            "Sábado": 6,
+            "Domingo": 7
+        };
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    isCollapsed: true,
+                    data: [],
+                    rawData: [],
+                    currentEntity: 'aula',
+                    filters: {
+                        diaSemana: '',
+                        professor: '',
+                        turma: '',
+                        turno: ''
+                    },
+                    diasSemana: [],
+                    professores: [],
+                    turmas: [],
+                    turnos: []
+                };
+            },
+            methods: {
+                toggleCollapse() {
+                    this.isCollapsed = !this.isCollapsed;
+                    console.log('Navbar collapsed:', this.isCollapsed);
+                },
+                async fetchData(endpoint) {
+                    try {
+                        const token = localStorage.getItem('authToken');
+                        const response = await fetch(endpoint, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        if (!response.ok) {
+                            throw new Error('Erro na resposta da API');
+                        }
+                        const data = await response.json();
+
+                        const aulasComStatus = data.map(aula => ({
+                            ...aula,
+                            status: this.calcularStatus(aula.horarioInicio, aula.horarioTermino)
+                        }));
+
+                        return aulasComStatus;
+                    } catch (error) {
+                        console.error('Erro ao buscar dados:', error);
+                        return [];
+                    }
+                },
+
+                calcularStatus(horarioInicio, horarioTermino) {
+                    const agora = new Date();
+                    const horaAtual = agora.getHours();
+                    const minutoAtual = agora.getMinutes();
+
+                    const [horaInicio, minutoInicio] = horarioInicio;
+                    const [horaTermino, minutoTermino] = horarioTermino;
+
+                    const inicio = new Date();
+                    inicio.setHours(horaInicio, minutoInicio, 0);
+
+                    const termino = new Date();
+                    termino.setHours(horaTermino, minutoTermino, 0);
+
+                    if (agora < inicio) {
+                        return "Não Iniciada";
+                    } else if (agora >= inicio && agora <= termino) {
+                        return "Em Andamento";
+                    } else {
+                        return "Concluída";
+                    }
+                },
+
+                async showAll(entity) {
+                    this.currentEntity = entity;
+                    const endpoints = {
+                        aula: 'http://localhost:8081/api/v1/aulas',
+                    };
+
+                    this.rawData = await this.fetchData(endpoints[entity]);
+
+                    this.diasSemana = [...new Set(this.rawData.map(aula => aula.diaSemanaNome))];
+                    this.professores = [...new Set(this.rawData.map(aula => aula.loginNome))];
+                    this.turmas = [...new Set(this.rawData.map(aula => aula.turmaNome))];
+                    this.turnos = [...new Set(this.rawData.map(aula => aula.turnoNome))];
+
+                    this.applyFilters();
+                },
+
+                applyFilters() {
+                    this.data = this.rawData.filter(aula => {
+                        return (
+                            (this.filters.diaSemana === '' || aula.diaSemanaNome === this.filters.diaSemana) &&
+                            (this.filters.professor === '' || aula.loginNome === this.filters.professor) &&
+                            (this.filters.turma === '' || aula.turmaNome === this.filters.turma) &&
+                            (this.filters.turno === '' || aula.turnoNome === this.filters.turno)
+                        );
+                    });
+
+                    this.data.sort((a, b) => {
+                        const diaA = diasSemanaOrdem[a.diaSemanaNome] || 0;
+                        const diaB = diasSemanaOrdem[b.diaSemanaNome] || 0;
+
+                        if (diaA !== diaB) {
+                            return diaA - diaB;
+                        }
+
+                        const [hourA, minuteA] = a.horarioInicio;
+                        const [hourB, minuteB] = b.horarioInicio;
+
+                        if (hourA === hourB) {
+                            return minuteA - minuteB;
+                        }
+                        return hourA - hourB;
+                    });
+
+                    this.data = this.data.map(item => ({
+                        ...item,
+                        horarioInicio: this.formatTime(item.horarioInicio),
+                        horarioTermino: this.formatTime(item.horarioTermino),
+                        status: item.status
+                    }));
+                },
+
+                formatTime(timeArray) {
+                    if (Array.isArray(timeArray) && timeArray.length === 2) {
+                        const [hours, minutes] = timeArray;
+                        const formattedHours = hours.toString().padStart(2, '0');
+                        const formattedMinutes = minutes.toString().padStart(2, '0');
+                        return `${formattedHours}:${formattedMinutes}`;
+                    }
+                    return '00:00';
+                },
+            },
+            mounted() {
+                this.showAll('aula');
+            }
+        });
+    </script>
+
+    <footer>
+        &copy; 2024 Sistema de Gerenciamento de Aulas. Todos os direitos reservados. |
+        <a href="config/Privacidade.html">Política de Privacidade</a> |
+        <a href="public/config/Termos.html">Termos de Uso</a> |
+        <a href="https://portal.ifpe.edu.br/palmares/">Contato</a>
+    </footer>
+</body>
+
+</html>
