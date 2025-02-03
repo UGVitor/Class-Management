@@ -78,23 +78,4 @@ public class Aula implements Serializable {
     public String getTurnoNome() { return turma != null ? turma.getTurno().getTurno() : null; }
     public Long getDisciplinaId() { return disciplina != null ? disciplina.getId() : null; }
 
-
-
-    public String getStatus() {
-        LocalTime agora = LocalTime.now();
-        LocalTime inicio = getHorarioInicio();
-        LocalTime termino = getHorarioTermino();
-
-        if (inicio == null || termino == null) {
-            return "Horário não definido";
-        }
-
-        if (agora.isBefore(inicio)) {
-            return "Não Iniciada";
-        } else if (agora.isAfter(inicio) && agora.isBefore(termino)) {
-            return "Em Andamento";
-        } else {
-            return "Finalizada";
-        }
-    }
 }
