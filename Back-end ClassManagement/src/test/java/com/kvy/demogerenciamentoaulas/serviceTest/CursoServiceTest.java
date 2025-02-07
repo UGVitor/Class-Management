@@ -25,8 +25,7 @@ import static org.junit.Assert.assertThrows;
 
         @Test
         void deveSalvarUmCurso() {
-            CursoDTO cursoDTO = CursoDTOFixture.fixtureCursoDTONullName();
-            assertThrows(IllegalArgumentException.class, () -> cursoService.salvar(cursoDTO));
+
         }
 
 

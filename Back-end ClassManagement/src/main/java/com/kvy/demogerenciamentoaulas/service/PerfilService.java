@@ -30,6 +30,14 @@ public class PerfilService {
 
     @Transactional
     public Perfil salvar(PerfilDTO perfilDTO) {
+
+        if (perfilDTO == null) {
+            throw new IllegalArgumentException("Perfil não pode ser nulo");
+        }
+
+        if (perfilDTO.getNome() == null || perfilDTO.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do Perfil é obrigatório");
+        }
         try {
             Perfil perfil = new Perfil();
             perfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
@@ -48,6 +56,13 @@ public class PerfilService {
 
     @Transactional
     public Perfil editar(Long id, Perfil perfil) {
+        if (perfil == null) {
+            throw new IllegalArgumentException("Perfil não pode ser nulo");
+        }
+
+        if (perfil.getNome() == null || perfil.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do Perfil é obrigatório");
+        }
         Perfil existingPerfil = buscarPorId(id);
 
         existingPerfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
