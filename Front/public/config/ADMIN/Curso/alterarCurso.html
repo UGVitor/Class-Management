@@ -104,6 +104,7 @@
                     fetch(`http://localhost:8081/api/v1/curso/${id}`, { 
                         method: 'PUT',
                         headers: {
+                            'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify(cursoData),

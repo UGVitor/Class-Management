@@ -26,11 +26,13 @@ public class SalaDTO {
     @Positive(message = "O campo numero deve ser um valor positivo")
     @Min(value = 1, message = "O número deve ser pelo menos 1")
     @Max(value = 99, message = "O número não pode exceder 99")
-    private int numero;
+    @NotNull(message = "O campo número é obrigatório")
+    private Integer numero;
 
     @Positive(message = "O campo capacidade deve ser um valor positivo")
     @Min(value = 1, message = "A capacidade deve ser pelo menos 1")
     @Max(value = 999, message = "A capacidade não pode exceder 999")
-    private int capacidade;
+    @NotNull(message = "O campo capacidade é obrigatório")
+    private Integer capacidade;
 
 }
