@@ -61,7 +61,7 @@ public class HorarioController {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
             })
     @PutMapping("/{id}")
-    public ResponseEntity<HorarioDTO> updateHorario(@PathVariable Long id,@Valid @RequestBody HorarioDTO horarioDTO) {
+    public ResponseEntity<HorarioDTO> updateHorario(@PathVariable Long id, @Valid @RequestBody HorarioDTO horarioDTO) {
         if (!horarioDTO.isHorarioValido()) {
             throw new IllegalArgumentException("O horário de início deve ser anterior ao horário de término");
         }

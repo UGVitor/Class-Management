@@ -23,7 +23,7 @@ public class Aula implements Serializable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_disciplina")
+    @JoinColumn(name = "id_disciplina", nullable = false, unique = true)
     @JsonBackReference("disciplina-aula")
     private Disciplina disciplina;
 

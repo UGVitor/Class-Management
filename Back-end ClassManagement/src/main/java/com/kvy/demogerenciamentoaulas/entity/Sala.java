@@ -20,10 +20,10 @@ public class Sala implements Serializable {
     private Long id;
 
     @Column(name = "numero", nullable = false, length = 2)
-    private int numero;
+    private Integer numero;
 
     @Column(name = "capacidade", nullable = false, length = 3)
-    private int capacidade;
+    private Integer capacidade;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_tiposala", nullable = false)

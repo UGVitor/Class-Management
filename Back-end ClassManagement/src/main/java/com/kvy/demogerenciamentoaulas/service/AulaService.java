@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -23,7 +24,6 @@ public class AulaService {
 
     @Transactional
     public Aula salvar(AulaDTO aulaDTO) {
-
         if (aulaDTO == null) {
             throw new IllegalArgumentException("AulaDTO não pode ser nulo");
         }
@@ -48,6 +48,18 @@ public class AulaService {
             throw new IllegalArgumentException("O ID do dia da semana é obrigatório");
         }
 
+        Optional<Aula> aulaExistente = aulaRepository.findByUniqueAttributes(
+                aulaDTO.getDisciplinaId(),
+                aulaDTO.getHorarioId(),
+                aulaDTO.getSalaId(),
+                aulaDTO.getTurmaId(),
+                aulaDTO.getDiaSemanaId()
+        );
+
+        if (aulaExistente.isPresent()) {
+            throw new AulaUniqueViolationException("Já existe uma aula com os mesmos atributos.");
+        }
+
         try {
             Aula aula = new Aula();
 
@@ -68,11 +80,9 @@ public class AulaService {
 
             return aulaRepository.save(aula);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
-            throw new AulaUniqueViolationException("Tipo sala já cadastrado");
+            throw new AulaUniqueViolationException("Erro de integridade ao salvar a aula: " + ex.getMessage());
         }
-
     }
-
 
     @Transactional
     public Aula buscarPorId(Long id) {

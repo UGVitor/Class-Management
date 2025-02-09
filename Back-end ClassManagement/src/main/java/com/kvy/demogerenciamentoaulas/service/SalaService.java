@@ -25,6 +25,18 @@ public class SalaService {
 
     @Transactional
     public Sala salvar(SalaDTO salaDTO) {
+        if (salaDTO == null) {
+            throw new IllegalArgumentException("Sala não pode ser nulo");
+        }
+
+        if (salaDTO.getCapacidade() == null) {
+            throw new IllegalArgumentException("A capacidade é obrigatório");
+        }
+
+        if (salaDTO.getNumero() == null) {
+            throw new IllegalArgumentException("O número é obrigatório");
+        }
+
         try {
             Sala sala = new Sala();
             sala.setNumero(salaDTO.getNumero());

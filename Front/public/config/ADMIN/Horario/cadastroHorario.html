@@ -66,10 +66,10 @@
                         body: JSON.stringify(horarioData)
                     })
                     .then(response => {
-                        if (response.ok) {
-                            return response.json();
+                        if (!response.ok) {
+                            throw new Error(`Erro HTTP: ${response.status}`);
                         }
-                        throw new Error('Erro ao criar o horário');
+                        return response.json();
                     })
                     .then(data => {
                         alert('Horário criado com sucesso!');

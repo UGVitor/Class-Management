@@ -31,10 +31,6 @@ public class DisciplinaService {
             throw new IllegalArgumentException("DisciplinaDTO não pode ser nulo");
         }
 
-        if (disciplinaDTO.getLoginId() == null) {
-            throw new IllegalArgumentException("O ID do login é obrigatório");
-        }
-
         String nomeDisciplina = disciplinaDTO.getNome();
         if (nomeDisciplina == null || nomeDisciplina.trim().isEmpty()) {
             throw new IllegalArgumentException("O nome da disciplina é obrigatório");
