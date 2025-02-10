@@ -93,7 +93,7 @@ public class LoginService {
         }
 
         Login user = buscarPorId(id);
-        if (!loginSenhaDTO.getSenhaAtual().equals(user.getPassword())){
+        if (!passwordEncoder.matches(loginSenhaDTO.getSenhaAtual(), user.getPassword())){
             throw new PasswordInvalidException("Sua senha não confere.");
         }
         user.setPassword(passwordEncoder.encode(loginSenhaDTO.getNovaSenha()));

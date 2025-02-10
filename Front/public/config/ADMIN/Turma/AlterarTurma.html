@@ -161,8 +161,8 @@
 
         async updateTurma() {
             try {
-                const { id, periodo, turno, curso, semestre } = this.turma;
-                const turmaData = { periodo, turno, curso, semestre };
+                const { id, nome, periodo, turno, curso, semestre } = this.turma;
+                const turmaData = { nome, periodo, turno, curso, semestre };
                 const token = localStorage.getItem('authToken');
 
                 const response = await fetch(`http://localhost:8081/api/v1/turmas/${id}`, {
