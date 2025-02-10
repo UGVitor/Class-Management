@@ -35,12 +35,12 @@ public class PerfilService {
             throw new IllegalArgumentException("Perfil não pode ser nulo");
         }
 
-        if (perfilDTO.getNome() == null || perfilDTO.getNome().trim().isEmpty()) {
+        if (perfilDTO.getNome() == null) {
             throw new IllegalArgumentException("O nome do Perfil é obrigatório");
         }
         try {
             Perfil perfil = new Perfil();
-            perfil.setNome(TratamentoDeString.capitalizeWords(perfil.getNome()));
+            perfil.setNome(TratamentoDeString.capitalizeWords(perfilDTO.getNome()));
             return perfilRepository.save(perfil);
         } catch (org.springframework.dao.DataIntegrityViolationException ex) {
             throw new PerfilUniqueViolationException(String.format("Tipo sala '%s' já cadastrado", perfilDTO.getNome()));

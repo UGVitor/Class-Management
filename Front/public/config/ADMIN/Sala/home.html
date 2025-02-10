@@ -104,6 +104,7 @@
                 async deleteSala(id) {
                     if (confirm("Tem certeza que deseja excluir esta sala?")) {
                         try {
+                            const token = localStorage.getItem('authToken');
                             const response = await fetch(`http://localhost:8081/api/v1/salas/${id}`, {
                                 method: 'DELETE',
                                 headers: {
