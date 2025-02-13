@@ -2,14 +2,14 @@ package com.kvy.demogerenciamentoaulas.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-@Getter @Setter @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Getter @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "login")
 public class Login implements Serializable {
