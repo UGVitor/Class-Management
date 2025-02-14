@@ -1,16 +1,20 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Disciplina;
 import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.LoginEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.LoginUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.PasswordInvalidException;
 import com.kvy.demogerenciamentoaulas.repository.LoginRepository;
+import com.kvy.demogerenciamentoaulas.repository.PerfilRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.LoginProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.CreateLoginDTO;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginDTO;
 import com.kvy.demogerenciamentoaulas.web.dto.LoginDTO.LoginSenhaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +26,9 @@ public class LoginService {
 
     private final LoginRepository loginRepository;
     private final PasswordEncoder passwordEncoder;
+
     private final PerfilService perfilService;
+
 
     public LoginDTO convertToDTO(Login login) {
         return new LoginDTO(login.getId(), login.getLogin(), login.getPerfil().getId());
@@ -149,5 +155,27 @@ public class LoginService {
     public String buscarPerfilPorUsername(String username) {
         Login login = buscarPorUsername(username);
         return login.getPerfil().getNome();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarLoginPadrao() {
+        adicionarLoginSeNaoExistir("Professor", "123456", 1L);
+        adicionarLoginSeNaoExistir("Admin", "123456", 2L);
+    }
+
+    public void adicionarLoginSeNaoExistir(String nomeLogin, String senha, Long perfilid) {
+        Perfil perfilProfessor = perfilService.buscarPorId(perfilid);
+
+
+        // Garantir que o login "professor" não exista
+        if (!loginRepository.existsByLogin(nomeLogin)) {
+            Login login = new Login();
+            login.setLogin(nomeLogin);
+            login.setPassword(passwordEncoder.encode(senha));
+            login.setPerfil(perfilProfessor);  // Associando o perfil "PROFESSOR" ao login
+            loginRepository.save(login);
+        }
+
     }
 }

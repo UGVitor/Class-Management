@@ -1,5 +1,7 @@
 package com.kvy.demogerenciamentoaulas.service;
 
+import com.kvy.demogerenciamentoaulas.entity.Disciplina;
+import com.kvy.demogerenciamentoaulas.entity.Login;
 import com.kvy.demogerenciamentoaulas.entity.Sala;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.SalaEntityNotFoundException;
@@ -9,6 +11,7 @@ import com.kvy.demogerenciamentoaulas.repository.Projection.SalaProjection;
 import com.kvy.demogerenciamentoaulas.repository.SalaRepository;
 import com.kvy.demogerenciamentoaulas.repository.TipoSalaRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.SalaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,6 +102,23 @@ public class SalaService {
    public List<SalaProjection> buscarTodasSalas() {
         return salaRepository.findAllSalas();
    }
+
+   @PostConstruct
+   @Transactional
+   public void adicionarSalaPadrao() {
+        adicionarSalaSeNaoExistir(9, 36);
+    }
+
+    public void adicionarSalaSeNaoExistir(Integer numero, Integer capacidade) {
+
+        TipoSala tipoSala = tipoSalaService.buscarPorId(1L);
+        Sala sala = new Sala();
+        sala.setNumero(numero);
+        sala.setCapacidade(capacidade);
+        sala.setTipoSala(tipoSala);
+        salaRepository.save(sala);
+
+    }
 
 
 

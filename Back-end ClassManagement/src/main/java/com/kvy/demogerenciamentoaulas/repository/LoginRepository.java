@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface LoginRepository extends JpaRepository<Login, Long> {
+    boolean existsByLogin(String nome);
 
     @Query("SELECT l.id AS id, l.login AS login, p.nome AS perfilNome " +
             "FROM Login l JOIN l.perfil p")

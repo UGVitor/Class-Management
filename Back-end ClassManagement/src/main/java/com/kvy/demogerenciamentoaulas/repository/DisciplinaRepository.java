@@ -12,6 +12,7 @@ import java.util.List;
 public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
     boolean existsByNome(String nome);
 
+
     @Query("SELECT d.id AS id, d.nome AS nome, " +
             "l.login AS loginNome " +
             "FROM Disciplina d " +
