@@ -62,6 +62,7 @@ public class CursoService {
             throw new IllegalArgumentException("O nome do curso é obrigatório");
         }
 
+
         if (cursoDTO.getModalidade() == null) {
             throw new IllegalArgumentException("A modalidade é obrigatória");
         }

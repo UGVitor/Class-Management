@@ -3,8 +3,6 @@ package com.kvy.demogerenciamentoaulas.serviceTest;
 import java.util.List;
 import java.util.Optional;
 
-import com.kvy.demogerenciamentoaulas.Adapter.SalaAdapter;
-import com.kvy.demogerenciamentoaulas.Adapter.TipoSalaAdapter;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import com.kvy.demogerenciamentoaulas.exception.SalaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.Projection.SalaProjection;
@@ -15,13 +13,11 @@ import com.kvy.demogerenciamentoaulas.fixtures.SalaDTOFixture;
 import com.kvy.demogerenciamentoaulas.repository.SalaRepository;
 import com.kvy.demogerenciamentoaulas.service.TipoSalaService;
 import com.kvy.demogerenciamentoaulas.web.dto.SalaDTO;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -68,7 +64,6 @@ class SalaServiceTest {
         verify(tipoSalaService, times(1)).buscarPorId(anyLong());
         verify(salaRepository, times(1)).save(any(Sala.class));
     }
-
 
 
     @Test
@@ -160,6 +155,47 @@ class SalaServiceTest {
         when(salaRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(SalaEntityNotFoundException.class, () -> salaService.buscarPorId(1L));
+    }
+
+    @Test
+    void deveTentarBuscarUmaSalaComIdInvalido() {
+        Long invalidId = -1L;
+
+        when(salaRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThrows(SalaEntityNotFoundException.class, () -> salaService.buscarPorId(invalidId));
+
+        verify(salaRepository, times(1)).findById(invalidId);
+
+    }
+
+    @Test
+    void deveTentarEditarUmaSalaComIdInvalido() {
+        Long invalidId = -1L;
+
+        SalaDTO salaDTO = new SalaDTO();
+        salaDTO.setNumero(15);
+        salaDTO.setCapacidade(20);
+        salaDTO.setTipoSala(1L);
+        salaDTO.setId(1L);
+
+        when(salaRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThrows(SalaEntityNotFoundException.class, () -> salaService.editar(invalidId, salaDTO));
+
+        verify(salaRepository, times(1)).findById(invalidId);
+    }
+
+
+    @Test
+    void deveTentarExcluirUmaSalaComIdInvalido() {
+        Long invalidId = -1L;
+
+        when(salaRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThrows(SalaEntityNotFoundException.class, () -> salaService.excluir(invalidId));
+
+        verify(salaRepository, times(1)).findById(invalidId);
     }
 
 }

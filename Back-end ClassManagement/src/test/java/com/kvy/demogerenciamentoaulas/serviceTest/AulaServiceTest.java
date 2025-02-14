@@ -17,8 +17,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,7 +66,6 @@ class AulaServiceTest {
 
     @Test
     void deveSalvarUmaAula() {
-        // Mock dos objetos necessários
         Disciplina disciplina = new Disciplina();
         disciplina.setId(1L);
         when(disciplinaService.buscarPorId(aulaDTO.getDisciplinaId())).thenReturn(disciplina);
@@ -89,17 +86,15 @@ class AulaServiceTest {
         diaSemana.setId(1L);
         when(diaSemanaService.buscarPorId(aulaDTO.getDiaSemanaId())).thenReturn(diaSemana);
 
-        // Simulação do salvamento da aula com atribuição de ID
         when(aulaRepository.save(any(Aula.class))).thenAnswer(invocation -> {
             Aula aula = invocation.getArgument(0);
-            aula.setId(1L); // Simula a geração do ID no banco
+            aula.setId(1L);
             return aula;
         });
 
-        // Execução do método a ser testado
+
         Aula aulaSalva = aulaService.salvar(aulaDTO);
 
-        // Asserções para verificar se a aula foi salva corretamente
         assertNotNull(aulaSalva);
         assertEquals(aulaDTO.getDisciplinaId(), aulaSalva.getDisciplina().getId());
         assertEquals(aulaDTO.getHorarioId(), aulaSalva.getHorario().getId());
@@ -214,9 +209,30 @@ class AulaServiceTest {
 
     @Test
     void deveBuscarTodasAsAulas() {
+        AulaProjection aula1 = mock(AulaProjection.class);
+        AulaProjection aula2 = mock(AulaProjection.class);
+
+        when(aula1.getId()).thenReturn(1L);
+        when(aula1.getDisciplinaNome()).thenReturn("Aula de Analise");
+        when(aula2.getId()).thenReturn(2L);
+        when(aula2.getDisciplinaNome()).thenReturn("Aula de Engenharia de Soft");
+
+        List<AulaProjection> listaAulas = List.of(aula1, aula2);
+
+        when(aulaRepository.findAllAulasWithDisciplinaNomeAndHorario()).thenReturn(listaAulas);
+
         List<AulaProjection> resultado = aulaService.buscarTodos();
 
+        assertNotNull(resultado, "A lista de aulas não deveria ser nula");
 
+        assertEquals(2, resultado.size(), "A lista de aulas deve conter 2 aulas");
+
+        assertEquals(1L, resultado.get(0).getId());
+        assertEquals("Aula de Analise", resultado.get(0).getDisciplinaNome());
+        assertEquals(2L, resultado.get(1).getId());
+        assertEquals("Aula de Engenharia de Soft", resultado.get(1).getDisciplinaNome());
+
+        verify(aulaRepository, times(1)).findAllAulasWithDisciplinaNomeAndHorario();
     }
 
     @Test
@@ -231,4 +247,44 @@ class AulaServiceTest {
 
         assertThrows(IllegalArgumentException.class, () -> aulaService.salvar(aulaDTO));
     }
+
+    @Test
+    void deveTentarBuscarUmaAulaComIdInvalido() {
+        Long idInvalido = 999L;
+        when(aulaRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+        assertThrows(AulaEntityNotFoundException.class, () -> aulaService.buscarPorId(idInvalido));
+        verify(aulaRepository, times(1)).findById(idInvalido);
+    }
+
+    @Test
+    void deveTentarEditarUmaAulaComIdInvalido() {
+        Long idInvalido = 999L;
+
+        AulaDTO aulaDTOEditada = AulaDTO.builder()
+                .id(idInvalido)
+                .disciplinaId(2L)
+                .horarioId(1L)
+                .salaId(1L)
+                .diaSemanaId(1L)
+                .turmaId(1L)
+                .build();
+
+        when(aulaRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+        assertThrows(AulaEntityNotFoundException.class, () -> aulaService.editar(idInvalido, aulaDTOEditada));
+        verify(aulaRepository, times(1)).findById(idInvalido);
+    }
+
+    @Test
+    void deveTentarExcluirUmaAulaComIdInvalido() {
+        Long idInvalido = 999L;
+
+        when(aulaRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+        assertThrows(AulaEntityNotFoundException.class, () -> aulaService.excluir(idInvalido));
+        verify(aulaRepository, times(1)).findById(idInvalido);
+    }
+
+
 }
