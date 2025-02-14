@@ -88,4 +88,7 @@ public class TipoSalaService {
             tipoSalaRepository.save(tipoSala);
         }
     }
+    public Long getTipoSalaId() {
+        return 0L;
+    }
 }

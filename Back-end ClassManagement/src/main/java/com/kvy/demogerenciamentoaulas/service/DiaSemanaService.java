@@ -24,7 +24,7 @@ public class DiaSemanaService {
 
     @Transactional
     public DiaSemana salvar(DiaSemanaDTO diaSemanaDTO) {
-        // Validação do DTO e campos obrigatórios
+
         if (diaSemanaDTO == null) {
             throw new IllegalArgumentException("DiaSemanaDTO não pode ser nulo");
         }

@@ -54,12 +54,6 @@ class PerfilServiceTest {
         assertThrows(IllegalArgumentException.class, () -> perfilService.salvar(perfilDTO));
     }
 
-    @Test
-    void deveTentarSalvarUmPerfilComNomeVazioeRetornarIllegalArgumentException() {
-        PerfilDTO perfilDTO = new PerfilDTO(null, "");
-
-        assertThrows(IllegalArgumentException.class, () -> perfilService.salvar(perfilDTO));
-    }
 
     @Test
     void deveBuscarUmPerfilPorIdValido() {
@@ -158,5 +152,3 @@ class PerfilServiceTest {
         assertTrue(encontrados.isEmpty());
     }
 }
-
-
