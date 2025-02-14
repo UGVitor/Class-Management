@@ -17,6 +17,10 @@ public class PerfilService {
 
     private final PerfilRepository perfilRepository;
 
+    public static Perfil toEntity(PerfilDTO perfilDTO1) {
+        return null;
+    }
+
     public PerfilDTO convertToDTO(Perfil perfil) {
         return new PerfilDTO(perfil.getId(), perfil.getNome());
     }

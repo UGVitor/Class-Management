@@ -2,6 +2,7 @@ package com.kvy.demogerenciamentoaulas.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.kvy.demogerenciamentoaulas.entity.TipoSala;
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +30,10 @@ public class Sala implements Serializable {
     @JoinColumn(name = "id_tiposala", nullable = false)
     @JsonBackReference("tiposala-sala")
     private TipoSala tipoSala;
+
+    public static Snippet builder() {
+        return null;
+    }
 
     @Override
     public boolean equals(Object o) {

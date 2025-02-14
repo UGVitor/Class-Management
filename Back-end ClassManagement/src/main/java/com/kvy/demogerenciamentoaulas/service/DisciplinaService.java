@@ -26,7 +26,6 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
-        // Validação do DTO e campos obrigatórios
         if (disciplinaDTO == null) {
             throw new IllegalArgumentException("DisciplinaDTO não pode ser nulo");
         }
@@ -63,7 +62,7 @@ public class DisciplinaService {
 
     @Transactional
     public Disciplina editar(Long id, DisciplinaDTO disciplinaDTO) {
-        // Validação do DTO e campos obrigatórios
+
         if (disciplinaDTO == null) {
             throw new IllegalArgumentException("DisciplinaDTO não pode ser nulo");
         }
