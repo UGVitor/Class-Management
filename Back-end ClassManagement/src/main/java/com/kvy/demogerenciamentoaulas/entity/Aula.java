@@ -33,7 +33,7 @@ public class Aula implements Serializable {
     private Horario horario;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_aula", nullable = false)
+    @JoinColumn(name = "id_sala", nullable = false)
     @JsonBackReference("sala-aula")
     private Sala sala;
 

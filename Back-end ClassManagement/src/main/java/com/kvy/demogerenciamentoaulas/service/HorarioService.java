@@ -1,15 +1,18 @@
 package com.kvy.demogerenciamentoaulas.service;
 
 import com.kvy.demogerenciamentoaulas.entity.Horario;
+import com.kvy.demogerenciamentoaulas.entity.Perfil;
 import com.kvy.demogerenciamentoaulas.exception.HorarioEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.HorarioUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.TipoSalaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.HorarioRepository;
 import com.kvy.demogerenciamentoaulas.web.dto.HorarioDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,5 +76,22 @@ public class HorarioService {
     @Transactional(readOnly = true)
     public List<Horario> buscarTodos() {
         return horarioRepository.findAll();
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarHorarioPadrao() {
+        adicionarHorarioSeNaoExistir(LocalTime.of(8, 0), LocalTime.of(12, 0));  // Exemplo de horário
+        /*adicionarHorarioSeNaoExistir(LocalTime.of(13, 0), LocalTime.of(17, 0)); // Exemplo de horário
+        adicionarHorarioSeNaoExistir(LocalTime.of(18, 0), LocalTime.of(22, 0)); // Exemplo de horário*/
+    }
+
+    private void adicionarHorarioSeNaoExistir(LocalTime horaInicio, LocalTime horaTermino) {
+        if (!horarioRepository.existsByHoraInicioAndHoraTermino(horaInicio, horaTermino)) {
+            Horario horario = new Horario();
+            horario.setHoraInicio(horaInicio);
+            horario.setHoraTermino(horaTermino);
+            horarioRepository.save(horario);
+        }
     }
 }

@@ -1,18 +1,20 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Disciplina;
-import com.kvy.demogerenciamentoaulas.entity.Login;
+import com.kvy.demogerenciamentoaulas.entity.*;
 import com.kvy.demogerenciamentoaulas.exception.DiaSemanaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.exception.DisciplinaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.ProfInvalidException;
 import com.kvy.demogerenciamentoaulas.repository.DisciplinaRepository;
 import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.DisciplinaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class DisciplinaService {
 
     private final DisciplinaRepository disciplinaRepository;
     private final LoginService loginService;
+
 
     @Transactional
     public Disciplina salvar(DisciplinaDTO disciplinaDTO) {
@@ -98,8 +101,24 @@ public class DisciplinaService {
         System.out.println("Disciplina excluida com sucesso");
     }
 
+
     @Transactional(readOnly = true)
     public List<DisciplinaProjection> buscarTodos() {
         return disciplinaRepository.findAllDisciplinaWithLoginAndTurma();
+    }
+    @PostConstruct
+    @Transactional
+    public void adicionarDisciplinaPadrao() {
+            adicionarDisciplinaSeNaoExistir("Disciplina", "Professor");
+    }
+
+    public void adicionarDisciplinaSeNaoExistir(String nomeDisicplina, String nomeLogin) {
+            if (!disciplinaRepository.existsByNome(nomeDisicplina)) {
+                Login login = loginService.buscarPorUsername(nomeLogin);
+                Disciplina disciplina = new Disciplina();
+                disciplina.setNome(nomeDisicplina);
+                disciplina.setLogin(login);
+                disciplinaRepository.save(disciplina);
+            }
     }
 }

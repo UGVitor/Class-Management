@@ -31,4 +31,6 @@ public interface TurmaRepository extends JpaRepository<Turma, Long> {
             @Param("semestreId") Long semestreId,
             @Param("cursoId") Long cursoId
     );
+
+    boolean existsByNome(String nomeTurma);
 }

@@ -1,15 +1,12 @@
 package com.kvy.demogerenciamentoaulas.service;
 
-import com.kvy.demogerenciamentoaulas.entity.Turma;
-import com.kvy.demogerenciamentoaulas.entity.Turno;
-import com.kvy.demogerenciamentoaulas.entity.Curso;
-import com.kvy.demogerenciamentoaulas.entity.Semestre;
-import com.kvy.demogerenciamentoaulas.entity.Periodo;
+import com.kvy.demogerenciamentoaulas.entity.*;
 import com.kvy.demogerenciamentoaulas.exception.TurmaEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.exception.TurmaUniqueViolationException;
 import com.kvy.demogerenciamentoaulas.repository.*;
 import com.kvy.demogerenciamentoaulas.repository.Projection.TurmaProjection;
 import com.kvy.demogerenciamentoaulas.web.dto.TurmaDTO;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,6 +138,24 @@ public class TurmaService {
         Turma optionalTurma = buscarPorId(id);
         turmaRepository.delete(optionalTurma);
         System.out.println("Deletado com sucesso!");
+    }
+
+    @PostConstruct
+    @Transactional
+    public void adicionarTurmaPadrao() {
+        adicionarTurmaSeNaoExistir("Turma", 5L, 1L, 2L, 1L);
+    }
+
+    public void adicionarTurmaSeNaoExistir(String nomeTurma, Long id_periodo, Long id_turno, Long id_semestre, Long id_curso) {
+        if (!turmaRepository.existsByNome(nomeTurma)) {
+            TurmaDTO turmaDTO = new TurmaDTO();
+            turmaDTO.setNome(nomeTurma);
+            turmaDTO.setPeriodo(id_periodo);
+            turmaDTO.setTurno(id_turno);
+            turmaDTO.setSemestre(id_semestre);
+            turmaDTO.setCurso(id_curso);
+            salvar(turmaDTO);
+        }
     }
 
 }
