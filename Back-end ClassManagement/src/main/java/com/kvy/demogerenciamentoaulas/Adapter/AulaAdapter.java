@@ -25,4 +25,35 @@ public class AulaAdapter {
                 .turmaId(aula.getTurma().getId())
                 .build();
     }
-}
+
+        public static Aula toEntity(AulaDTO aulaDTO) {
+            if (aulaDTO == null) {
+                return null;
+            }
+            Aula aula = new Aula();
+            aula.setId(aulaDTO.getId());
+
+            Disciplina disciplina = new Disciplina();
+            disciplina.setId(aulaDTO.getDisciplinaId());
+            aula.setDisciplina(disciplina);
+
+            Horario horario = new Horario();
+            horario.setId(aulaDTO.getHorarioId());
+            aula.setHorario(horario);
+
+            Sala sala = new Sala();
+            sala.setId(aulaDTO.getSalaId());
+            aula.setSala(sala);
+
+            Turma turma = new Turma();
+            turma.setId(aulaDTO.getTurmaId());
+            aula.setTurma(turma);
+
+            DiaSemana diaSemana = new DiaSemana();
+            diaSemana.setId(aulaDTO.getDiaSemanaId());
+            aula.setDiaSemana(diaSemana);
+
+            return aula;
+        }
+    }
+

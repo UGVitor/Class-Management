@@ -35,4 +35,19 @@ public class SalaDTO {
     @NotNull(message = "O campo capacidade é obrigatório")
     private Integer capacidade;
 
+
+    public static void setsalaId(Object o) {
+    }
+
+    public static Long getSalaId() {
+        return Long.valueOf(0);
+    }
+
+    public Long getTipoSalaId() {
+        return null;
+    }
+
+    public Object getId(long l) {
+        return null;
+    }
 }

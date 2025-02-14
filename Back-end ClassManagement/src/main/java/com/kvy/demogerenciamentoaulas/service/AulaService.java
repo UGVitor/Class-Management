@@ -84,11 +84,11 @@ public class AulaService {
         }
     }
 
-    @Transactional
     public Aula buscarPorId(Long id) {
         return aulaRepository.findById(id)
                 .orElseThrow(() -> new AulaEntityNotFoundException(String.format("Aula id=%s não encontrada", id)));
     }
+
 
     @Transactional
     public Aula editar(Long id, AulaDTO aulaDTO) {

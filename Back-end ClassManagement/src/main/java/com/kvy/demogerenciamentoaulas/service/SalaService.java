@@ -31,7 +31,9 @@ public class SalaService {
         if (salaDTO == null) {
             throw new IllegalArgumentException("Sala não pode ser nulo");
         }
-
+        if (salaDTO.getId()== null) {
+            throw new IllegalArgumentException("O id de sala não pode ser nulo.");
+        }
         if (salaDTO.getCapacidade() == null) {
             throw new IllegalArgumentException("A capacidade é obrigatório");
         }
@@ -59,11 +61,25 @@ public class SalaService {
     @Transactional
     public Sala buscarPorId(Long id) {
         return salaRepository.findById(id)
-                .orElseThrow(() -> new SalaEntityNotFoundException(String.format("Curso id=%s não encontrado", id)));
+                .orElseThrow(() -> new SalaEntityNotFoundException(String.format("Sala id=%s não encontrado", id)));
     }
 
     @Transactional
     public Sala editar(Long id, SalaDTO salaDTO) {
+        if (salaDTO == null) {
+            throw new IllegalArgumentException("Sala não pode ser nulo");
+        }
+        if (salaDTO.getId()== null) {
+            throw new IllegalArgumentException("O id de sala não pode ser nulo.");
+        }
+        if (salaDTO.getCapacidade() == null) {
+            throw new IllegalArgumentException("A capacidade é obrigatório");
+        }
+
+        if (salaDTO.getNumero() == null) {
+            throw new IllegalArgumentException("O número é obrigatório");
+        }
+
         Sala existingSala = buscarPorId(id);
         existingSala.setNumero(salaDTO.getNumero());
         existingSala.setCapacidade(salaDTO.getCapacidade());
