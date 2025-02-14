@@ -4,9 +4,7 @@ import com.kvy.demogerenciamentoaulas.entity.Curso;
 import com.kvy.demogerenciamentoaulas.entity.Modalidade;
 import com.kvy.demogerenciamentoaulas.exception.CursoEntityNotFoundException;
 import com.kvy.demogerenciamentoaulas.repository.CursoRepository;
-import com.kvy.demogerenciamentoaulas.repository.Projection.AulaProjection;
 import com.kvy.demogerenciamentoaulas.repository.Projection.CursoProjection;
-import com.kvy.demogerenciamentoaulas.repository.Projection.DisciplinaProjection;
 import com.kvy.demogerenciamentoaulas.service.CursoService;
 import com.kvy.demogerenciamentoaulas.service.ModalidadeService;
 import com.kvy.demogerenciamentoaulas.web.dto.CursoDTO;
@@ -175,7 +173,7 @@ class CursoServiceTest {
 
         var cursos = cursoService.buscarTodos();
 
-        System.out.println("Cursos encontrados: " + cursos.size()); // Para depuração
+        System.out.println("Cursos encontrados: " + cursos.size());
         assertNotNull(cursos);
         assertEquals(2, cursos.size(), "A lista de cursos deve conter 2 cursos");
 
@@ -198,6 +196,33 @@ class CursoServiceTest {
 
         verify(cursoRepository, times(1)).findAllCursosWithModalidadeNome();
       }
+
+        @Test
+        void deveTentarBuscarUmCursoComIdInvalido() {
+            Long idInvalido = 999L;
+            when(cursoRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+            assertThrows(CursoEntityNotFoundException.class, () -> cursoService.buscarPorId(idInvalido));
+            verify(cursoRepository, times(1)).findById(idInvalido);
+        }
+
+
+        @Test
+        void deveTentarEditarUmCursoComIdInvalido() {
+            Long idInvalido = 999L;
+
+            CursoDTO cursoDTOEditado = CursoDTO.builder()
+                    .id(idInvalido)
+                    .curso("Engenharia de Software")
+                    .modalidade(2L)
+                    .build();
+
+            when(cursoRepository.findById(idInvalido)).thenReturn(Optional.empty());
+
+            assertThrows(CursoEntityNotFoundException.class, () -> cursoService.editar(idInvalido, cursoDTOEditado));
+            verify(cursoRepository, times(1)).findById(idInvalido);
+
+        }
 
 
 }
